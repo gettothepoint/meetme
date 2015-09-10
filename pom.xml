@@ -12,7 +12,7 @@
   <properties>
     <!-- Following properties are important. Set the correct path
          and set debug enable to true as needed -->
-    <android.sdk.path>/opt/android-sdk-linux/</android.sdk.path>
+    <android.sdk.path>C:\Users\vrettos\AppData\Local\Android\android-sdk</android.sdk.path>
     <debug.enable>false</debug.enable>
 
     <groovy.version>2.4.4</groovy.version>
