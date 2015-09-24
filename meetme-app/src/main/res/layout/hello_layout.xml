@@ -9,4 +9,12 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     />
+    <Button
+            android:id="@+id/showlocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Location"
+
+            android:layout_gravity="center_horizontal"
+            />
 </LinearLayout>
