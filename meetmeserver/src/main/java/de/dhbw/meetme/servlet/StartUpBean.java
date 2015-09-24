@@ -21,7 +21,8 @@ public class StartUpBean {
   private static final Logger log = LoggerFactory.getLogger(StartUpBean.class);
   public static final String DB_PORT = "9092";
 
-  @Inject UserDao userDao;
+  @Inject
+  UserDao userDao;
 
   @PostConstruct
   public void init() {
@@ -30,22 +31,20 @@ public class StartUpBean {
     startDbServer();
   }
 
+  @PreDestroy
+  public void shutdown() {
+    stopDbServer();
+  }
 
-    @PreDestroy
-    public void shutdown()
-    {
-      stopDbServer();
-    }
-
-    /**
-     * Start H2 db as server.
-     * You can connect remotly using this URL:
-     * jdbc:h2:tcp://localhost:9092/~/meetmedb
-     * User: sa
-     * Pwd: <KEEP EMPTY>
-     *
-     * WARNING: Server is NOT secured. Don't use in production!!!!!
-     */
+  /**
+   * Start H2 db as server.
+   * You can connect remotly using this URL:
+   * jdbc:h2:tcp://localhost:9092/~/meetmedb
+   * User: sa
+   * Pwd: <KEEP EMPTY>
+   *
+   * WARNING: Server is NOT secured. Don't use in production!!!!!
+   */
   private void startDbServer() {
     try {
       Server.createTcpServer("-tcpPort", DB_PORT, "-tcpAllowOthers").start();
