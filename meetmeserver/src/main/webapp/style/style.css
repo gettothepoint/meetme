@@ -1,0 +1,135 @@
+@charset "utf-8";
+/* CSS Document */
+
+/** CSS RESET **/
+header, footer, section, aside, nav, article { display: block;}
+
+html { 
+  background: url(../img/home.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul,
+li,
+pre,
+code,
+address,
+variable,
+form,
+fieldset,
+blockquote {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  vertical-align: baseline;
+  font-size: 100%;
+  font-weight: normal;
+}
+body, p {
+  line-height: 2;
+  font-family:Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  text-align:justify;
+
+    
+}
+
+
+/* ----------------- content--------------------- */
+
+section#content {
+background-image:url(../img/bg_start.fw.png);
+background-repeat:repeat;
+max-width: 1000px;
+min-width:700px;
+margin:0  auto;
+margin-top: 200px; 
+padding:  20px 130px;
+}
+
+/* -----------footer / header / inner--------------------------- */
+
+header {
+	background: #bbb;
+	width: 100%; 
+	position: fixed;
+	left: 0;
+	top: 0; 
+	border-bottom:1px solid #666;
+	border-top:1px solid #666;
+}
+
+footer {
+	background: #bbb;
+	width: 100%; 
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	border-bottom:1px solid #666;
+	border-top:1px solid #666;
+	height: 150px;
+	}
+
+.inner{
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1000px;
+    min-width: 150px;
+	background-color: none; 
+    }
+.copyright {
+	margin: 0 auto; 
+	min-width: 150px;
+	max-width: 1000px;   
+	background-color: none; 
+	text-align: right; 
+	font-size: 11px; 
+	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif; 
+	
+}
+
+.copyright#a {
+	margin: 20px; 
+}
+	
+/*-----RESET-----*/
+* {
+margin: 0;
+padding: 0;
+-moz-box-sizing: border-box;
+-webkit-box-sizing: border-box;
+box-sizing: border-box;
+}
+
+
+/*--- FORMARIETUNG REGISTRIERUNGSFORMULAR --- */ 
+
+form {
+	
+	background-color: none; 
+		
+}
+
+input {
+	
+	height: 50px; 
+	/*background-color:rgba(0, 0, 0, 0);*/
+	border: 2px solid #CACAD9;
+	font-size: 15px; 
+	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif; 
+	margin: 5px; 
+	padding-left: 20px; 
+	
+}

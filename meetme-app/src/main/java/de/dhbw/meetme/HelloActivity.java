@@ -62,7 +62,7 @@ public class HelloActivity extends Activity {
     }
 
     //this method is supposed to bring the data to the server via "POST"
-    public void postData(String la, String lo) {
+    public void postData(double la, double lo) {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
         HttpGet htget = new HttpGet("http://<your_app_url>/Home/Book/"+la+"/"+lo);

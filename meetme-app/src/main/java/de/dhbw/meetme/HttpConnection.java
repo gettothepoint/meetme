@@ -20,7 +20,7 @@ import java.io.IOException;
  * Created by kollemar on 22.09.2015.
  */
 public class HttpConnection {
-    public void postData(String la, String lo) {
+    public void postData(double la, double lo) {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
         HttpGet htget = new HttpGet("http://<your_app_url>/Home/Book/"+la+"/"+lo);
