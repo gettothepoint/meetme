@@ -7,9 +7,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  *
  */
-@Entity // also add to persistence.xml !!
-@XmlRootElement // needed for REST JSON marshalling
+@Entity // also add to persistence.xml !! -> done
+@XmlRootElement // needed for REST JSON marshalling --> maps class to enum type or XML Element
+//causes a global element declaration associated with the XML schema type to which the class is mapped
+//wieso nicht @Table?
 public class User extends PersistentObject {
+    //nicht vergessen: alle Funktionen aus Persistent Object werden übernommen
   private String name;
 
   public String getName() {

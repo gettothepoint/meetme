@@ -9,6 +9,8 @@ import java.util.UUID;
  *
  */
 @Embeddable
+//instances are stored as intrinsic part of an owning entity and share the identity of the entity
+//embedded objects are mapped to the database table for the entity
 public class UuidId implements Serializable {
   @Column(length = 512)
   private String id;
@@ -37,7 +39,8 @@ public class UuidId implements Serializable {
 
   @Override
   public int hashCode() {
-    return id.hashCode();
+
+    return id.hashCode(); //?!?!?!?
   }
 
   @Override
