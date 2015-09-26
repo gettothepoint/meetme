@@ -45,10 +45,13 @@ public class HelloActivity extends Activity {
 
                     double latitude = gps.getLatitude();
                     double longitude = gps.getLongitude();
-                    postData(latitude, longitude);
+                    String slatitude = Double.toString(latitude);
+                    String slongitude = Double.toString(longitude);
+                    HttpConnection sendGps = new HttpConnection(HelloActivity.this);
+                    sendGps.postData(slatitude, slongitude);
 
                     // \n is for new line
-                    Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude + "\n GPS sent to server!", Toast.LENGTH_LONG).show();
                 } else {
                     // can't get location
                     // GPS or Network is not enabled
@@ -61,26 +64,7 @@ public class HelloActivity extends Activity {
         });
     }
 
-    //this method is supposed to bring the data to the server via "POST"
-    public void postData(String la, String lo) {
-        // Create a new HttpClient and Post Header
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpGet htget = new HttpGet("http://<your_app_url>/Home/Book/"+la+"/"+lo);
 
-        try {
-            // Execute HTTP Post Request
-            HttpResponse response = httpclient.execute(htget);
-            String resp = response.getStatusLine().toString();
-            Toast bread = Toast.makeText(this.getApplicationContext(), resp, 5000);
-            bread.show();
-
-
-        } catch (ClientProtocolException e) {
-            Toast.makeText(this, "Error", 5000).show();
-        } catch (IOException e) {
-            Toast.makeText(this, "Error", 5000).show();
-        }
-    }
 
 }
 
