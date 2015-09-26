@@ -39,7 +39,7 @@ public class UserClassicDao implements Dao<UuidId, User> {
             statement.setString(3, entity.getFirstname());
             statement.setString(4, entity.getLastname());
             statement.setString(5, entity.getEmail());
-            statement.setString(6, entity.getEmail());
+            statement.setString(6, entity.getPassword());
             statement.setString(7, entity.getTeam());
             statement.executeUpdate();
             statement.close();
