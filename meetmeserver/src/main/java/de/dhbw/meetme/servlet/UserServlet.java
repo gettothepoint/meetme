@@ -38,6 +38,11 @@ public class UserServlet extends HttpServlet {
 
     User user = new User();
     user.setName("User " + users.size());
+    user.setFirstname("firstname");
+    user.setLastname("lastname");
+    user.setEmail("mail");
+    user.setPassword("*****");
+    user.setTeam("gruen oder blau");
     userDao.persist(user);
     transaction.commit();
 
