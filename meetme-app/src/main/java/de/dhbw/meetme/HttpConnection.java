@@ -30,8 +30,8 @@ public class HttpConnection {
     public void postData(String la, String lo) {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
-        HttpGet htget = new HttpGet("http://<your_app_url>/Home/Book/"+la+"/"+lo);
-
+      //  HttpGet htget = new HttpGet("http://<your_app_url>/Home/Book/"+la+"/"+lo);
+        HttpGet htget = new HttpGet("localhost:8087/meetmeserver/api/user/list");
         try {
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(htget);

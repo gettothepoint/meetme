@@ -21,6 +21,7 @@ import java.io.IOException;
 public class HelloActivity extends Activity {
 
     Button btnShowLocation;
+    Button btnShowUsers;
 
     // GPSTracker class
     GPSTracker gps;
@@ -30,6 +31,7 @@ public class HelloActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hello_layout);
 
+        //btnShowUsers = (Button) findViewById(R.id.showusers);
         btnShowLocation = (Button) findViewById(R.id.showlocation);
 
         // show location button click event
