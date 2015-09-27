@@ -7,11 +7,18 @@ import javax.persistence.MappedSuperclass;
  *
  */
 @MappedSuperclass
+//has no separate table defined for it
+//mapping information is applied to the entities inheriting
+
 abstract public class PersistentObject {
   @EmbeddedId protected UuidId id;
+  //only one embeddedId assigned and no further id
+  //used as primary key
+  //as an embedded Object UuidId is not an entity itself!
 
   public PersistentObject() {
     id = new UuidId();
+    //wird initialisiert, damit jedes Objekt auch eine ID hat
   }
 
   public UuidId getId() {
@@ -23,6 +30,7 @@ abstract public class PersistentObject {
   }
 
   @Override
+  //just because it overrides a method declaration in a supertype
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof PersistentObject)) return false;
@@ -35,7 +43,7 @@ abstract public class PersistentObject {
 
   @Override
   public int hashCode() {
-    return id.hashCode();
+    return id.hashCode(); //ist aktuell noch leer --> Sinn?
   }
 
   @Override
