@@ -42,7 +42,8 @@ public class UserServlet extends HttpServlet {
     user.setLastname("lastname");
     user.setEmail("mail");
     user.setPassword("*****");
-    user.setTeam("gruen oder blau");
+    user.chooseTeam();
+    user.setTeam(user.getTeam());
     userDao.persist(user);
     transaction.commit();
 

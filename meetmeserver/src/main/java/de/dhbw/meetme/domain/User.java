@@ -59,6 +59,18 @@ public class User extends PersistentObject {
     public void setTeam(String team) {
         this.team = team;
     }
+    public void chooseTeam()
+    {
+        int t = (int) Math.floor(Math.random()*2);
+        if(t==0)
+        {
+            team = "green";
+        }
+        else
+        {
+            team = "blue";
+        }
+    }
 
     public String getName() {
     return name;
