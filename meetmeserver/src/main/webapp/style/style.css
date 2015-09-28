@@ -12,31 +12,22 @@ html {
   background-size: cover;
 }
 
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-ol,
-ul,
-li,
-pre,
-code,
-address,
-variable,
-form,
-fieldset,
-blockquote {
-  border: 0;
-  padding: 0;
-  margin: 0;
-  vertical-align: baseline;
-  font-size: 100%;
-  font-weight: normal;
+html {
+    position: relative;
+    min-height: 100%;
 }
+body {
+    margin: 0 0 100px; /* bottom = footer height */
+}
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100px;
+    width: 100%;
+	background-color:#667682;
+}
+
 body, p {
   line-height: 2;
   font-family:Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -52,10 +43,10 @@ body, p {
 section#content {
 background-image:url(../img/bg_start.fw.png);
 background-repeat:repeat;
-max-width: 1000px;
-min-width:700px;
-margin:0  auto;
-margin-top: 200px; 
+max-width: 50%;
+margin-left: auto; 
+margin-right: 50px; 
+margin-top: 180px; 
 padding:  20px 130px;
 }
 
@@ -71,38 +62,61 @@ header {
 	border-top:1px solid #666;
 }
 
-footer {
-	background: #bbb;
-	width: 100%; 
-	position: fixed;
-	left: 0;
-	bottom: 0;
-	border-bottom:1px solid #666;
-	border-top:1px solid #666;
-	height: 150px;
-	}
-
 .inner{
-    margin: 0 auto;
+    margin-left: 15%;
     padding: 20px;
-    max-width: 1000px;
-    min-width: 150px;
-	background-color: none; 
+    max-width: 15%;
+	max-height: 15%;
+    background-color: none; 
     }
-.copyright {
-	margin: 0 auto; 
-	min-width: 150px;
-	max-width: 1000px;   
-	background-color: none; 
-	text-align: right; 
-	font-size: 11px; 
-	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif; 
+
+
+p#app {
+
+	margin-left: 15%;
+	background-color: none;
+	max-width: 15%;
+	font-size: 11px;
 	
 }
 
-.copyright#a {
-	margin: 20px; 
+p#legal {
+	background-color:#2D3D47;
+	text-align: right; 
+	margin-bottom: 0; 
+	margin-left: auto; 
+	margin-right: 0;
+	font-size: 10px; 
+	font-family:Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	padding-right: 10px; 
+	padding-bottom: 5px;
+	color: #FFFFFF; 
+	position: absolute; 
+	bottom: 0; 
+	width: 100%;
+	
 }
+
+div#social_icons {
+	margin-bottom: 1.7%; 
+	margin-left: auto; 
+	margin-right: 0; 
+	position: absolute; 
+	bottom: 0; 
+	width: 100%;
+	background-color: none;
+		
+}
+
+p#required {
+	font-size: 11px; 
+	color: #F90307;
+	
+}
+
+
+
+
 	
 /*-----RESET-----*/
 * {
@@ -129,7 +143,34 @@ input {
 	border: 2px solid #CACAD9;
 	font-size: 15px; 
 	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif; 
-	margin: 5px; 
+	margin: 0.5%; 
 	padding-left: 20px; 
+	max-width: 250px;
 	
 }
+
+button
+{
+	/*display: block;*/
+	margin-left: 18%;
+	margin-top: 0.25%
+	width: 150px; 
+	font-size: 1.1em;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 10px 15px;
+	/*margin: 20px auto;*/
+	color: #ccc;
+	background-color: #555;
+	background: -webkit-linear-gradient(#888, #555);
+	background: linear-gradient(#888, #555);
+	border: 0 none;
+	border-radius: 3px;
+	text-shadow: 0 -1px 0 #000;
+	box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0,0,0,0.6);
+	cursor: pointer;
+
+
+
+
+

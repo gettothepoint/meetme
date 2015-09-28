@@ -5,41 +5,63 @@
 <title>GetToThePoint!</title>
 <link rel="stylesheet" href="style/style.css">
 
+<!---VALIDATION JAVASCRIPT---->
+
+<script>
+function validateForm() {
+    var x = document.forms["registration"]["name"]["lastname"]["username"]["e-mail"]["confirm_mail"]["password"]["confirm_password"].value;
+	if ( ["username"] != element.defaultValue) {
+		
+	} else if ( (["e-mail"] != ["confirm_mail"]) || (["password"] != ["confirm_password"])  ) {
+	 	alert("E-Mail Address doesn't match!");
+	 }
+	else {	
+		if (x == null || x == "")  {
+        	alert("All fields must be filled out.");
+        	return false;
+				}
+	}
+}
+</script>
+
 </head>
 <body>
 
+<section id="content">
 
-<div id="container">
-<section id="content">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
+<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. </p>
 
 
-<form action="http://localhost:8087/meetmeserver/user" method="get">
-<input name="name" class="name" type="text" value="Name">
-<input name="lastname" class="lastname" type="text" value="Lastname">
-<input name="username" class="username" type="text" value="Username">
-<input name="e-mail" class="e-mail" type="text" value="Your E-Mail Address">
-<input name="confirm_mail" class="confirm_mail" type="text" value="Confirm E-Mail Address">
-<input name="password" class="password" type="password" value="Password">
-<input name="confirm_password" class="confirm_password" type="password" value="Confirm Password">
-<input name="submit_button" type="submit" value="I'm in!" />
+<form name="registration" action="http://localhost:8087/meetmeserver/user" onsubmit="return ValidateForm()" method="GET">
+<input name="name" class="name" type="text" placeholder="Name*" required>
+<input name="lastname" class="lastname" type="text" placeholder="Lastname*" required> 
+<input name="username" class="username" type="text" placeholder="Username*" required>
+<input name="e-mail" class="e-mail" type="email" placeholder="Your E-Mail Address*" required> 
+<input name="confirm_mail" class="confirm_mail" type="email" placeholder="Confirm E-Mail Address*" required > 
+<input name="password" class="password" type="password" placeholder="Password*" required> 
+<input name="confirm_password" class="confirm_password" type="password" placeholder="Confirm Password*" required>
+<button id="submit_button" type="submit" />I'm in!</button>
 </form>
+
+<p id="required">* Field required</p>
+
+
 
 </section>
 
 
 
-</div>
 
 <footer>
-<div class="inner"> 
-<p>Available for</p>
-<a href="https://play.google.com/"><img src="img/google.png" width="20%"></a>
+<div class="innner">
+<p id="app">Available for <br />
+<a href="http://play.google.com" target="new"><img src="img/google.png" width="55%"></a>
+</p>
+<div id="social_icons"><img style="float:right;" src="img/social_media.PNG"></div>
+
+<p id="legal">Copyright (C) 2015, Hewlett Packard Enterprise</p>
 </div>
 
-<div class="copyright">
-<a href="http://google.de">Privacy and Terms</a>
-<a href="http://google.de">Legal Notice</a>
-</div>
 </footer>
 
 </body>
