@@ -38,11 +38,11 @@ public class UserServlet extends HttpServlet {
     Collection<User> users = userDao.list();
 
     User user = new User();
-    user.setName("User " + users.size());
-    user.setFirstname("firstname");
-    user.setLastname("lastname");
-    user.setEmail("mail");
-    user.setPassword("password");
+    user.setName(request.getParameter("username"));
+    user.setFirstname(request.getParameter("name"));
+    user.setLastname(request.getParameter ("lastname"));
+    user.setEmail(request.getParameter("e-mail"));
+    user.setPassword(request.getParameter("password"));
     user.chooseTeam();
     user.setTeam(user.getTeam());
 
