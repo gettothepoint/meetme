@@ -1,5 +1,6 @@
 package de.dhbw.meetme.rest;
 
+import de.dhbw.meetme.database.Transaction;
 import de.dhbw.meetme.database.dao.UserDao;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
@@ -22,6 +23,7 @@ public class UserService {
 
   @Inject
   UserDao userDao;
+  Transaction transaction;
 
   @Path("/list")
   @GET
@@ -40,8 +42,10 @@ public class UserService {
   @Path("/delete/{id}")
   @DELETE
   public void delete(@PathParam("id") String id) {
+    transaction.begin();
     log.debug("Delete user " + id);
     userDao.delete(UuidId.fromString(id));
+    transaction.commit();
   }
 
   @Path("/save")

@@ -3,6 +3,7 @@ package de.dhbw.meetme.servlet;
 import de.dhbw.meetme.database.Transaction;
 import de.dhbw.meetme.database.dao.UserDao;
 import de.dhbw.meetme.domain.User;
+import de.dhbw.meetme.domain.UuidId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,9 +42,13 @@ public class UserServlet extends HttpServlet {
     user.setFirstname("firstname");
     user.setLastname("lastname");
     user.setEmail("mail");
-    user.setPassword("*****");
+    user.setPassword("password");
     user.chooseTeam();
     user.setTeam(user.getTeam());
+
+    user.setBreitengrad(null);
+    user.setLaengengrad(null);
+
     userDao.persist(user);
     transaction.commit();
 
