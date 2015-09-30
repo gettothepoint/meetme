@@ -33,7 +33,7 @@ public class UserClassicDao implements Dao<UuidId, User> {
         Connection con = getConnection();
         PreparedStatement statement = null;
         try {
-            statement = con.prepareStatement("insert into user (id, name, firstname, lastname, email, password, team, breitengrad, laengengrad) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            statement = con.prepareStatement("insert into user (id, name, firstname, lastname, email, password, team, latitude, longitude) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setString(1, entity.getId().asString());
             statement.setString(2, entity.getName());
             statement.setString(3, entity.getFirstname());
@@ -41,8 +41,8 @@ public class UserClassicDao implements Dao<UuidId, User> {
             statement.setString(5, entity.getEmail());
             statement.setString(6, entity.getPassword());
             statement.setString(7, entity.getTeam());
-            statement.setString(8, entity.getBreitengrad());
-            statement.setString(9, entity.getLaengengrad());
+            statement.setString(8, entity.getLatitude());
+            statement.setString(9, entity.getLongitude());
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -125,7 +125,7 @@ public class UserClassicDao implements Dao<UuidId, User> {
         ResultSet result = null;
         List<User> users = new ArrayList<>();
         try {
-            statement = con.prepareStatement("select id, name, firstname, lastname, email, password, team, breitengrad, laengengrad from user");
+            statement = con.prepareStatement("select id, name, firstname, lastname, email, password, team, latitude, longitude from user");
             result = statement.executeQuery();
 
             while(result.next()) {
@@ -193,5 +193,5 @@ public class UserClassicDao implements Dao<UuidId, User> {
         return users;
     }
 
-
 }
+

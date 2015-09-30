@@ -20,25 +20,25 @@ public class User extends PersistentObject {
     private String password;
     private String team;
 
-    private String breitengrad;
-    private String laengengrad;
+    private String latitude;
+    private String longitude;
 
 
     //Getter und Setter Methoden für Variablen
-    public String getBreitengrad() {
-        return breitengrad;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setBreitengrad(String breitengrad) {
-        this.breitengrad = breitengrad;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
-    public String getLaengengrad() {
-        return laengengrad;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setLaengengrad(String laengengrad) {
-        this.laengengrad = laengengrad;
+    public void setLongitude(String laengengrad) {
+        this.longitude = laengengrad;
     }
 
     public String getFirstname() {
@@ -104,6 +104,7 @@ public class User extends PersistentObject {
             team = "blue";
         }
     }
+
 
   @Override
   public String toString() {
