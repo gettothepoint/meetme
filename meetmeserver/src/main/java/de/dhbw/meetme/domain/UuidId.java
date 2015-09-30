@@ -15,6 +15,10 @@ public class UuidId implements Serializable {
   @Column(length = 512)
   private String id;
 
+  public String getId() {
+    return id;
+  }
+
   private UuidId(String id) {
     this.id = id;
   }

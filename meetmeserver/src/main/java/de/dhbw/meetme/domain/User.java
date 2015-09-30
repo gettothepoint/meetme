@@ -20,6 +20,27 @@ public class User extends PersistentObject {
     private String password;
     private String team;
 
+    private String latitude;
+    private String longitude;
+
+
+    //Getter und Setter Methoden für Variablen
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String laengengrad) {
+        this.longitude = laengengrad;
+    }
+
     public String getFirstname() {
         return firstname;
     }
@@ -59,6 +80,18 @@ public class User extends PersistentObject {
     public void setTeam(String team) {
         this.team = team;
     }
+
+    public String getName() {
+    return name;
+    }
+
+    public void setName(String name) {
+    this.name = name;
+  }
+
+
+
+    //Methode für die zufällige Verteilung der Teams
     public void chooseTeam()
     {
         int t = (int) Math.floor(Math.random()*2);
@@ -72,13 +105,6 @@ public class User extends PersistentObject {
         }
     }
 
-    public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
 
   @Override
   public String toString() {
