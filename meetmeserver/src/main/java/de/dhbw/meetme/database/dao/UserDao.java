@@ -20,6 +20,7 @@ import java.util.Collection;
  */
 @ApplicationScoped
 public class UserDao extends JpaDao<UuidId, User> {
+
     public UserDao() {
         super(User.class);
     }
@@ -31,7 +32,7 @@ public class UserDao extends JpaDao<UuidId, User> {
         return (Collection<User>) query.getResultList();
     }
 
-    public User findbyUserame(String name) {
+    public User findByUsername(String name) {
         Query query = entityManager.createQuery("Select u from User u where u.name = :name");
                 query.setParameter("username", name);
         return (User) query.getResultList().get(0);
