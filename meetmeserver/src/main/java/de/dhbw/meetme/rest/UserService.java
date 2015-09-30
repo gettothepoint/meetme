@@ -1,7 +1,7 @@
 package de.dhbw.meetme.rest;
 
 import de.dhbw.meetme.database.Transaction;
-import de.dhbw.meetme.database.dao.UserDao;
+import de.dhbw.meetme.database.dao.UserClassicDao;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
 import groovy.lang.Singleton;
@@ -22,7 +22,7 @@ public class UserService {
   private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
   @Inject
-  UserDao userDao;
+  UserClassicDao userDao;
   Transaction transaction;
 
   @Path("/list")
