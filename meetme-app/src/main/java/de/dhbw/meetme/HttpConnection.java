@@ -1,5 +1,6 @@
 package de.dhbw.meetme;
 
+import android.content.Context;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -20,10 +21,15 @@ import java.io.IOException;
  * Created by kollemar on 22.09.2015.
  */
 public class HttpConnection {
+    Context mContext;
+    public HttpConnection(Context context) {
+        this.mContext = context;
+
+    }
     public void postData(String la, String lo) {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
-        HttpGet htget = new HttpGet("http://<your_app_url>/Home/Book/"+la+"/"+lo);
+        HttpGet htget = new HttpGet("localhost:8087/meetmeserver/api/user/list");
 
         try {
             // Execute HTTP Post Request
