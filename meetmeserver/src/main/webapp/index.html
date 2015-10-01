@@ -1,13 +1,13 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>GetToThePoint!</title>
-<link rel="stylesheet" href="style/style.css">
+	<meta charset="utf-8">
+	<title>GetToThePoint!</title>
+	<link rel="stylesheet" href="style/style.css">
 
-<!---VALIDATION JAVASCRIPT---->
+	<!---VALIDATION JAVASCRIPT---->
 
-<script>
+	<script>
 function validateForm() {
     var x = document.forms["registration"]["name"]["lastname"]["username"]["e-mail"]["confirm_mail"]["password"]["confirm_password"].value;
 	if ( ["username"] != element.defaultValue) {
@@ -26,24 +26,37 @@ function validateForm() {
 
 </head>
 <body>
+<header><center><img src="img/header.jpg"></center></header>
 
 <section id="content">
+	<h1>Herzlich Willkommen bei GetToThePoint!</h1>
+	<p>GetToThePoint ist ein Geo-Kennenlernspiel. Es gibt dir die Möglichkeit neue Menschen in vielleicht sogar  neue Städte auf spielerische und spaßige Weise kennenzulernen. <br /></p>
+	Registriere dich jetzt und werde Teil der Community.
 
-<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. </p>
 
 
-<form name="registration" action="http://localhost:8087/meetmeserver/user" onsubmit="return ValidateForm()" method="GET">
-<input name="name" class="name" type="text" placeholder="Name*" required>
-<input name="lastname" class="lastname" type="text" placeholder="Lastname*" required> 
-<input name="username" class="username" type="text" placeholder="Username*" required>
-<input name="e-mail" class="e-mail" type="email" placeholder="Your E-Mail Address*" required> 
-<input name="confirm_mail" class="confirm_mail" type="email" placeholder="Confirm E-Mail Address*" required > 
-<input name="password" class="password" type="password" placeholder="Password*" required> 
-<input name="confirm_password" class="confirm_password" type="password" placeholder="Confirm Password*" required>
-<button id="submit_button" type="submit" />I'm in!</button>
-</form>
+	<form name="registration" action="http://localhost:8087/meetmeserver/user" onsubmit="return ValidateForm()" method="GET">
+		<input name="name" class="name" type="text" placeholder="Vorname*" required>
+		<input name="lastname" class="lastname" type="text" placeholder="Nachname*" required>
+		<input name="username" class="username" type="text" placeholder="Username*" required>
+		<input name="e-mail" class="e-mail" type="email" placeholder="Deine E-Mail Addresse*" required>
+		<input name="confirm_mail" class="confirm_mail" type="email" placeholder="E-Mail Adresse bestätigen*" required >
+		<input name="password" class="password" type="password" placeholder="Password*" required>
+		<input name="confirm_password" class="confirm_password" type="password" placeholder="Passwort bestätigen*" required>
+		<select name="teams">
+			<option value="blue" selected="selected">Blue</option>
+			<option value="red">Red</option>
+		</select>
+		<button id="submit_button" type="submit">Los geht's!</button>
+	</form>
 
-<p id="required">* Field required</p>
+	<script type="javascript">
+		$('#submit_button').click(function () {
+    window.location = 'http://localhost:63342/GetToThePoint/meetmeserver/src/main/webapp/Confirmation.html';
+});
+	</script>
+
+	<p id="required">* Pflichtfeld</p>
 
 
 
@@ -53,14 +66,14 @@ function validateForm() {
 
 
 <footer>
-<div class="innner">
-<p id="app">Available for <br />
-<a href="http://play.google.com" target="new"><img src="img/google.png" width="55%"></a>
-</p>
-<div id="social_icons"><img style="float:right;" src="img/social_media.PNG"></div>
+	<div class="innner">
+		<p id="app">Available for <br />
+			<a href="http://play.google.com" target="new"><img src="img/google.png" width="55%"></a>
+		</p>
+		<div id="social_icons"> <img style="float:right;"src="img/social_media.PNG"></div>
 
-<p id="legal">Copyright (C) 2015, Hewlett Packard Enterprise</p>
-</div>
+		<p id="legal">Copyright (C) 2015, Hewlett Packard Enterprise</p>
+	</div>
 
 </footer>
 

@@ -1,6 +1,7 @@
 package de.dhbw.meetme.servlet;
 
 import de.dhbw.meetme.database.Transaction;
+import de.dhbw.meetme.database.dao.UserClassicDao;
 import de.dhbw.meetme.database.dao.UserDao;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
@@ -26,6 +27,7 @@ import java.util.Collection;
 public class UserServlet extends HttpServlet {
   private static final Logger log = LoggerFactory.getLogger(UserServlet.class);
 
+  @Inject UserClassicDao userClassicDao;
   @Inject UserDao userDao;
   @Inject Transaction transaction;
 
@@ -35,7 +37,7 @@ public class UserServlet extends HttpServlet {
     log.debug("UserServlet get");
 
     transaction.begin();
-    Collection<User> users = userDao.list();
+    Collection<User> users = userClassicDao.list();
 
     User user = new User();
     user.setName(request.getParameter("username"));
@@ -44,12 +46,12 @@ public class UserServlet extends HttpServlet {
     user.setEmail(request.getParameter("e-mail"));
     user.setPassword(request.getParameter("password"));
     //user.chooseTeam();
-    user.setTeam(null);
+    user.setTeam(request.getParameter("teams"));
 
-    user.setLatitude(null);
-    user.setLongitude(null);
+    user.setLatitude("");
+    user.setLongitude("");
 
-    userDao.persist(user);
+    userClassicDao.persist(user);
     transaction.commit();
 
     users = new ArrayList<>(users); // cloning the read-only list so that we can add something

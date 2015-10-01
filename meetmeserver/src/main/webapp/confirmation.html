@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>GetToThePoint!</title>
+<link rel="stylesheet" href="style/style.css">
+
+<!---VALIDATION JAVASCRIPT---->
+
+<script>
+function validateForm() {
+    var x = document.forms["registration"]["name"]["lastname"]["username"]["e-mail"]["confirm_mail"]["password"]["confirm_password"].value;
+	if ( ["username"] != element.defaultValue) {
+		
+	} else if ( (["e-mail"] != ["confirm_mail"]) || (["password"] != ["confirm_password"])  ) {
+	 	alert("E-Mail Address doesn't match!");
+	 }
+	else {	
+		if (x == null || x == "")  {
+        	alert("All fields must be filled out.");
+        	return false;
+				}
+	}
+}
+</script>
+
+</head>
+<body>
+<header><center><img src="img/header.jpg"></center></header>
+<section id="content">
+<h1>Gratulation!</h1>
+<p>Herzlichen Glückwunsch du hast dich erfolgreich registriert. <br />
+Verschwende nun keinen Moment! Schalte dein GPS-Signal an und es kann losgehen. <br />
+
+ 
+ <a href="index.html">Kehre zurück zur Startseite </a> </p>
+
+
+
+</section>
+
+
+
+
+<footer>
+<div class="innner">
+<p id="app">Available for <br />
+<a href="http://play.google.com" target="new"><img src="img/google.png" width="55%"></a>
+</p>
+<div id="social_icons"><img style="float:right;"src="img/social_media.PNG"></div>
+
+<p id="legal">Copyright (C) 2015, Hewlett Packard Enterprise</p>
+</div>
+
+</footer>
+
+</body>
+
+</html>
