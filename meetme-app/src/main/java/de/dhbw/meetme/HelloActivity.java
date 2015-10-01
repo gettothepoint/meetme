@@ -22,6 +22,7 @@ public class HelloActivity extends Activity {
 
     Button btnShowLocation;
     Button btnShowUsers;
+    TextView tvShowUserList;
 
     // GPSTracker class
     GPSTracker gps;
@@ -31,9 +32,20 @@ public class HelloActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hello_layout);
 
-        //btnShowUsers = (Button) findViewById(R.id.showusers);
+        btnShowUsers = (Button) findViewById(R.id.showusers);
         btnShowLocation = (Button) findViewById(R.id.showlocation);
+        tvShowUserList = (TextView)findViewById(R.id.showuserlist);
 
+        btnShowUsers.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                HttpConnection getList = new HttpConnection(HelloActivity.this);
+
+              //  Toast.makeText(getApplicationContext(), "List for users is updated", Toast.LENGTH_LONG).show();
+                tvShowUserList.setText(getList.callClient());
+            }
+        });
         // show location button click event
         btnShowLocation.setOnClickListener(new View.OnClickListener() {
 
@@ -49,8 +61,9 @@ public class HelloActivity extends Activity {
                     double longitude = gps.getLongitude();
                     String slatitude = Double.toString(latitude);
                     String slongitude = Double.toString(longitude);
-                    HttpConnection sendGps = new HttpConnection(HelloActivity.this);
-                    sendGps.postData(slatitude, slongitude);
+                    SendGPS sendeGpsDaten = new SendGPS(HelloActivity.this);
+
+                    tvShowUserList.setText(sendeGpsDaten.postData("9.1","51.00"));
 
                     // \n is for new line
                     Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude + "\n GPS sent to server!", Toast.LENGTH_LONG).show();
