@@ -44,7 +44,7 @@ public class UserServlet extends HttpServlet {
     user.setEmail(request.getParameter("e-mail"));
     user.setPassword(request.getParameter("password"));
     //user.chooseTeam();
-    user.setTeam(null);
+    user.setTeam(request.getParameter("teams"));
 
     user.setLatitude(null);
     user.setLongitude(null);
