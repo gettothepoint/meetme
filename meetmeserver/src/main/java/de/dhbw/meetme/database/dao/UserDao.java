@@ -20,14 +20,22 @@ import java.util.Collection;
  */
 @ApplicationScoped
 public class UserDao extends JpaDao<UuidId, User> {
+
     public UserDao() {
         super(User.class);
     }
 
     @SuppressWarnings("unchecked")
     Collection<User> findByName(String name) {
-        Query query = entityManager.createQuery("from User u where u.name = :name");
+        Query query = entityManager.createQuery("Select u from User u where u.name = :name");
         query.setParameter("name", name);
         return (Collection<User>) query.getResultList();
+    }
+
+    public User findByUsername(String name) {
+        Query query = entityManager.createQuery("Select u from User u where u.name = :name");
+                query.setParameter("username", name);
+        return (User) query.getResultList().get(0);
+        //username in sql:name, bei webservice:username; welches muss eingetragen werden?
     }
 }

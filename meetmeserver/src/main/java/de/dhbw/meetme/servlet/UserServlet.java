@@ -1,7 +1,7 @@
 package de.dhbw.meetme.servlet;
 
 import de.dhbw.meetme.database.Transaction;
-import de.dhbw.meetme.database.dao.UserClassicDao;
+import de.dhbw.meetme.database.dao.UserDao;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ import java.util.Collection;
 public class UserServlet extends HttpServlet {
   private static final Logger log = LoggerFactory.getLogger(UserServlet.class);
 
-  @Inject UserClassicDao userDao;
+  @Inject UserDao userDao;
   @Inject Transaction transaction;
 
 
@@ -38,16 +38,16 @@ public class UserServlet extends HttpServlet {
     Collection<User> users = userDao.list();
 
     User user = new User();
-    user.setName(request.getParameter("name"));
-    user.setFirstname(request.getParameter("firstname"));
+    user.setName(request.getParameter("username"));
+    user.setFirstname(request.getParameter("name"));
     user.setLastname(request.getParameter ("lastname"));
     user.setEmail(request.getParameter("e-mail"));
     user.setPassword(request.getParameter("password"));
-    user.chooseTeam();
-    user.setTeam(user.getTeam());
+    //user.chooseTeam();
+    user.setTeam(null);
 
-    user.setlatitude("");
-    user.setlongitude("");
+    user.setLatitude(null);
+    user.setLongitude(null);
 
     userDao.persist(user);
     transaction.commit();
