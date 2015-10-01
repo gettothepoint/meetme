@@ -47,8 +47,14 @@ function validateForm() {
 			<option value="blue" selected="selected">Blue</option>
 			<option value="red">Red</option>
 		</select>
-		<button id="submit_button" type="submit" />Los geht's!</button>
+		<button id="submit_button" type="submit">Los geht's!</button>
 	</form>
+
+	<script type="javascript">
+		$('#submit_button').click(function () {
+    window.location = 'http://localhost:63342/GetToThePoint/meetmeserver/src/main/webapp/Confirmation.html';
+});
+	</script>
 
 	<p id="required">* Pflichtfeld</p>
 
@@ -64,7 +70,7 @@ function validateForm() {
 		<p id="app">Available for <br />
 			<a href="http://play.google.com" target="new"><img src="img/google.png" width="55%"></a>
 		</p>
-		<div id="social_icons"><img style="float:right;"src="img/social_media.PNG"></div>
+		<div id="social_icons"> <img style="float:right;"src="img/social_media.PNG"></div>
 
 		<p id="legal">Copyright (C) 2015, Hewlett Packard Enterprise</p>
 	</div>
