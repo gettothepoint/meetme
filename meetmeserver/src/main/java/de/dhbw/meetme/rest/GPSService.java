@@ -1,7 +1,8 @@
 package de.dhbw.meetme.rest;
 
 import de.dhbw.meetme.database.Transaction;
-        import de.dhbw.meetme.database.dao.UserDao;
+import de.dhbw.meetme.database.dao.UserClassicDao;
+import de.dhbw.meetme.database.dao.UserDao;
         import de.dhbw.meetme.domain.User;
         import de.dhbw.meetme.domain.UuidId;
         import groovy.lang.Singleton;
@@ -27,6 +28,9 @@ public class GPSService {
 
     @Inject
     UserDao userDao;
+    @Inject
+    UserClassicDao userClassicDao;
+    @Inject
     Transaction transaction;
 
     @Path("/{username}/{long}/{lat}")
@@ -42,5 +46,23 @@ public class GPSService {
 
         return "updated GPS Data for User "+username;
     }
+
+    /* Alternative: fürs ClassicDao
+    @Path("/{username}/{long}/{lat}")
+    @POST
+    public String put(@PathParam("username") String username, @PathParam("long") String longitude, @PathParam("lat") String latitude ){
+        transaction.begin();
+        log.debug("Get User" + username);
+        UuidId thisid = userClassicDao.idFromName(username);
+        User thisuser = userClassicDao.get(thisid);
+
+        thisuser.setLatitude(latitude);
+        thisuser.setLongitude(longitude);
+        userClassicDao.updateGeo(thisuser);
+        transaction.commit();
+
+        return "updated GPS Data for User "+username;
+    }
+*/
 
 }
