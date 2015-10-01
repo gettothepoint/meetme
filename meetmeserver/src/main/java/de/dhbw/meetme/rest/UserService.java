@@ -2,6 +2,7 @@ package de.dhbw.meetme.rest;
 
 import de.dhbw.meetme.database.Transaction;
 import de.dhbw.meetme.database.dao.UserClassicDao;
+import de.dhbw.meetme.database.dao.UserDao;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
 import groovy.lang.Singleton;
@@ -22,21 +23,24 @@ public class UserService {
   private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
   @Inject
-  UserClassicDao userDao;
+  UserDao userDao;
+  @Inject
+  UserClassicDao userClassicDao;
+  @Inject
   Transaction transaction;
 
   @Path("/list")
   @GET
   public Collection<User> list() {
     log.debug("List users");
-    return userDao.list();
+    return userClassicDao.list();
   }
 
   @Path("/get/{id}")
   @GET
   public User get(@PathParam("id") String id) {
     log.debug("Get user " + id);
-    return userDao.get(UuidId.fromString(id));
+    return userClassicDao.get(UuidId.fromString(id));
   }
 
   @Path("/delete/{id}")
@@ -51,7 +55,7 @@ public class UserService {
   @Path("/save")
   @PUT
   public void save(@PathParam("user") User user) {
-    userDao.persist(user);
+    userClassicDao.persist(user);
     log.debug("Save user " + user);
   }
 

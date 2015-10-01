@@ -102,8 +102,8 @@ public class UserClassicDao implements Dao<UuidId, User> {
             user.setEmail(result.getString(5));
             user.setPassword(result.getString(6));
             user.setTeam(result.getString(7));
-            user.setlatitude(result.getString(8));
-            user.setlongitude(result.getString(9));
+            user.setLatitude(result.getString(8));
+            user.setLongitude(result.getString(9));
 
             result.close();
             statement.close();
@@ -145,8 +145,8 @@ public class UserClassicDao implements Dao<UuidId, User> {
                 user.setEmail(result.getString(5));
                 user.setPassword(result.getString(6));
                 user.setTeam(result.getString(7));
-                user.setlatitude(result.getString(8));
-                user.setlongitude(result.getString(9));
+                user.setLatitude(result.getString(8));
+                user.setLongitude(result.getString(9));
                 users.add(user);
             }
             result.close();
@@ -251,18 +251,18 @@ public class UserClassicDao implements Dao<UuidId, User> {
 
     public String getLongitudeByID(UuidId id) {
         User user = get(id);
-        return user.getlongitude();
+        return user.getLongitude();
     }
     public String getLatituedByID(UuidId id){
         User user = get(id);
-        return user.getlatitude();
+        return user.getLatitude();
     }
 
 
     public void updateGeo(User entity) {
         String id = (entity.getId()).asString();
-        String latitude = entity.getlatitude();
-        String longitude = entity.getlongitude();
+        String latitude = entity.getLatitude();
+        String longitude = entity.getLongitude();
 
         Connection con = getConnection();
         PreparedStatement statement = null;

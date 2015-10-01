@@ -25,26 +25,19 @@ public class User extends PersistentObject {
 
 
     //Getter und Setter Methoden für Variablen
-    public String getlatitude() {
+    public String getLatitude() {
         return latitude;
     }
-    public void setlatitude(String latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
-        return longitude;
-    }
-    public void setlongitude(String longitude) {this.longitude = longitude; }
-
-    public void setLaengengrad(String laengengrad) {
-        this.laengengrad = laengengrad;
-    }
+    public String getLongitude() { return longitude; }
+    public void setLongitude(String longitude) {this.longitude = longitude; }
 
     public String getFirstname() {
         return firstname;
     }
-
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
@@ -52,7 +45,6 @@ public class User extends PersistentObject {
     public String getLastname() {
         return lastname;
     }
-
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
@@ -60,7 +52,6 @@ public class User extends PersistentObject {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -68,7 +59,6 @@ public class User extends PersistentObject {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -76,7 +66,6 @@ public class User extends PersistentObject {
     public String getTeam() {
         return team;
     }
-
     public void setTeam(String team) {
         this.team = team;
     }
@@ -84,7 +73,6 @@ public class User extends PersistentObject {
     public String getName() {
     return name;
     }
-
     public void setName(String name) {
     this.name = name;
   }
