@@ -1,9 +1,11 @@
 package de.dhbw.meetme.rest;
 
 import de.dhbw.meetme.database.Transaction;
+import de.dhbw.meetme.database.dao.GPSClassicDao;
 import de.dhbw.meetme.database.dao.UserClassicDao;
 import de.dhbw.meetme.database.dao.UserDao;
-        import de.dhbw.meetme.domain.User;
+import de.dhbw.meetme.domain.GPSData;
+import de.dhbw.meetme.domain.User;
         import de.dhbw.meetme.domain.UuidId;
         import groovy.lang.Singleton;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -31,39 +33,26 @@ public class GPSService {
     @Inject
     UserClassicDao userClassicDao;
     @Inject
+    GPSClassicDao GPSClassicDao;
+    @Inject
     Transaction transaction;
 
-    //abändern zum GPSDao
+
     @Path("/{username}/{long}/{lat}")
     @POST
     public String put(@PathParam("username") String username, @PathParam("long") String longitude, @PathParam("lat") String latitude ){
         transaction.begin();
-        log.debug("Get User" + username);
-        User thisuser = userDao.findByUsername(username);
 
-        thisuser.setLatitude(latitude);
-        thisuser.setLongitude(longitude);
+        log.debug("Get User " + username);
+        UuidId userId = userClassicDao.idFromName(username);
+
+        log.debug("User found, continue to insert or update");
+        GPSClassicDao.updateGPS(username, userId, latitude, longitude);
+
         transaction.commit();
 
         return "updated GPS Data for User "+username;
     }
 
-    /* Alternative: fürs ClassicDao
-    @Path("/{username}/{long}/{lat}")
-    @POST
-    public String put(@PathParam("username") String username, @PathParam("long") String longitude, @PathParam("lat") String latitude ){
-        transaction.begin();
-        log.debug("Get User" + username);
-        UuidId thisid = userClassicDao.idFromName(username);
-        User thisuser = userClassicDao.get(thisid);
-
-        thisuser.setLatitude(latitude);
-        thisuser.setLongitude(longitude);
-        userClassicDao.updateGeo(thisuser);
-        transaction.commit();
-
-        return "updated GPS Data for User "+username;
-    }
-*/
 
 }

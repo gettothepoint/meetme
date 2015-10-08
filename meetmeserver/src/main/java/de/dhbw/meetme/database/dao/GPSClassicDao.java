@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Created by vrettos on 08.10.2015.
+ * Created by Käthe on 08.10.2015.
+ * testing noch durchzuführen!
  */
 public class GPSClassicDao implements Dao<UuidId, GPSData> {
     @PersistenceContext
@@ -159,28 +160,84 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         return datalist;
     }
 
-    public void updateGeo(GPSData data) {
-        String id = data.getId().asString();
-        String latitude = data.getLatitude();
-        String longitude = data.getLongitude();
 
+    public GPSData getGPSbyUserId(UuidId id) {
         Connection con = getConnection();
         PreparedStatement statement = null;
+        ResultSet result = null;
+        GPSData Data = null;
         try {
-            statement = con.prepareStatement("UPDATE GPSData SET latitude = ?, longitude = ? WHERE id = ?");
-            statement.setString(1, latitude);
-            statement.setString(2, longitude);
-            statement.setString(3, id);
-            statement.executeUpdate();
+            statement = con.prepareStatement("select id, username, userId, latitude, longitude from GPSData where userId = ?");
+            statement.setString(1, id.asString());
+            result = statement.executeQuery();
+            if (!result.next())
+                return null;
+            if (result.getFetchSize() > 1) {
+                throw new RuntimeException("Id not unique!");
+            }
+            Data = new GPSData();
+            Data.setId(id);
+            Data.setUsername(result.getString(2));
+            Data.setUserIdfromString(result.getString(3));     //VORSICHT HIER - UNSICHER OB DAS GEHT
+            Data.setLatitude(result.getString(4));
+            Data.setLongitude(result.getString(5));
+
+            result.close();
             statement.close();
         } catch (SQLException e) {
             throw new RuntimeException("Could not update database", e);
         } finally {
             try {
+                if (result != null && !result.isClosed())
+                    result.close();
+            } catch (SQLException e) {
+                // ignore
+            }
+            try {
                 if (statement != null && !statement.isClosed())
                     statement.close();
             } catch (SQLException e) {
                 // ignore
+            }
+        }
+        return Data;
+    }
+
+
+    public void updateGPS(String username, UuidId userId, String latitude, String longitude) {
+
+        GPSData data = new GPSData();
+        data.setUsername(username);
+        data.setUserId(userId);
+        data.setLatitude(latitude);
+        data.setLongitude(longitude);
+
+        GPSData olddata = getGPSbyUserId(userId);
+
+        if(olddata == null){
+            persist(data);  //sollte der betreffende User noch keine Daten haben
+        } else {
+            String id = olddata.getId().asString();
+
+            Connection con = getConnection();
+            PreparedStatement statement = null;
+            try {
+                statement = con.prepareStatement("UPDATE GPSData SET latitude = ?, longitude = ? WHERE id = ?");
+                statement.setString(1, latitude);
+                statement.setString(2, longitude);
+                statement.setString(3, id);
+                //hier wird die id der GeoData nicht überschrieben sondern bleibt die alte - später mit Datum noch abändern
+                statement.executeUpdate();
+                statement.close();
+            } catch (SQLException e) {
+                throw new RuntimeException("Could not update database", e);
+            } finally {
+                try {
+                    if (statement != null && !statement.isClosed())
+                        statement.close();
+                } catch (SQLException e) {
+                    // ignore
+                }
             }
         }
 

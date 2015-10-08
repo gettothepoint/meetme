@@ -48,9 +48,6 @@ public class UserServlet extends HttpServlet {
     //user.chooseTeam();
     user.setTeam(request.getParameter("teams"));
 
-    user.setLatitude("");
-    user.setLongitude("");
-
     userClassicDao.persist(user);
     transaction.commit();
 
