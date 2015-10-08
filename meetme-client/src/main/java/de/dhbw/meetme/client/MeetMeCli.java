@@ -13,15 +13,17 @@ public class MeetMeCli {
     /**
      * Use the Jersey Rest client to connect to our server
      */
+    public Me
     private void callClient() {
         Client c = ClientBuilder.newClient();
-        WebTarget target = c.target("http://localhost:8087/meetmeserver/api");
+        WebTarget target = c.target("http://localhost:8087/meetmeserver/api/");
         String responseMsg = target.path("user/list").request().get(String.class);
         System.out.println(responseMsg);
+        //Default GET need POST
     }
 
-    public static void main(String[] argv) {
-        MeetMeCli cli = new MeetMeCli();
-        cli.callClient();
-    }
+   // public static void main(String[] argv) {
+     //   MeetMeCli cli = new MeetMeCli();
+     //   cli.callClient();
+   // }
 }
