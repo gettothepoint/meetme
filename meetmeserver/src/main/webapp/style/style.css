@@ -34,7 +34,7 @@ body, p {
   font-size: 14px;
   text-align:justify;
 
-
+    
 }
 
 
@@ -44,9 +44,9 @@ section#content {
 background-image:url(../img/bg_start.fw.png);
 background-repeat:repeat;
 max-width: 50%;
-margin-left: auto;
+margin-left: auto; 
 margin-right: auto;
-margin-top: 250px;
+margin-top: 250px; 
 padding:  10px 30px;
 min-height: 350px;
 }
@@ -54,24 +54,24 @@ min-height: 350px;
 section#logo {
 float: left;
 max-width: 20%;
-margin-right: auto;
-margin-left: 50px;
-margin-top: 250px;
+margin-right: auto; 
+margin-left: 50px; 
+margin-top: 250px; 
 background-color: none;
-
+	
 }
 
 /* -----------footer / header / inner--------------------------- */
 
 header {
 	background: none;
-	width: 100%;
+	width: 100%; 
 	position: absolute;
 	margin-bottom: 5%;
 	left: 0;
-	top: 0;
-	padding-left: 50%;
-	padding: 0;
+	top: 0; 
+	padding-left: 50%; 
+	padding: 0; 
 }
 
 .inner{
@@ -79,7 +79,7 @@ header {
     padding: 20px;
     max-width: 15%;
 	max-height: 15%;
-    background-color: none;
+    background-color: none; 
     }
 
 
@@ -89,47 +89,47 @@ p#app {
 	background-color: none;
 	max-width: 15%;
 	font-size: 11px;
-
+	
 }
 
 p#legal {
 	background-color:#2D3D47;
-	text-align: right;
-	margin-bottom: 0;
-	margin-left: auto;
+	text-align: right; 
+	margin-bottom: 0; 
+	margin-left: auto; 
 	margin-right: 0;
-	font-size: 10px;
+	font-size: 10px; 
 	font-family:Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
-	padding-right: 10px;
+	padding-right: 10px; 
 	padding-bottom: 5px;
-	color: #FFFFFF;
-	position: absolute;
-	bottom: 0;
+	color: #FFFFFF; 
+	position: absolute; 
+	bottom: 0; 
 	width: 100%;
-
+	
 }
 
 div#social_icons {
-	margin-bottom: 1.7%;
-	margin-left: auto;
-	margin-right: 0;
-	position: absolute;
-	bottom: 0;
+	margin-bottom: 1.7%; 
+	margin-left: auto; 
+	margin-right: 0; 
+	position: absolute; 
+	bottom: 0; 
 	width: 100%;
 	background-color: none;
-
+		
 }
 
 p#required {
-	font-size: 11px;
+	font-size: 11px; 
 	color: #F90307;
-
+	
 }
 
 
 
 
-
+	
 /*-----RESET-----*/
 * {
 margin: 0;
@@ -140,40 +140,40 @@ box-sizing: border-box;
 }
 
 
-/*--- FORMARIETUNG REGISTRIERUNGSFORMULAR --- */
+/*--- FORMARIETUNG REGISTRIERUNGSFORMULAR --- */ 
 
 form {
-
-	background-color: none;
-
+	
+	background-color: none; 
+		
 }
 
 input {
-
-	height: 50px;
+	
+	height: 50px; 
 	/*background-color:rgba(0, 0, 0, 0);*/
 	border: 2px solid #CACAD9;
-	font-size: 15px;
-	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
-	margin: 0.5%;
+	font-size: 15px; 
+	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif; 
+	margin: 0.5%; 
 	margin-top: 0.5%;
 	margin-left: 1%;
-	padding-left: 20px;
+	padding-left: 20px; 
 	min-width: 210px;
 	max-width: 250px;
-
+	
 }
 
 select {
-	height: 50px;
-	border: 2px solid #CACAD9;
-	font-size: 15px;
+	height: 50px; 
+	border: 2px solid #CACAD9; 
+	font-size: 15px; 
 	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
 	padding-left: 20px;
-	margin-left: 4.5%;
-	min-width: 210px;
-	max-width: 250px;
-
+	margin-left: 1%;
+	min-width: 210px; 
+	max-width: 250px; 
+	
 }
 
 button
@@ -181,7 +181,7 @@ button
 	/*display: block;*/
 	margin-left: 5%;
 	margin-top: 0.25%;
-	width: 150px;
+	width: 150px; 
 	font-size: 1.1em;
 	font-weight: bold;
 	text-transform: uppercase;
@@ -196,6 +196,8 @@ button
 	text-shadow: 0 -1px 0 #000;
 	box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0,0,0,0.6);
 	cursor: pointer;
-}
+
+
+
 
 
