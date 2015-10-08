@@ -33,6 +33,7 @@ public class GPSService {
     @Inject
     Transaction transaction;
 
+    //abändern zum GPSDao
     @Path("/{username}/{long}/{lat}")
     @POST
     public String put(@PathParam("username") String username, @PathParam("long") String longitude, @PathParam("lat") String latitude ){
