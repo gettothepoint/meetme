@@ -42,6 +42,7 @@
                     <sdk>
                         <platform>17</platform>
                     </sdk>
+                    <androidManifestFile>${project.basedir}/src/main/AndroidManifest.xml</androidManifestFile>
                     <deleteConflictingFiles>true</deleteConflictingFiles>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
                 </configuration>

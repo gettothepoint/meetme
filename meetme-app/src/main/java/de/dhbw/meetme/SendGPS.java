@@ -10,6 +10,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.hello.R;
@@ -37,22 +38,23 @@ public class SendGPS {
 
         try {
             // Execute HTTP Post Request
-            HttpHost targetComputer = new HttpHost(HOSTNAME,PORT,"http");
-            HttpPost postRequest = new HttpPost("/meetmeserver/api/login/" + USERNAME + "/" + la + "/" + lo);
-            HttpResponse httpResponse = httpClient.execute(targetComputer,postRequest);
-            HttpEntity entity = httpResponse.getEntity();
+            HttpHost targetComputer = new HttpHost(HOSTNAME, PORT, "http");
+            HttpPut putRequest = new HttpPut("/meetmeserver/api/login/martink/55/55");
+            HttpResponse httpResponse = httpClient.execute(targetComputer, putRequest);
+           // HttpEntity entity = httpResponse.getEntity();
+
             //tvUsers = (TextView)
             //Toast.makeText(mContext, "msg msg", Toast.LENGTH_LONG).show();
             //Toast bread = Toast.makeText(mContext, resp, 5000);
             //bread.show();
 
-           return EntityUtils.toString(entity);
+           return httpResponse.toString(); //EntityUtils.toString(entity);
 
         } catch (ClientProtocolException e) {
             Toast.makeText(mContext, "Error", 5000).show();
-            return "error";
+            return e.toString();
         } catch (IOException e) {
             Toast.makeText(mContext, "Error", 5000).show();
-            return "error";
+            return e.toString();
         }
 }}
