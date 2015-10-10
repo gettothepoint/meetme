@@ -35,17 +35,17 @@ function validateForm() {
 
 
 
-	<form name="registration" action="http://localhost:8087/meetmeserver/user" onsubmit="return ValidateForm()" method="GET">
+	<form name="registration" action="confirmation.html" onsubmit="return ValidateForm()" method="GET">
 		<input name="name" class="name" type="text" placeholder="Vorname*" required>
 		<input name="lastname" class="lastname" type="text" placeholder="Nachname*" required>
 		<input name="username" class="username" type="text" placeholder="Username*" required>
 		<input name="e-mail" class="e-mail" type="email" placeholder="Deine E-Mail Addresse*" required>
-		<input name="confirm_mail" class="confirm_mail" type="email" placeholder="E-Mail Adresse bestätigen*" required >
 		<input name="password" class="password" type="password" placeholder="Password*" required>
 		<input name="confirm_password" class="confirm_password" type="password" placeholder="Passwort bestätigen*" required>
 		<select name="teams">
-			<option value="blue" selected="selected">Blue</option>
-			<option value="red">Red</option>
+			<option value="random" selected="selected">Zufällig</option>
+			<option value="blue">Blau</option>
+			<option value="red">Rot</option>
 		</select>
 		<button id="submit_button" type="submit">Los geht's!</button>
 	</form>
