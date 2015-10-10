@@ -53,6 +53,9 @@ public class HelloActivity extends Activity {
             public void onClick(View arg0) {
                 // create class object
                 gps = new GPSTracker(HelloActivity.this);
+                SendGPS sendeGpsDaten = new SendGPS(HelloActivity.this);
+
+                tvShowUserList.setText(sendeGpsDaten.postData("9.1","51.00"));
 
                 // check if GPS enabled
                 if (gps.canGetLocation()) {
@@ -61,9 +64,9 @@ public class HelloActivity extends Activity {
                     double longitude = gps.getLongitude();
                     String slatitude = Double.toString(latitude);
                     String slongitude = Double.toString(longitude);
-                    SendGPS sendeGpsDaten = new SendGPS(HelloActivity.this);
+                    //SendGPS sendeGpsDaten = new SendGPS(HelloActivity.this);
 
-                    tvShowUserList.setText(sendeGpsDaten.postData("9.1","51.00"));
+                    //tvShowUserList.setText(sendeGpsDaten.postData("9.1","51.00"));
 
                     // \n is for new line
                     Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude + "\n GPS sent to server!", Toast.LENGTH_LONG).show();
