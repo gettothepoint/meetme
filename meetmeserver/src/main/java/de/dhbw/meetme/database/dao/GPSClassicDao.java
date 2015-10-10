@@ -160,7 +160,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         return datalist;
     }
 
-
+    //später ändern, wenn die UserId häufiger vorkommt -> auf Datum überprüfen
     public GPSData getGPSbyUserId(UuidId id) {
         Connection con = getConnection();
         PreparedStatement statement = null;
@@ -226,7 +226,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
                 statement.setString(1, latitude);
                 statement.setString(2, longitude);
                 statement.setString(3, id);
-                //hier wird die id der GeoData nicht überschrieben sondern bleibt die alte - später mit Datum noch abändern
+                //hier wird die ID der GeoData nicht überschrieben sondern bleibt die alte - später mit Datum noch abändern
                 statement.executeUpdate();
                 statement.close();
             } catch (SQLException e) {

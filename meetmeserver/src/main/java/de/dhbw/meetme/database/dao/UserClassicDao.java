@@ -242,5 +242,10 @@ public class UserClassicDao implements Dao<UuidId, User> {
         return id;
     }
 
+    public boolean rightpassword(String username, String password){
+        UuidId id = idFromName(username);
+        User u = get(id);
 
+        return u.getPassword().equals(password);
+    }
 }

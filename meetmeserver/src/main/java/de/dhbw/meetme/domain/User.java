@@ -85,7 +85,7 @@ public class User extends PersistentObject {
   public String toString() {
     return "User{" +
         "id='" + id + '\'' +
-        ", name='" + name + '\'' +
+        ", username='" + name + '\'' +
         '}';
   }
 }

@@ -33,4 +33,14 @@ public class GPSData extends PersistentObject {
     public String getLongitude() { return longitude; }
     public void setLongitude(String longitude) {this.longitude = longitude; }
 
+    @Override
+    public String toString() {
+        return "GeoData{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                "userid='" + userId + '\'' +
+                "latitude='" + latitude + '\'' +
+                "longitude='" + longitude + '\'' +
+                '}';
+    }
 }

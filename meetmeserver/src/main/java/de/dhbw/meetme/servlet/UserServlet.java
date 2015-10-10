@@ -39,6 +39,7 @@ public class UserServlet extends HttpServlet {
     transaction.begin();
     Collection<User> users = userClassicDao.list();
 
+      //todo Paul: überprüfen ob Username vergeben, sobald Käthe die Methode geschrieben hat
     User user = new User();
     user.setName(request.getParameter("username"));
     user.setFirstname(request.getParameter("name"));
