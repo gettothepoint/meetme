@@ -39,8 +39,8 @@ public class SendGPS {
         try {
             // Execute HTTP Post Request
             HttpHost targetComputer = new HttpHost(HOSTNAME, PORT, "http");
-            HttpPut putRequest = new HttpPut("/meetmeserver/api/login/martink/55/55");
-            HttpResponse httpResponse = httpClient.execute(targetComputer, putRequest);
+            HttpPost postRequest = new HttpPost("/meetmeserver/api/login/martink/55/55");
+            HttpResponse httpResponse = httpClient.execute(targetComputer, postRequest);
            // HttpEntity entity = httpResponse.getEntity();
 
             //tvUsers = (TextView)
