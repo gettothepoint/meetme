@@ -37,7 +37,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
             statement = con.prepareStatement("insert into GPSData (id, username, userid, latitude, longitude) values (?, ?, ?, ?, ?)");
             statement.setString(1, entity.getId().asString());
             statement.setString(2, entity.getUsername());
-            statement.setString(3, entity.getUserId().asString());
+            statement.setString(3, entity.getUserId());
             statement.setString(4, entity.getLatitude());
             statement.setString(5, entity.getLongitude());
             statement.executeUpdate();
@@ -93,7 +93,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
             Data = new GPSData();
             Data.setId(id);
             Data.setUsername(result.getString(2));
-            Data.setUserIdfromString(result.getString(3));     //VORSICHT HIER - UNSICHER OB DAS GEHT
+            Data.setUserId(result.getString(3));
             Data.setLatitude(result.getString(4));
             Data.setLongitude(result.getString(5));
 
@@ -125,14 +125,14 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         ResultSet result = null;
         List<GPSData> datalist = new ArrayList<>();
         try {
-            statement = con.prepareStatement("select id, username, userId, latitude, longitude from user");
+            statement = con.prepareStatement("select id, username, userId, latitude, longitude from GPSData");
             result = statement.executeQuery();
 
             while(result.next()) {
                 GPSData data = new GPSData();
                 data.setId(UuidId.fromString(result.getString(1)));
                 data.setUsername(result.getString(2));
-                data.setUserIdfromString(result.getString(3));     //VORSICHT HIER - UNSICHER OB DAS GEHT
+                data.setUserId(result.getString(3));
                 data.setLatitude(result.getString(4));
                 data.setLongitude(result.getString(5));
 
@@ -161,14 +161,14 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
     }
 
     //später ändern, wenn die UserId häufiger vorkommt -> auf Datum überprüfen
-    public GPSData getGPSbyUserId(UuidId id) {
+    public GPSData getGPSbyUserId(String userId) {
         Connection con = getConnection();
         PreparedStatement statement = null;
         ResultSet result = null;
         GPSData Data = null;
         try {
             statement = con.prepareStatement("select id, username, userId, latitude, longitude from GPSData where userId = ?");
-            statement.setString(1, id.asString());
+            statement.setString(1, userId);
             result = statement.executeQuery();
             if (!result.next())
                 return null;
@@ -176,9 +176,9 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
                 throw new RuntimeException("Id not unique!");
             }
             Data = new GPSData();
-            Data.setId(id);
+            Data.setId(UuidId.fromString(result.getString(1)));
             Data.setUsername(result.getString(2));
-            Data.setUserIdfromString(result.getString(3));     //VORSICHT HIER - UNSICHER OB DAS GEHT
+            Data.setUserId(result.getString(3));
             Data.setLatitude(result.getString(4));
             Data.setLongitude(result.getString(5));
 
@@ -204,7 +204,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
     }
 
 
-    public void updateGPS(String username, UuidId userId, String latitude, String longitude) {
+    public void updateGPS(String username, String userId, String latitude, String longitude) {
 
         GPSData data = new GPSData();
         data.setUsername(username);

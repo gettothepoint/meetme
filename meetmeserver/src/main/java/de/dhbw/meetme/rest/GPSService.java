@@ -44,7 +44,8 @@ public class GPSService {
         transaction.begin();
 
         log.debug("Get User " + username);
-        UuidId userId = userClassicDao.idFromName(username);
+        UuidId uID = userClassicDao.idFromName(username);
+        String userId = uID.asString();
 
         log.debug("User found, continue to insert or update");
         GPSClassicDao.updateGPS(username, userId, latitude, longitude);
@@ -54,5 +55,12 @@ public class GPSService {
         return "updated GPS Data for User "+username;
     }
 
-
+    /* für Käthe's Testzwecke bitte drin lassen
+    @Path("/list")
+    @GET
+    public Collection<GPSData> list() {
+        log.debug("List GPSData");
+        return GPSClassicDao.list();
+    }
+    */
 }
