@@ -248,4 +248,8 @@ public class UserClassicDao implements Dao<UuidId, User> {
 
         return u.getPassword().equals(password);
     }
+
+    public boolean usernameUnique(String username){
+        return (idFromName(username) == null);
+    }
 }
