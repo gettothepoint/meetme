@@ -250,6 +250,10 @@ public class UserClassicDao implements Dao<UuidId, User> {
     }
 
     public boolean usernameUnique(String username){
-        return (idFromName(username) == null);
+        if (username.equals("teamBlue") || username.equals("teamRed")){
+            return false;
+        }else{
+            return (idFromName(username) == null);
+        }
     }
 }
