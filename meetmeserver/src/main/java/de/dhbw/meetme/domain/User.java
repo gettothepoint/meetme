@@ -33,9 +33,7 @@ public class User extends PersistentObject {
     public String getLastname() {
         return lastname;
     }
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
+    public void setLastname(String lastname) { this.lastname = lastname; }
 
     public String getEmail() {
         return email;
@@ -84,8 +82,13 @@ public class User extends PersistentObject {
   @Override
   public String toString() {
     return "User{" +
-        "id='" + id + '\'' +
-        ", username='" + name + '\'' +
-        '}';
+            "id='" + id + '\'' +
+            ", name='" + name + '\'' +
+            ", firstName='" + firstname + '\'' +
+            ", lastName='" + lastname + '\'' +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            ", team='" + team + '\'' +
+            '}';
   }
 }
