@@ -39,15 +39,15 @@ public class UserServlet extends HttpServlet {
     transaction.begin();
     Collection<User> users = userClassicDao.list();
 
-      //todo Paul: überprüfen ob Username vergeben, sobald Käthe die Methode geschrieben hat
+      //todo Paul: überprüfen ob Username vergeben
     User user = new User();
     user.setName(request.getParameter("username"));
     user.setFirstname(request.getParameter("name"));
     user.setLastname(request.getParameter("lastname"));
     user.setEmail(request.getParameter("e-mail"));
     user.setPassword(request.getParameter("password"));
-    //user.chooseTeam();
     user.setTeam(request.getParameter("teams"));
+      //user.chooseTeam(); für zufällige Zuordnung der Teams
 
     userClassicDao.persist(user);
     transaction.commit();

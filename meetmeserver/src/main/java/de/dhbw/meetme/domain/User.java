@@ -71,7 +71,7 @@ public class User extends PersistentObject {
         int t = (int) Math.floor(Math.random()*2);
         if(t==0)
         {
-            team = "green";
+            team = "red";
         }
         else
         {

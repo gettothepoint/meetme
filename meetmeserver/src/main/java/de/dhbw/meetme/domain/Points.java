@@ -28,6 +28,7 @@ public class Points extends PersistentObject {
     public String getPointS(){ return Integer.toString(point); }
     public void setPointS(String pointS){ this.point = Integer.parseInt(pointS); }
 
+
     @Override
     public String toString(){
         return "GPSData{" +
