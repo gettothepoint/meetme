@@ -1,6 +1,6 @@
 package de.dhbw.meetme.database.dao;
 
-import de.dhbw.meetme.domain.User;
+import de.dhbw.meetme.domain.GPSData;
 import de.dhbw.meetme.domain.UuidId;
 import org.hibernate.Session;
 import org.hibernate.internal.SessionImpl;
@@ -14,34 +14,32 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 /**
- * The same class the User Dao, but implemented in the traditional way.
- * You can use either this or the the other.
- * Decide yourself!
+ * Created by Käthe on 08.10.2015.
+ * testing noch durchzuführen!
  */
-public class UserClassicDao implements Dao<UuidId, User> {
+public class GPSClassicDao implements Dao<UuidId, GPSData> {
     @PersistenceContext
     protected EntityManager entityManager;
 
     private Connection getConnection() {
         return entityManager.unwrap(Connection.class);
         //davor: return (entityManager.unwrap(SessionImpl.class)).connection();
-    }
+        }
 
     @Override
-    public void persist(User entity) {
+    public void persist(GPSData entity) {
         Connection con = getConnection();
         PreparedStatement statement = null;
         try {
-            statement = con.prepareStatement("insert into user (id, name, firstname, lastname, email, password, team) values (?, ?, ?, ?, ?, ?, ?)");
+            statement = con.prepareStatement("insert into GPSData (id, username, userid, latitude, longitude) values (?, ?, ?, ?, ?)");
             statement.setString(1, entity.getId().asString());
-            statement.setString(2, entity.getName());
-            statement.setString(3, entity.getFirstname());
-            statement.setString(4, entity.getLastname());
-            statement.setString(5, entity.getEmail());
-            statement.setString(6, entity.getPassword());
-            statement.setString(7, entity.getTeam());
+            statement.setString(2, entity.getUsername());
+            statement.setString(3, entity.getUserId());
+            statement.setString(4, entity.getLatitude());
+            statement.setString(5, entity.getLongitude());
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -61,7 +59,7 @@ public class UserClassicDao implements Dao<UuidId, User> {
         Connection con = getConnection();
         PreparedStatement statement = null;
         try {
-            statement = con.prepareStatement("delete from user where id = ?");
+            statement = con.prepareStatement("delete from GPSData where id = ?");
             statement.setString(1, id.asString());
             statement.executeUpdate();
             statement.close();
@@ -77,14 +75,14 @@ public class UserClassicDao implements Dao<UuidId, User> {
         }
     }
 
-    @Override
-    public User get(UuidId id) {
+    @Override //id ist hier die ID des GPSData Objektes - nicht des Users
+    public GPSData get(UuidId id) {
         Connection con = getConnection();
         PreparedStatement statement = null;
         ResultSet result = null;
-        User user = null;
+        GPSData Data = null;
         try {
-            statement = con.prepareStatement("select id, name, firstname, lastname, email, password, team from user where id = ?");
+            statement = con.prepareStatement("select id, username, userId, latitude, longitude from GPSData where id = ?");
             statement.setString(1, id.asString());
             result = statement.executeQuery();
             if (!result.next())
@@ -92,14 +90,12 @@ public class UserClassicDao implements Dao<UuidId, User> {
             if (result.getFetchSize() > 1) {
                 throw new RuntimeException("Id not unique!");
             }
-            user = new User();
-            user.setId(id);
-            user.setName(result.getString(2));
-            user.setFirstname(result.getString(3));
-            user.setLastname(result.getString(4));
-            user.setEmail(result.getString(5));
-            user.setPassword(result.getString(6));
-            user.setTeam(result.getString(7));
+            Data = new GPSData();
+            Data.setId(id);
+            Data.setUsername(result.getString(2));
+            Data.setUserId(result.getString(3));
+            Data.setLatitude(result.getString(4));
+            Data.setLongitude(result.getString(5));
 
             result.close();
             statement.close();
@@ -119,29 +115,28 @@ public class UserClassicDao implements Dao<UuidId, User> {
                 // ignore
             }
         }
-        return user;
+        return Data;
     }
 
     @Override
-    public Collection<User> list() {
+    public Collection<GPSData> list() {
         Connection con = getConnection();
         PreparedStatement statement = null;
         ResultSet result = null;
-        List<User> users = new ArrayList<>();
+        List<GPSData> datalist = new ArrayList<>();
         try {
-            statement = con.prepareStatement("select id, name, firstname, lastname, email, password, team from user");
+            statement = con.prepareStatement("select id, username, userId, latitude, longitude from GPSData");
             result = statement.executeQuery();
 
             while(result.next()) {
-                User user = new User();
-                user.setId(UuidId.fromString(result.getString(1)));
-                user.setName(result.getString(2));
-                user.setFirstname(result.getString(3));
-                user.setLastname(result.getString(4));
-                user.setEmail(result.getString(5));
-                user.setPassword(result.getString(6));
-                user.setTeam(result.getString(7));
-                users.add(user);
+                GPSData data = new GPSData();
+                data.setId(UuidId.fromString(result.getString(1)));
+                data.setUsername(result.getString(2));
+                data.setUserId(result.getString(3));
+                data.setLatitude(result.getString(4));
+                data.setLongitude(result.getString(5));
+
+                datalist.add(data);
             }
             result.close();
             statement.close();
@@ -162,64 +157,30 @@ public class UserClassicDao implements Dao<UuidId, User> {
                 // ignore
             }
         }
-        return users;
+        return datalist;
     }
 
-    //eher suboptimal - gibt aktuell nicht alle Attribute des Users zurück
-    public Collection<User> findByName(String name) {
+    //später ändern, wenn die UserId häufiger vorkommt -> auf Datum überprüfen
+    public GPSData getGPSbyUserId(String userId) {
         Connection con = getConnection();
         PreparedStatement statement = null;
         ResultSet result = null;
-        List<User> users = new ArrayList<>();
+        GPSData Data = null;
         try {
-            statement = con.prepareStatement("select id, name from user where name = ?");
-            //hier fehlen noch die anderen Variablen
-            statement.setString(1, name);
-            result = statement.executeQuery();
-
-            while(result.next()) {
-                User user = new User();
-                user.setId(UuidId.fromString(result.getString(1)));
-                user.setName(result.getString(2));
-                users.add(user);
-            }
-            result.close();
-            statement.close();
-        } catch (SQLException e) {
-            throw new RuntimeException("Could not update database", e);
-        } finally {
-            try {
-                if (result != null && !result.isClosed())
-                    result.close();
-            } catch (SQLException e) {
-                // ignore
-            }
-            try {
-                if (statement != null && !statement.isClosed())
-                    statement.close();
-            } catch (SQLException e) {
-                // ignore
-            }
-        }
-        return users;
-    }
-
-    //ungetestet - macht aus username die UuId
-    public UuidId idFromName(String username) {
-        Connection con = getConnection();
-        PreparedStatement statement = null;
-        ResultSet result = null;
-        UuidId id = null;
-        try {
-            statement = con.prepareStatement("select id from user where name = ?");
-            statement.setString(1, username);
+            statement = con.prepareStatement("select id, username, userId, latitude, longitude from GPSData where userId = ?");
+            statement.setString(1, userId);
             result = statement.executeQuery();
             if (!result.next())
                 return null;
             if (result.getFetchSize() > 1) {
-                throw new RuntimeException("Name not unique!");
+                throw new RuntimeException("Id not unique!");
             }
-            id = UuidId.fromString(result.getString(1));
+            Data = new GPSData();
+            Data.setId(UuidId.fromString(result.getString(1)));
+            Data.setUsername(result.getString(2));
+            Data.setUserId(result.getString(3));
+            Data.setLatitude(result.getString(4));
+            Data.setLongitude(result.getString(5));
 
             result.close();
             statement.close();
@@ -239,21 +200,47 @@ public class UserClassicDao implements Dao<UuidId, User> {
                 // ignore
             }
         }
-        return id;
+        return Data;
     }
 
-    public boolean rightpassword(String username, String password){
-        UuidId id = idFromName(username);
-        User u = get(id);
 
-        return u.getPassword().equals(password);
-    }
+    public void updateGPS(String username, String userId, String latitude, String longitude) {
 
-    public boolean usernameUnique(String username){
-        if (username.equals("teamBlue") || username.equals("teamRed")){
-            return false;
-        }else{
-            return (idFromName(username) == null);
+        GPSData data = new GPSData();
+        data.setUsername(username);
+        data.setUserId(userId);
+        data.setLatitude(latitude);
+        data.setLongitude(longitude);
+
+        GPSData olddata = getGPSbyUserId(userId);
+
+        if(olddata == null){
+            persist(data);  //sollte der betreffende User noch keine Daten haben
+        } else {
+            String id = olddata.getId().asString();
+
+            Connection con = getConnection();
+            PreparedStatement statement = null;
+            try {
+                statement = con.prepareStatement("UPDATE GPSData SET latitude = ?, longitude = ? WHERE id = ?");
+                statement.setString(1, latitude);
+                statement.setString(2, longitude);
+                statement.setString(3, id);
+                //hier wird die ID der GeoData nicht überschrieben sondern bleibt die alte - später mit Datum noch abändern
+                statement.executeUpdate();
+                statement.close();
+            } catch (SQLException e) {
+                throw new RuntimeException("Could not update database", e);
+            } finally {
+                try {
+                    if (statement != null && !statement.isClosed())
+                        statement.close();
+                } catch (SQLException e) {
+                    // ignore
+                }
+            }
         }
+
     }
+
 }

@@ -33,9 +33,14 @@ public class UserDao extends JpaDao<UuidId, User> {
     }
 
     public User findByUsername(String name) {
-        Query query = entityManager.createQuery("Select u from User u where u.name = :name");
-                query.setParameter("username", name);
+
+        Query query = entityManager.createQuery("SELECT u from User u where u.name = :name"); //prev.: from User u where u.username = :username"
+        query.setParameter("name", name);
         return (User) query.getResultList().get(0);
+
+       // Query query = entityManager.createQuery("Select u from User u where u.name = :name");
+       //         query.setParameter("username", name);
+       // return (User) query.getResultList().get(0);
         //username in sql:name, bei webservice:username; welches muss eingetragen werden?
     }
 }

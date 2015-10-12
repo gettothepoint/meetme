@@ -1,7 +1,12 @@
 package de.dhbw.meetme;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -15,6 +20,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import com.google.android.gms.*;
 
 import java.io.IOException;
 
@@ -31,7 +37,8 @@ public class HelloActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hello_layout);
-
+        scheduleAlarm();
+        Log.i("DEBUG", "scheduleAlarm is started");
         btnShowUsers = (Button) findViewById(R.id.showusers);
         btnShowLocation = (Button) findViewById(R.id.showlocation);
         tvShowUserList = (TextView)findViewById(R.id.showuserlist);
@@ -53,7 +60,7 @@ public class HelloActivity extends Activity {
             public void onClick(View arg0) {
                 // create class object
                 gps = new GPSTracker(HelloActivity.this);
-                SendGPS sendeGpsDaten = new SendGPS(HelloActivity.this);
+                SendGPS sendeGpsDaten = new SendGPS();
 
                 tvShowUserList.setText(sendeGpsDaten.postData("9.1","51.00"));
 
@@ -81,8 +88,22 @@ public class HelloActivity extends Activity {
             }
         });
     }
-
-
+public static final long INTERVAL_MINUTES = 30000;
+    public void scheduleAlarm() {
+        Log.i("DEBUG", "we are in the method schdule alarm");
+        // Construct an intent that will execute the AlarmReceiver
+        Intent intent = new Intent(getApplicationContext(), MyAlarmReciever.class);
+        // Create a PendingIntent to be triggered when the alarm goes off
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReciever.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Setup periodic alarm every 5 seconds
+        long firstMillis = System.currentTimeMillis(); // alarm is set right away
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
+        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+               INTERVAL_MINUTES, pIntent);
+    }
 
 }
 

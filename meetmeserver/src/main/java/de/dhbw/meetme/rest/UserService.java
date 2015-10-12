@@ -22,6 +22,8 @@ import java.util.Collection;
 public class UserService {
   private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
+  //Mutter aller Services muss beide Daos bereitstellen
+
   @Inject
   UserDao userDao;
   @Inject

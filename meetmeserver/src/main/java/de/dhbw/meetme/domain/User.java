@@ -13,27 +13,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 //wieso nicht @Table?
 public class User extends PersistentObject {
     //nicht vergessen: alle Funktionen aus Persistent Object werden übernommen
-  private String name;
+    private String name;
     private String firstname;
     private String lastname;
     private String email;
     private String password;
     private String team;
-
-    private String latitude;
-    private String longitude;
+    //zufall oder freiwillig, beides offen lassen
 
 
-    //Getter und Setter Methoden für Variablen
-    public String getLatitude() {
-        return latitude;
-    }
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() { return longitude; }
-    public void setLongitude(String longitude) {this.longitude = longitude; }
 
     public String getFirstname() {
         return firstname;
@@ -45,9 +33,7 @@ public class User extends PersistentObject {
     public String getLastname() {
         return lastname;
     }
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
+    public void setLastname(String lastname) { this.lastname = lastname; }
 
     public String getEmail() {
         return email;
@@ -96,8 +82,13 @@ public class User extends PersistentObject {
   @Override
   public String toString() {
     return "User{" +
-        "id='" + id + '\'' +
-        ", name='" + name + '\'' +
-        '}';
+            "id='" + id + '\'' +
+            ", name='" + name + '\'' +
+            ", firstName='" + firstname + '\'' +
+            ", lastName='" + lastname + '\'' +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            ", team='" + team + '\'' +
+            '}';
   }
 }

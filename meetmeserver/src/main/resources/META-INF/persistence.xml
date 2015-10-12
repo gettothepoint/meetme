@@ -7,6 +7,8 @@
   <persistence-unit name="MeetMeDb" transaction-type="JTA">
     <jta-data-source>java:jboss/datasources/meetmeDb</jta-data-source>
 
+      <class>de.dhbw.meetme.domain.Points</class>
+      <class>de.dhbw.meetme.domain.GPSData</class>
     <class>de.dhbw.meetme.domain.User</class>
     <class>de.dhbw.meetme.domain.UuidId</class>
     <class>de.dhbw.meetme.domain.PersistentObject</class>
