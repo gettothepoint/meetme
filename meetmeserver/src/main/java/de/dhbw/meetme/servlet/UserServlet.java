@@ -46,8 +46,8 @@ public class UserServlet extends HttpServlet {
     user.setLastname(request.getParameter("lastname"));
     user.setEmail(request.getParameter("e-mail"));
     user.setPassword(request.getParameter("password"));
-    //user.chooseTeam();
     user.setTeam(request.getParameter("teams"));
+      //user.chooseTeam(); für zufällige Zuordnung der Teams
 
     userClassicDao.persist(user);
     transaction.commit();
