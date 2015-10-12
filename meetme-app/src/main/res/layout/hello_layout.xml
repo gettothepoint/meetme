@@ -4,7 +4,20 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView
+    <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/map"/>
+    <!--<com.google.android.gms.maps.MapFragment
+        android:id="@+id/mapFragment"
+        android:layout_width="fill-parent"
+        android:layout_height="fill-parent"
+        android:enabled="true"
+        android:clickable="true"
+        android:apiKey="<AIzaSyAWzGr95E_RtfBN1cj423y3mI5pirm6s4U>"/>-->
+
+
+   <!-- <TextView
     android:id="@+id/showuserlist"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -28,6 +41,6 @@
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText" android:layout_gravity="center_horizontal"/>
+            android:id="@+id/editText" android:layout_gravity="center_horizontal"/>-->
 
 </LinearLayout>

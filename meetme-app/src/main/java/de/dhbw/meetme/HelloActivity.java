@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.google.android.gms.*;
+//import com.google.android.maps.MapActivity;
 
 import java.io.IOException;
 
@@ -29,6 +32,7 @@ public class HelloActivity extends Activity {
     Button btnShowLocation;
     Button btnShowUsers;
     TextView tvShowUserList;
+    private GoogleMap meetMeMap;
 
     // GPSTracker class
     GPSTracker gps;
@@ -39,7 +43,12 @@ public class HelloActivity extends Activity {
         setContentView(R.layout.hello_layout);
         scheduleAlarm();
         Log.i("DEBUG", "scheduleAlarm is started");
-        btnShowUsers = (Button) findViewById(R.id.showusers);
+        meetMeMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        meetMeMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+
+
+
+       /* btnShowUsers = (Button) findViewById(R.id.showusers);
         btnShowLocation = (Button) findViewById(R.id.showlocation);
         tvShowUserList = (TextView)findViewById(R.id.showuserlist);
 
@@ -87,7 +96,19 @@ public class HelloActivity extends Activity {
 
             }
         });
+
+*/
+
+        /*Code Maren
+            created: 12.10.2015
+        */
+
+
+
     }
+
+
+    //started den Alarm scheduler - funktioniert
 public static final long INTERVAL_MINUTES = 30000;
     public void scheduleAlarm() {
         Log.i("DEBUG", "we are in the method schdule alarm");

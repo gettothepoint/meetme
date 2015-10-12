@@ -3,9 +3,11 @@
           package="org.hello"
           android:versionCode="1"
           android:versionName="1.0.0" >
-    <uses-sdk android:minSdkVersion="4"/>
+    <uses-sdk android:minSdkVersion="11"/>
     <application android:label="@string/app_name"
                  android:icon="@drawable/ic_launcher">
+
+       <uses-library android:name="com.google.android.maps" />
         <activity
                 android:name="de.dhbw.meetme.HelloActivity"
                 android:label="@string/app_name" >
@@ -23,7 +25,10 @@
         <service
                 android:name="de.dhbw.meetme.MyGpsService"
                 android:exported="false" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAWzGr95E_RtfBN1cj423y3mI5pirm6s4U"/>
     </application>
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
