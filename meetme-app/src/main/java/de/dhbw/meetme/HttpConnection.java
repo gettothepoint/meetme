@@ -45,7 +45,7 @@ public class HttpConnection {
             try{
                 HttpHost targetComputer = new HttpHost(HOSTNAME, PORT, "http");
 
-                HttpGet getRequest = new HttpGet("/meetmeserver/api/user/list");
+                HttpGet getRequest = new HttpGet("/meetmeserver/api/login/list");
                 HttpResponse httpResponse = httpClient.execute(targetComputer,getRequest);
                 HttpEntity entity = httpResponse.getEntity();
                 //Toast.makeText(mContext, EntityUtils.toString(entity), Toast.LENGTH_LONG).show();
