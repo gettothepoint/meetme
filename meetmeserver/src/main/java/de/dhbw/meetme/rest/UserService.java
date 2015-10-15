@@ -2,7 +2,6 @@ package de.dhbw.meetme.rest;
 
 import de.dhbw.meetme.database.Transaction;
 import de.dhbw.meetme.database.dao.UserClassicDao;
-import de.dhbw.meetme.database.dao.UserDao;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
 import groovy.lang.Singleton;
@@ -22,27 +21,22 @@ import java.util.Collection;
 public class UserService {
   private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-  //Mutter aller Services muss beide Daos bereitstellen
-
   @Inject
-  UserDao userDao;
-  @Inject
-  UserClassicDao userClassicDao;
-  @Inject
+  UserClassicDao userDao;
   Transaction transaction;
 
   @Path("/list")
   @GET
   public Collection<User> list() {
     log.debug("List users");
-    return userClassicDao.list();
+    return userDao.list();
   }
 
   @Path("/get/{id}")
   @GET
   public User get(@PathParam("id") String id) {
     log.debug("Get user " + id);
-    return userClassicDao.get(UuidId.fromString(id));
+    return userDao.get(UuidId.fromString(id));
   }
 
   @Path("/delete/{id}")
@@ -57,7 +51,7 @@ public class UserService {
   @Path("/save")
   @PUT
   public void save(@PathParam("user") User user) {
-    userClassicDao.persist(user);
+    userDao.persist(user);
     log.debug("Save user " + user);
   }
 
