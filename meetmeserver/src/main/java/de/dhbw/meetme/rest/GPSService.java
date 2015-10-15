@@ -16,6 +16,7 @@ import org.slf4j.Logger;
         import javax.ws.rs.*;
         import java.util.Collection;
 
+
 /**
  * Created by Paul on 28.09.2015.
  */
@@ -55,12 +56,13 @@ public class GPSService {
         return "updated GPS Data for User "+username;
     }
 
-    /* für Käthe's Testzwecke bitte drin lassen
+    // für Käthe's Testzwecke bitte drin lassen
     @Path("/list")
     @GET
     public Collection<GPSData> list() {
         log.debug("List GPSData");
         return GPSClassicDao.list();
     }
-    */
+    //curl -i -H "Accept: application/json" -X POST http://127.0.0.1:8087/meetmeserver/api/login/
+
 }

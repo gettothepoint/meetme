@@ -7,6 +7,8 @@ import org.hibernate.internal.SessionImpl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,8 +28,14 @@ public class UserClassicDao implements Dao<UuidId, User> {
     @PersistenceContext
     protected EntityManager entityManager;
 
+    public boolean inTest = false;
+
     private Connection getConnection() {
-        return entityManager.unwrap(Connection.class);
+        if (inTest) {
+            return (entityManager.unwrap(SessionImpl.class)).connection();
+        } else {
+            return entityManager.unwrap(Connection.class);
+        }
         //davor: return (entityManager.unwrap(SessionImpl.class)).connection();
     }
 
@@ -259,13 +267,42 @@ public class UserClassicDao implements Dao<UuidId, User> {
         }
     }
 
-
     public boolean checkMail(String email) {
         String EMAIL_PATTERN =  "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
         Pattern p = Pattern.compile(EMAIL_PATTERN);
         Matcher m = p.matcher(email);
         return m.matches();
 
+    }
+
+    public static String getMD5(String input) {
+        byte[] source;
+        try {
+            //Get byte according by specified coding.
+            source = input.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            source = input.getBytes();
+        }
+        String result = null;
+        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7',
+                '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(source);
+            //The result should be one 128 integer
+            byte temp[] = md.digest();
+            char str[] = new char[16 * 2];
+            int k = 0;
+            for (int i = 0; i < 16; i++) {
+                byte byte0 = temp[i];
+                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                str[k++] = hexDigits[byte0 & 0xf];
+            }
+            result = new String(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     }

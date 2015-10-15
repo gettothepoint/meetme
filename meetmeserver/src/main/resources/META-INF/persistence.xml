@@ -9,9 +9,9 @@
 
       <class>de.dhbw.meetme.domain.Points</class>
       <class>de.dhbw.meetme.domain.GPSData</class>
-    <class>de.dhbw.meetme.domain.User</class>
-    <class>de.dhbw.meetme.domain.UuidId</class>
-    <class>de.dhbw.meetme.domain.PersistentObject</class>
+      <class>de.dhbw.meetme.domain.User</class>
+      <class>de.dhbw.meetme.domain.UuidId</class>
+      <class>de.dhbw.meetme.domain.PersistentObject</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
     <properties>

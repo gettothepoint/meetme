@@ -19,7 +19,7 @@ import javax.ws.rs.Produces;
  * Created by Paul on 15.10.2015.
  */
 
-/*@Path("/api/meet")
+@Path("/api/meet")
 @Produces({"application/json"})
 @Singleton
 
@@ -36,19 +36,20 @@ public class MeetService {
     Transaction transaction;
 
 
-    @Path("/check/username/password/username2")
+    @Path("/check/{username}/{password}/{username2}")
     @POST
     public boolean check(@PathParam("username") String username, @PathParam("password") String password, @PathParam("username2") String username2 ) {
         transaction.begin();
-        if (userClassicDao.rightpassword(username, password) = true) {
-            return meeting(username, username2);
+        if (userClassicDao.rightpassword(username, password)) {
+            Meet mt = new Meet();
             transaction.commit();
+            return mt.meeting(username, username2);
         }
         else
         {
-            return false;
             transaction.commit();
+            return false;
         }
     }
 
-}*/
+}

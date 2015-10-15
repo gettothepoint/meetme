@@ -301,6 +301,7 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
 
         //teampoints updated (UserId wird übergeben
         // weil sie nicht noch zum String gemacht werden muss in updateTeamPoints
+        //todo Käthe: Version abprüfen!
         int newpoints = getPointsAmountByUserId1(teamPoints.getUserId()) + p;
         updateTeamPoints(teamPoints.getUserId(), newpoints);
 

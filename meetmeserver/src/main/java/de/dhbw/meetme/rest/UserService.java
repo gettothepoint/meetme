@@ -60,5 +60,22 @@ public class UserService {
     userClassicDao.persist(user);
     log.debug("Save user " + user);
   }
+/* test von Käthe
+  @Path("newuser/{username}/{firstname}/{lastname}/{email}/{password}/{team}")
+  @POST
+  public void newuser(@PathParam("username") String username, @PathParam("firstname") String firstname, @PathParam("lastname") String lastname,
+                      @PathParam("email") String email, @PathParam("password") String password, @PathParam("team") String team){
+    User u = new User();
+    u.setName(username);
+    u.setFirstname(firstname);
+    u.setLastname(lastname);
+    u.setEmail(email);
+    u.setPassword(password);
+    u.setTeam(team);
 
+    userClassicDao.persist(u);
+    log.debug("new user created and inserted");
+  }
+  */
 }
+// curl -i -H "Accept: application/json" -X POST http://127.0.0.1:8087/meetmeserver/api/user/newuser/
