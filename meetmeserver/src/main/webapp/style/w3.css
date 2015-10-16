@@ -98,10 +98,10 @@ ul.w3-ul li:last-child{border-bottom:none}
 .w3-modal:target{display:block}
 .w3-modal-content{margin:auto;background-color:#f3f3f3;position:relative;padding:0;outline:0;border:1px #555 solid;width:600px}.w3-closebtn{text-decoration:none;float:right;font-size:24px;font-weight:bold;color:inherit}
 .w3-closebtn:hover,.w3-closebtn:focus{color:#000;text-decoration:none;cursor:pointer}
-.w3-form{padding:16px}.w3-group{position:relative;margin-top:2px;margin-bottom:30px; float: left; margin-right: 10px;}
-.w3-input{padding:10px;display:block;border:none;border-bottom:1px solid #808080;width:100%}
+.w3-form{padding:16px; width: 100%; height: 100%; min-width: 600px;}.w3-group{position:relative;margin-top:2px;margin-bottom:30px; float: left; margin-right: 10px;   min-width: 80%; height: 100%; display: inline;}
+.w3-input{padding:10px;display:block;border:none;border-bottom:1px solid #808080;width:100%; min-width: 600px;}
 .w3-label{;position:absolute;top:-22px;left:0;color:#009688}.w3-input:not(:valid)~.w3-label{color:#f44336}
-.w3-select{background-color:white;padding:4px 0;width:55%;color:#000;border:1px solid transparent;border-bottom: 1px solid #009688}
+.w3-select{background-color:white;padding:4px 0;width:55%;color:#000;border:1px solid transparent;border-bottom: 1px solid #009688; min-width: 600px;}
 .w3-select select:focus {color:#000;border:1px solid #009688}.w3-select option[disabled] {color:#009688}
 .w3-checkbox:before,.w3-checkbox:after,.w3-checkbox,.w3-checkmark:before,.w3-checkmark:after,.w3-checkmark{box-sizing:border-box}
 .w3-checkbox{display:inline-block;line-height:24px;margin:8px 0}
@@ -158,7 +158,7 @@ ul.w3-ul li:last-child{border-bottom:none}
 .w3-col.l10{width:83.33333%}
 .w3-col.l11{width:91.66666%}
 .w3-col.l12{width:99.99999%}}
-.w3-content{max-width:980px; margin:auto; max-height: 980px; margin-bottom: 200px;}
+.w3-content{max-width:100%; margin:auto; max-height: 100%; margin-bottom: 200px; min-width: 600px;}
 .w3-rest{overflow:hidden}
 @media (max-width:601px){.w3-modal-content{margin:50px 10px 10px 10px;width:auto !important}}
 @media (max-width:768px){.w3-modal-content{width:500px}}
