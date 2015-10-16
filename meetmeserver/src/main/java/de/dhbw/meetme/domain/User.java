@@ -19,9 +19,6 @@ public class User extends PersistentObject {
     private String email;
     private String password;
     private String team;
-    //zufall oder freiwillig, beides offen lassen
-
-
 
     public String getFirstname() {
         return firstname;
@@ -52,9 +49,18 @@ public class User extends PersistentObject {
     public String getTeam() {
         return team;
     }
-    public void setTeam(String team) {
-        this.team = team;
+    public void setTeam(String team)
+    {
+        if (team=="random")
+        {
+            this.team = chooseTeam();
+        }
+        else
+        {
+            this.team = team;
+        }
     }
+
 
     public String getName() {
     return name;
@@ -66,21 +72,22 @@ public class User extends PersistentObject {
 
 
     //Methode für die zufällige Verteilung der Teams
-    public void chooseTeam()
+    public String chooseTeam()
     {
         int t = (int) Math.floor(Math.random()*2);
         if(t==0)
         {
-            team = "red";
+            return "red";
         }
         else
         {
-            team = "blue";
+            return "blue";
         }
     }
 
 
-  @Override
+
+    @Override
   public String toString() {
     return "User{" +
             "id='" + id + '\'' +
