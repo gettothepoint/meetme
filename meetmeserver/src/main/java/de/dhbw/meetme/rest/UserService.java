@@ -63,7 +63,6 @@ public class UserService {
     log.debug("Save user " + user);
   }
 
-    //WORK STILL NEEDS TO BE DONE to change Communication with Website from UserServlet to UserService
     /*@Path("/adduser")
     @POST
     @Produces(MediaType.TEXT_HTML)
@@ -73,7 +72,6 @@ public class UserService {
     transaction.begin();
     Collection<User> users = userClassicDao.list();
 
-    //todo Paul: überprüfen ob Username vergeben
     User user = new User();
     user.setName(username);
     user.setFirstname(firstname);
