@@ -103,13 +103,22 @@ public class UserServlet extends HttpServlet {
                   "\n" +
                   "</html>\n");
       } else {*/
+          String random = "random";
           User user = new User();
           user.setName(request.getParameter("username"));
           user.setFirstname(request.getParameter("name"));
           user.setLastname(request.getParameter("lastname"));
           user.setEmail(request.getParameter("e-mail"));
           user.setPassword(request.getParameter("password"));
-          user.setTeam(request.getParameter("teams"));
+          if (random.equals(request.getParameter("teams")))
+          {
+              user.setTeam(request.getParameter("teams"));
+              user.chooseTeam();
+          }
+          else
+          {
+              user.setTeam(request.getParameter("teams"));
+          }
 
           userClassicDao.persist(user);
           transaction.commit();

@@ -51,14 +51,7 @@ public class User extends PersistentObject {
     }
     public void setTeam(String team)
     {
-        if (team=="random")
-        {
-            this.team = chooseTeam();
-        }
-        else
-        {
-            this.team = team;
-        }
+        this.team = team;
     }
 
 
@@ -72,16 +65,16 @@ public class User extends PersistentObject {
 
 
     //Methode für die zufällige Verteilung der Teams
-    public String chooseTeam()
+    public void chooseTeam()
     {
         int t = (int) Math.floor(Math.random()*2);
         if(t==0)
         {
-            return "red";
+            this.team="red";
         }
         else
         {
-            return "blue";
+            this.team="blue";
         }
     }
 
