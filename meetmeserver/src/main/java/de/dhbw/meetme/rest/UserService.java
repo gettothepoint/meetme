@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -54,5 +56,30 @@ public class UserService {
     userDao.persist(user);
     log.debug("Save user " + user);
   }
+
+    /*@Path("/adduser")
+    @POST
+    @Produces(MediaType.TEXT_HTML)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+
+    public void adduser(@FormParam("name") String firstname, @FormParam("lastname") String lastname, @FormParam("username") String username, @FormParam("e-mail") String email, @FormParam("password") String password, @FormParam("teams") String team){
+    transaction.begin();
+    Collection<User> users = userClassicDao.list();
+
+    User user = new User();
+    user.setName(username);
+    user.setFirstname(firstname);
+    user.setLastname(lastname);
+    user.setEmail(email);
+    user.setPassword(password);
+    user.setTeam(team);
+
+    userClassicDao.persist(user);
+    transaction.commit();
+
+    users = new ArrayList<>(users); // cloning the read-only list so that we can add something
+    users.add(user);
+  }
+*/
 
 }
