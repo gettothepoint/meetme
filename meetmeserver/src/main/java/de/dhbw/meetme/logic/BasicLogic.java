@@ -119,6 +119,10 @@ public class BasicLogic {
 
     }
 
+    public boolean checkTeam(String team){
+        return team.equals("red")||team.equals("blue")||team.equals("random");
+    }
+
     //by Pia - todo: nochmal Funktion klären!
     public static String getMD5(String input) {
         byte[] source;
