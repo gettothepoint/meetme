@@ -101,21 +101,20 @@ p#app {
 	
 }
 
-p#legal {
+div.legal {
 	background-color:#2D3D47;
-	text-align: right; 
-	margin-bottom: 0; 
-	margin-left: auto; 
-	margin-right: 0;
+	text-align: right;
 	font-size: 10px; 
 	font-family:Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
 	padding-right: 10px; 
 	padding-bottom: 5px;
-	color: #FFFFFF; 
-	position: absolute; 
-	bottom: 0; 
-	width: 100%;
-	
+	color: #FFFFFF;
+	width: remainder;
+	min-width: 100%;
+	clear:both;
+	margin-bottom: 0%;
+
+
 }
 
 div#social_icons {
