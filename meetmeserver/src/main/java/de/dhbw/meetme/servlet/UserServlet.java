@@ -93,7 +93,6 @@ public class UserServlet extends HttpServlet {
               "</body>\n" +
               "\n" +
               "</html>\n";
-      Collection<User> users = basicLogic.listUsers();
 
       //prüft, ob Username unique
       if (!basicLogic.usernameUnique(request.getParameter("username"))) {
@@ -133,27 +132,14 @@ public class UserServlet extends HttpServlet {
                       output2);
           }
       } else {
-          User user = new User();
+          String username = request.getParameter("username");
+          String firstname = request.getParameter("name");
+          String lastname = request.getParameter("lastname");
+          String password = request.getParameter("password");
+          String mail = request.getParameter("e-mail");
+          String team = request.getParameter("teams");
 
-          user.setName(request.getParameter("username"));
-          user.setFirstname(request.getParameter("name"));
-          user.setLastname(request.getParameter("lastname"));
-          user.setEmail(request.getParameter("e-mail"));
-          user.setPassword(request.getParameter("password"));
-          if ("random".equals(request.getParameter("teams")))
-          {
-              user.chooseTeam();
-          }
-          else
-          {
-              user.setTeam(request.getParameter("teams"));
-          }
-
-          basicLogic.persistUser(user);
-
-          users = new ArrayList<>(users); // cloning the read-only list so that we can add something
-          users.add(user);
-
+          basicLogic.addUser(firstname, lastname, username, mail, password, team);
 
           //response.sendRedirect("http://localhost:63342/GetToThePoint/meetmeserver/src/main/webapp/confirmation.html");
 

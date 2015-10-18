@@ -53,7 +53,10 @@ public class BasicLogic {
         u.setLastname(lastname);
         u.setEmail(email);
         u.setPassword(password);
-        u.setTeam(team);
+        if(team.equals("random"))
+            u.chooseTeam();
+        else
+            u.setTeam(team);
 
         transaction.begin();
         userClassicDao.persist(u);
