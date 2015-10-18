@@ -19,6 +19,9 @@ public class User extends PersistentObject {
     private String email;
     private String password;
     private String team;
+    //zufall oder freiwillig, beides offen lassen
+
+
 
     public String getFirstname() {
         return firstname;
@@ -30,7 +33,9 @@ public class User extends PersistentObject {
     public String getLastname() {
         return lastname;
     }
-    public void setLastname(String lastname) { this.lastname = lastname; }
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
     public String getEmail() {
         return email;
@@ -49,11 +54,10 @@ public class User extends PersistentObject {
     public String getTeam() {
         return team;
     }
-    public void setTeam(String team)
-    {
+
+    public void setTeam(String team) {
         this.team = team;
     }
-
 
     public String getName() {
     return name;

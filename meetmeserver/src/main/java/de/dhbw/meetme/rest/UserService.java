@@ -1,6 +1,8 @@
 package de.dhbw.meetme.rest;
 
-
+import de.dhbw.meetme.database.Transaction;
+import de.dhbw.meetme.database.dao.UserClassicDao;
+import de.dhbw.meetme.database.dao.UserDao;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.logic.BasicLogic;
 import groovy.lang.Singleton;
@@ -27,7 +29,6 @@ public class UserService {
   @Inject
   BasicLogic basicLogic;
 
-
   @Path("/list")
   @GET
   public Collection<User> list() {
@@ -49,8 +50,20 @@ public class UserService {
     basicLogic.deleteUser(id);
   }
 
-/*
-    @Path("/adduser")
+  @Path("/save")
+  @PUT
+  public void save(@PathParam("user") User user) {
+    String firstname = user.getFirstname();
+    String lastname = user.getLastname();
+    String username = user.getName();
+    String email = user.getEmail();
+    String password = user.getPassword();
+    String team = user.getTeam();
+    basicLogic.addUser(firstname, lastname, username, email, password, team);
+    log.debug("Save user " + user);
+  }
+
+    /*@Path("/adduser")
     @POST
     @Produces(MediaType.TEXT_HTML)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
