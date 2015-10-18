@@ -82,7 +82,7 @@ public class BasicLogic {
 
     }
 
-    //by Käthe - funktioniert nicht
+
     public boolean checkPassword(String username, String password){
         transaction.begin();
         UuidId id = userClassicDao.idFromName(username);
@@ -91,7 +91,7 @@ public class BasicLogic {
         return u.getPassword().equals(password);
     }
 
-    //by Käthe - ungetestet
+
     public boolean usernameUnique(String username){
         transaction.begin();
         boolean b;

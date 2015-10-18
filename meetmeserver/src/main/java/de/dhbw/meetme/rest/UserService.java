@@ -1,6 +1,7 @@
 package de.dhbw.meetme.rest;
 
 import de.dhbw.meetme.domain.User;
+import de.dhbw.meetme.logic.BasicLogic;
 import groovy.lang.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
