@@ -61,6 +61,12 @@ public class BasicLogic {
 
     }
 
+    public void persistUser(User u){
+        transaction.begin();
+        userClassicDao.persist(u);
+        transaction.commit();
+    }
+
     public void updateGPS(String username, String latitude, String longitude){
 
         transaction.begin();

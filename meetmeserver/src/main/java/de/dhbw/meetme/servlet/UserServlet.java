@@ -5,6 +5,7 @@ import de.dhbw.meetme.database.dao.UserClassicDao;
 import de.dhbw.meetme.database.dao.UserDao;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
+import de.dhbw.meetme.logic.BasicLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,90 +28,93 @@ import java.util.Collection;
 public class UserServlet extends HttpServlet {
   private static final Logger log = LoggerFactory.getLogger(UserServlet.class);
 
-  @Inject UserClassicDao userClassicDao;
-  @Inject UserDao userDao;
-  @Inject Transaction transaction;
+    @Inject BasicLogic basicLogic;
+
+
 
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       log.debug("UserServlet get");
 
-      transaction.begin();
-      Collection<User> users = userClassicDao.list();
+      Collection<User> users = basicLogic.listUsers();
 
       //prüft, ob Username unique
-      /*if (!UserClassicDao.usernameUnique(request.getParameter("username"))) {
-          transaction.commit();
+      if (!basicLogic.usernameUnique(request.getParameter("username"))) {
+
           //gibt Error Page zurück
-          out.println("<!doctype html>\n" +
-                  "<html>\n" +
-                  "<head>\n" +
-                  "<meta charset=\"utf-8\">\n" +
-                  "<title>GetToThePoint!</title>\n" +
-                  "<link rel=\"stylesheet\" href=\"style/style.css\">\n" +
-                  "\n" +
-                  "<!---VALIDATION JAVASCRIPT---->\n" +
-                  "\n" +
-                  "<script>\n" +
-                  "function validateForm() {\n" +
-                  "    var x = document.forms[\"registration\"][\"name\"][\"lastname\"][\"username\"][\"e-mail\"][\"confirm_mail\"][\"password\"][\"confirm_password\"].value;\n" +
-                  "\tif ( [\"username\"] != element.defaultValue) {\n" +
-                  "\t\t\n" +
-                  "\t} else if ( ([\"e-mail\"] != [\"confirm_mail\"]) || ([\"password\"] != [\"confirm_password\"])  ) {\n" +
-                  "\t \talert(\"E-Mail Address doesn't match!\");\n" +
-                  "\t }\n" +
-                  "\telse {\t\n" +
-                  "\t\tif (x == null || x == \"\")  {\n" +
-                  "        \talert(\"All fields must be filled out.\");\n" +
-                  "        \treturn false;\n" +
-                  "\t\t\t\t}\n" +
-                  "\t}\n" +
-                  "}\n" +
-                  "</script>\n" +
-                  "\n" +
-                  "</head>\n" +
-                  "<body>\n" +
-                  "<header><center><img src=\"img/header.gif\"></center></header>\n" +
-                  "<section id=\"content\">\n" +
-                  "<h1>Entschuldigung!</h1>\n" +
-                  "<p>Es ist ein Fehler bei deiner Registrierung aufgetreten. <br />\n" +
-                  "Wahrscheinlich ist dein Username bereits vergeben Bitte suche dir einen anderen Namen aus und versuche es noch einmal. <br />\n" +
-                  "\n" +
-                  " \n" +
-                  " <a href=\"index.html\">Kehre zurück zur Startseite </a> </p>\n" +
-                  "\n" +
-                  "\n" +
-                  "\n" +
-                  "</section>\n" +
-                  "\n" +
-                  "\n" +
-                  "\n" +
-                  "\n" +
-                  "<footer>\n" +
-                  "<div class=\"innner\">\n" +
-                  "<p id=\"app\">Available for <br />\n" +
-                  "<a href=\"http://play.google.com\" target=\"new\"><img src=\"img/google.png\" width=\"55%\"></a>\n" +
-                  "</p>\n" +
-                  "<div id=\"social_icons\"><img style=\"float:right;\"src=\"img/social_media.PNG\"></div>\n" +
-                  "\n" +
-                  "<p id=\"legal\">Copyright (C) 2015</p>\n" +
-                  "</div>\n" +
-                  "\n" +
-                  "</footer>\n" +
-                  "\n" +
-                  "</body>\n" +
-                  "\n" +
-                  "</html>\n");
-      } else {*/
-          String random = "random";
+          response.setContentType("text/html");
+          response.setBufferSize(8192);
+          try (PrintWriter out = response.getWriter()) {
+              out.println("<!doctype html>\n" +
+                      "<html>\n" +
+                      "<head>\n" +
+                      "<meta charset=\"utf-8\">\n" +
+                      "<title>GetToThePoint!</title>\n" +
+                      "<link rel=\"stylesheet\" href=\"style/style.css\">\n" +
+                      "\n" +
+                      "<!---VALIDATION JAVASCRIPT---->\n" +
+                      "\n" +
+                      "<script>\n" +
+                      "function validateForm() {\n" +
+                      "    var x = document.forms[\"registration\"][\"name\"][\"lastname\"][\"username\"][\"e-mail\"][\"confirm_mail\"][\"password\"][\"confirm_password\"].value;\n" +
+                      "\tif ( [\"username\"] != element.defaultValue) {\n" +
+                      "\t\t\n" +
+                      "\t} else if ( ([\"e-mail\"] != [\"confirm_mail\"]) || ([\"password\"] != [\"confirm_password\"])  ) {\n" +
+                      "\t \talert(\"E-Mail Address doesn't match!\");\n" +
+                      "\t }\n" +
+                      "\telse {\t\n" +
+                      "\t\tif (x == null || x == \"\")  {\n" +
+                      "        \talert(\"All fields must be filled out.\");\n" +
+                      "        \treturn false;\n" +
+                      "\t\t\t\t}\n" +
+                      "\t}\n" +
+                      "}\n" +
+                      "</script>\n" +
+                      "\n" +
+                      "</head>\n" +
+                      "<body>\n" +
+                      "<header><center><img src=\"img/header.gif\"></center></header>\n" +
+                      "<section id=\"content\">\n" +
+                      "<h1>Entschuldigung!</h1>\n" +
+                      "<p>Es ist ein Fehler bei deiner Registrierung aufgetreten. <br />\n" +
+                      "Wahrscheinlich ist dein Username bereits vergeben Bitte suche dir einen anderen Namen aus und versuche es noch einmal. <br />\n" +
+                      "\n" +
+                      " \n" +
+                      " <a href=\"index.html\">Kehre zurück zur Startseite </a> </p>\n" +
+                      "\n" +
+                      "\n" +
+                      "\n" +
+                      "</section>\n" +
+                      "\n" +
+                      "\n" +
+                      "\n" +
+                      "\n" +
+                      "<footer>\n" +
+                      "<div class=\"innner\">\n" +
+                      "<p id=\"app\">Available for <br />\n" +
+                      "<a href=\"http://play.google.com\" target=\"new\"><img src=\"img/google.png\" width=\"55%\"></a>\n" +
+                      "</p>\n" +
+                      "<div id=\"social_icons\"><img style=\"float:right;\"src=\"img/social_media.PNG\"></div>\n" +
+                      "\n" +
+                      "<p id=\"legal\">Copyright (C) 2015</p>\n" +
+                      "</div>\n" +
+                      "\n" +
+                      "</footer>\n" +
+                      "\n" +
+                      "</body>\n" +
+                      "\n" +
+                      "</html>\n");
+          }
+      } else {
           User user = new User();
+
           user.setName(request.getParameter("username"));
           user.setFirstname(request.getParameter("name"));
           user.setLastname(request.getParameter("lastname"));
           user.setEmail(request.getParameter("e-mail"));
           user.setPassword(request.getParameter("password"));
-          if (random.equals(request.getParameter("teams")))
+          if ("random".equals(request.getParameter("teams")))
           {
               user.setTeam(request.getParameter("teams"));
               user.chooseTeam();
@@ -120,8 +124,7 @@ public class UserServlet extends HttpServlet {
               user.setTeam(request.getParameter("teams"));
           }
 
-          userClassicDao.persist(user);
-          transaction.commit();
+          basicLogic.persistUser(user);
 
           users = new ArrayList<>(users); // cloning the read-only list so that we can add something
           users.add(user);
@@ -217,4 +220,4 @@ public class UserServlet extends HttpServlet {
       }
   }
 
-//}
+}
