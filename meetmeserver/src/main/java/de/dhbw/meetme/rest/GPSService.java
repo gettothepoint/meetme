@@ -35,13 +35,14 @@ public class GPSService {
         return "updated GPS Data for User "+username;
     }
 
-    // für Käthe's Testzwecke bitte drin lassen
+    /* für Käthe's Testzwecke bitte drin lassen
     @Path("/list")
     @GET
     public Collection<GPSData> list() {
         log.debug("List GPSData");
         return basicLogic.listGPSData();
     }
+    */
     //curl -i -H "Accept: application/json" -X POST http://127.0.0.1:8087/meetmeserver/api/login/
 
 }
