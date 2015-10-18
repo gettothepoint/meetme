@@ -1,15 +1,7 @@
 package de.dhbw.meetme.rest;
 
-import de.dhbw.meetme.database.Transaction;
-import de.dhbw.meetme.database.dao.GPSClassicDao;
-import de.dhbw.meetme.database.dao.UserClassicDao;
-import de.dhbw.meetme.database.dao.UserDao;
 import de.dhbw.meetme.domain.GPSData;
-import de.dhbw.meetme.domain.User;
-        import de.dhbw.meetme.domain.UuidId;
-import de.dhbw.meetme.logic.BasicLogic;
 import groovy.lang.Singleton;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.slf4j.Logger;
         import org.slf4j.LoggerFactory;
 
