@@ -14,7 +14,7 @@ import javax.inject.Inject;
 /**
  * Kerstin und Käthe - meet enthält boolean meeting um ein Treffen zu prüfen
  */
-public class Meet {
+public class MeetLogic {
 
     private static final Logger log = LoggerFactory.getLogger(GPSService.class);
 
@@ -25,25 +25,17 @@ public class Meet {
     @Inject
     Transaction transaction;
 
-    public boolean meeting(String user1, String user2)
+    public boolean checkMeeting(String user1, String user2)
     {
         double spielraum = 0.015;
 
         transaction.begin();
+        String userId1 = (userClassicDao.idFromName(user1)).asString();
 
-        log.debug("Get User " + user1);
-        UuidId uID1 = userClassicDao.idFromName(user1);
-        String userId1 = uID1.asString();
-        log.debug("User1 found, continue to insert or update");
-
-        log.debug("Get User " + user2);
-        UuidId uID2 = userClassicDao.idFromName(user2);
-        String userId2 = uID2.asString();
-        log.debug("User2 found, continue to insert or update");
+        String userId2 = (userClassicDao.idFromName(user2)).asString();
 
         GPSData data1 = GPSClassicDao.getGPSbyUserId(userId1);
         GPSData data2 = GPSClassicDao.getGPSbyUserId(userId2);
-
         transaction.commit();
 
         double lat1 = Double.parseDouble(data1.getLatitude());
@@ -55,7 +47,7 @@ public class Meet {
         double dy = 111.3 * (lat1-lat2);
         double distance = Math.sqrt((dx*dx)+(dy*dy));
 
-
+        log.debug("distance: " + distance);
         return distance <= spielraum;
     }
 

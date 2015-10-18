@@ -7,8 +7,6 @@ import org.hibernate.internal.SessionImpl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,13 +14,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
- * The same class the User Dao, but implemented in the traditional way.
- * You can use either this or the the other.
- * Decide yourself!
+ * Enthält alle Funktionen die in irgendeiner Weise auf die Tabelle User zugfreifen
+ * Alle anderen Tabellen müssen über andere Daos bedient werden
+ * Alle Funktionen dürfen nur aus dem Logic-Package aufgerufen werden
+ * Kerstin and Käthe rule ;)
  */
 public class UserClassicDao implements Dao<UuidId, User> {
     @PersistenceContext
@@ -250,59 +247,6 @@ public class UserClassicDao implements Dao<UuidId, User> {
             }
         }
         return id;
-    }
-
-    public boolean rightpassword(String username, String password){
-        UuidId id = idFromName(username);
-        User u = get(id);
-
-        return u.getPassword().equals(password);
-    }
-
-    public boolean usernameUnique(String username){
-        if (username.equals("teamBlue") || username.equals("teamRed")){
-            return false;
-        }else{
-            return (idFromName(username) == null);
-        }
-    }
-
-    public boolean checkMail(String email) {
-        String EMAIL_PATTERN =  "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-        Pattern p = Pattern.compile(EMAIL_PATTERN);
-        Matcher m = p.matcher(email);
-        return m.matches();
-
-    }
-
-    public static String getMD5(String input) {
-        byte[] source;
-        try {
-            //Get byte according by specified coding.
-            source = input.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            source = input.getBytes();
-        }
-        String result = null;
-        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7',
-                '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(source);
-            //The result should be one 128 integer
-            byte temp[] = md.digest();
-            char str[] = new char[16 * 2];
-            int k = 0;
-            for (int i = 0; i < 16; i++) {
-                byte byte0 = temp[i];
-                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
-                str[k++] = hexDigits[byte0 & 0xf];
-            }
-            result = new String(str);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
     }
 
     }

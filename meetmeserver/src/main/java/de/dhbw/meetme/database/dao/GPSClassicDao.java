@@ -203,7 +203,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         return Data;
     }
 
-
+    //später ändern -> keine Überschreibung, nur persist
     public void updateGPS(String username, String userId, String latitude, String longitude) {
 
         GPSData data = new GPSData();

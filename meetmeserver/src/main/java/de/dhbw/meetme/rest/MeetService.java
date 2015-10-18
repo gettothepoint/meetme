@@ -1,19 +1,14 @@
 package de.dhbw.meetme.rest;
 
-import de.dhbw.meetme.database.Transaction;
-import de.dhbw.meetme.database.dao.GPSClassicDao;
-import de.dhbw.meetme.database.dao.UserClassicDao;
-import de.dhbw.meetme.database.dao.UserDao;
-import de.dhbw.meetme.logic.Meet;
+
+import de.dhbw.meetme.logic.BasicLogic;
+import de.dhbw.meetme.logic.MeetLogic;
 import groovy.lang.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 
 /**
  * Created by Paul on 15.10.2015.
@@ -27,29 +22,35 @@ public class MeetService {
     private static final Logger log = LoggerFactory.getLogger(GPSService.class);
 
     @Inject
-    UserDao userDao;
+    BasicLogic basicLogic;
     @Inject
-    UserClassicDao userClassicDao;
-    @Inject
-    de.dhbw.meetme.database.dao.GPSClassicDao GPSClassicDao;
-    @Inject
-    Transaction transaction;
+    MeetLogic meetLogic;
 
 
     @Path("/check/{username}/{password}/{username2}")
     @POST
     public boolean check(@PathParam("username") String username, @PathParam("password") String password, @PathParam("username2") String username2 ) {
-        transaction.begin();
-        if (userClassicDao.rightpassword(username, password)) {
-            Meet mt = new Meet();
-            transaction.commit();
-            return mt.meeting(username, username2);
-        }
-        else
-        {
-            transaction.commit();
-            return false;
-        }
+        return (basicLogic.checkPassword(username, password))&&meetLogic.checkMeeting(username, username2);
+
+    }
+/*
+    @Path("/checkpw/{username}/{password}")
+    @GET
+    public boolean checkpw(@PathParam("username") String username, @PathParam("password") String pw){
+        return basicLogic.checkPassword(username, pw);
+
     }
 
+    @Path("/checkmeet/{username}/{username2}")
+    @GET
+    public boolean checkMeet(@PathParam("username") String username, @PathParam("username2") String username2){
+        return meetLogic.checkMeeting(username, username2);
+    }
+
+    @Path("checkunique/{name}")
+    @GET
+    public boolean checkUnique(@PathParam("name") String name){
+        return basicLogic.usernameUnique(name);
+    }
+*/
 }

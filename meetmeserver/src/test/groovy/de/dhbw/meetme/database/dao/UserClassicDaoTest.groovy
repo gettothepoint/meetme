@@ -24,9 +24,7 @@ class UserClassicDaoTest extends Specification {
         dao.persist(u);
         u
     }
-/*
-    void "See if User persists"() {
-        setup:
+/* setup:
         UserClassicDao dao = new UserClassicDao()
         dbTestUtil.em.getTransaction().begin();
         dao.entityManager = dbTestUtil.em
@@ -45,8 +43,8 @@ class UserClassicDaoTest extends Specification {
         foundUser.id == id
         foundUser.name == "testUsername"
     }
-*/
-/*
+
+
     void "test User"(){
         setup:
         UserClassicDao dao = new UserClassicDao();
@@ -55,8 +53,8 @@ class UserClassicDaoTest extends Specification {
         dao.entityManager = dbTestUtil.em;
         User u1 = createUser(dao, 1);
         User u2 = createUser(dao, 2);
-        UuidId id1 = u1.getid();
-        UuidId id2 = u2.getid();
+        UuidId id1 = u1.getId();
+        UuidId id2 = u2.getId();
 
         when:
         User foundUser = dao.get(id1);
@@ -65,7 +63,11 @@ class UserClassicDaoTest extends Specification {
         foundUser
         foundUser.id == id1;
         foundUser.name.equals("Testusername1");
-    }*/
+
+        cleanup:
+        dbTestUtil.em.getTransaction().commit();
+
+    }
     void testDelete() {
 
     }
@@ -78,11 +80,31 @@ class UserClassicDaoTest extends Specification {
 
     }
 
-    void testFindByName() {
+    def "Give out right id if username is inserted"() {
+        setup:
+        UserClassicDao dao = new UserClassicDao();
+        dao.inTest = true;
+        dbTestUtil.em.getTransaction().begin();
+        dao.entityManager = dbTestUtil.em;
+        User u = createUser(dao, 1);
+        UuidId idu = u.getId();
+        String id = idu.asString();
+        String name = u.getName();
 
+
+        when:
+        String foundid = (UserClassicDao.idFromName(name)).asString();
+
+        expect:
+        foundid
+        foundid == id;
+
+        cleanup:
+        dbTestUtil.em.getTransaction().commit();
     }
 
     void testIdFromName() {
 
     }
+    */
 }

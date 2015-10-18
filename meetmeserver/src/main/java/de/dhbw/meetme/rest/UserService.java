@@ -1,10 +1,8 @@
 package de.dhbw.meetme.rest;
 
-import de.dhbw.meetme.database.Transaction;
-import de.dhbw.meetme.database.dao.UserClassicDao;
-import de.dhbw.meetme.database.dao.UserDao;
+
 import de.dhbw.meetme.domain.User;
-import de.dhbw.meetme.domain.UuidId;
+import de.dhbw.meetme.logic.BasicLogic;
 import groovy.lang.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,43 +25,32 @@ public class UserService {
   //Mutter aller Services muss beide Daos bereitstellen
 
   @Inject
-  UserDao userDao;
-  @Inject
-  UserClassicDao userClassicDao;
-  @Inject
-  Transaction transaction;
+  BasicLogic basicLogic;
+
 
   @Path("/list")
   @GET
   public Collection<User> list() {
     log.debug("List users");
-    return userClassicDao.list();
+    return basicLogic.listUsers();
   }
 
   @Path("/get/{id}")
   @GET
   public User get(@PathParam("id") String id) {
     log.debug("Get user " + id);
-    return userClassicDao.get(UuidId.fromString(id));
+    return basicLogic.getUser(id);
   }
 
   @Path("/delete/{id}")
   @DELETE
   public void delete(@PathParam("id") String id) {
-    transaction.begin();
     log.debug("Delete user " + id);
-    userDao.delete(UuidId.fromString(id));
-    transaction.commit();
+    basicLogic.deleteUser(id);
   }
 
-  @Path("/save")
-  @PUT
-  public void save(@PathParam("user") User user) {
-    userClassicDao.persist(user);
-    log.debug("Save user " + user);
-  }
-
-    /*@Path("/adduser")
+/*
+    @Path("/adduser")
     @POST
     @Produces(MediaType.TEXT_HTML)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
