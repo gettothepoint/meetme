@@ -119,7 +119,7 @@ public class UserServlet extends HttpServlet {
                       "Wahrscheinlich ist deine E-Mailadresse ungültig. Bitte gib deine richtige E-Mail an und versuche es noch einmal. <br />\n" +
                       output2);
           }
-      } else if (!basicLogic.checkTeam(request.getParameter("team"))) {
+      } /*else if (!basicLogic.checkTeam(request.getParameter("team"))) {
 
           //gibt Error Page zurück
           response.setContentType("text/html");
@@ -131,7 +131,7 @@ public class UserServlet extends HttpServlet {
                       "Womöglich wolltest du Schlingel unsere Datenbank sabotieren - wir erlauben nur die Teameingaben blue, red und random!. <br />\n" +
                       output2);
           }
-      } else {
+      } */else {
           String username = request.getParameter("username");
           String firstname = request.getParameter("name");
           String lastname = request.getParameter("lastname");

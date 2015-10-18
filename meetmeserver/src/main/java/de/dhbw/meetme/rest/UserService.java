@@ -24,6 +24,12 @@ public class UserService {
   @Inject
   BasicLogic basicLogic;
 
+  @Path("/login/{username}/{password}")
+  @GET
+  public boolean login(@PathParam("username") String username, @PathParam("password") String password) {
+    return basicLogic.checkPassword(username, password);
+  }
+
   @Path("/list")
   @GET
   public Collection<User> list() {

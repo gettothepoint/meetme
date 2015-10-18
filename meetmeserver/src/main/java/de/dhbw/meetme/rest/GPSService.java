@@ -27,22 +27,25 @@ public class GPSService {
     BasicLogic basicLogic;
 
 
-    @Path("/{username}/{long}/{lat}")
+    @Path("/{username}/{password}/{lat}/{long}")
     @POST
-    public String put(@PathParam("username") String username, @PathParam("long") String longitude, @PathParam("lat") String latitude ){
-
-        basicLogic.updateGPS(username, latitude, longitude);
-        return "updated GPS Data for User "+username;
+    public String putGPS(@PathParam("username") String username, @PathParam("password") String password, @PathParam("lat") String latitude, @PathParam("long") String longitude ){
+        if (basicLogic.checkPassword(username, password))
+        {
+            basicLogic.updateGPS(username, latitude, longitude);
+            return "updated GPS Data for User " + username;
+        }
+        else {return "Password incorrect";}
     }
 
-    /* für Käthe's Testzwecke bitte drin lassen
+    // für Käthe's Testzwecke bitte drin lassen
     @Path("/list")
     @GET
     public Collection<GPSData> list() {
         log.debug("List GPSData");
         return basicLogic.listGPSData();
     }
-    */
+
     //curl -i -H "Accept: application/json" -X POST http://127.0.0.1:8087/meetmeserver/api/login/
 
 }

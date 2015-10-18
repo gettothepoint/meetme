@@ -29,8 +29,16 @@ public class MeetService {
 
     @Path("/check/{username}/{password}/{username2}")
     @POST
-    public boolean check(@PathParam("username") String username, @PathParam("password") String password, @PathParam("username2") String username2 ) {
-        return (basicLogic.checkPassword(username, password))&&meetLogic.checkMeeting(username, username2);
+    public String check(@PathParam("username") String username, @PathParam("password") String password, @PathParam("username2") String username2 ) {
+        if (!basicLogic.checkPassword(username,password)){
+            return "Password incorrect";
+        }
+        else if (meetLogic.checkMeeting(username, username2)) {
+           return "Meeting confirmed";
+        }
+        else {
+            return "Meeting rejected";
+        }
 
     }
 /*
