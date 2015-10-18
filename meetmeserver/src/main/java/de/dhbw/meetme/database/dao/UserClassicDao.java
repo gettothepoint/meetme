@@ -49,8 +49,6 @@ public class UserClassicDao implements Dao<UuidId, User> {
             statement.setString(5, entity.getEmail());
             statement.setString(6, entity.getPassword());
             statement.setString(7, entity.getTeam());
-            statement.setString(8, entity.getBreitengrad());
-            statement.setString(9, entity.getLaengengrad());
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
