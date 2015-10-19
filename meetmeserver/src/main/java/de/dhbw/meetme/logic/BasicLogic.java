@@ -86,6 +86,7 @@ public class BasicLogic {
     }
 
 
+
     public boolean checkPassword(String username, String password){
         transaction.begin();
         UuidId id = userClassicDao.idFromName(username);
@@ -93,7 +94,6 @@ public class BasicLogic {
         transaction.commit();
         return u.getPassword().equals(password);
     }
-
 
     public boolean usernameUnique(String username){
         transaction.begin();
@@ -150,9 +150,6 @@ public class BasicLogic {
         }
         return result;
     }
-
-
-
 
 
 }

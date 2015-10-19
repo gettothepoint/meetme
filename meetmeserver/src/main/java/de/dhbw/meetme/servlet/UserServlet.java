@@ -31,8 +31,6 @@ public class UserServlet extends HttpServlet {
     @Inject BasicLogic basicLogic;
 
 
-
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       log.debug("UserServlet get");
@@ -119,7 +117,7 @@ public class UserServlet extends HttpServlet {
                       "Wahrscheinlich ist deine E-Mailadresse ungültig. Bitte gib deine richtige E-Mail an und versuche es noch einmal. <br />\n" +
                       output2);
           }
-      } else if (!basicLogic.checkTeam(request.getParameter("team"))) {
+      } else if (!basicLogic.checkTeam(request.getParameter("teams"))) {
 
           //gibt Error Page zurück
           response.setContentType("text/html");
