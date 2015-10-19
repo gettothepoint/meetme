@@ -286,7 +286,6 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
         point.setPoint(p);
         persist(point);
 
-        log.debug("points erstellt: " + point);
 
         //danach sollen die Teampoints upgedaten werden - also zuerst erzeugen:
         Points teamPoints = new Points();
@@ -294,18 +293,15 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
             teamPoints.setId(UuidId.fromString("bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12"));
             //wird benötigt, da sonst get() nicht aufgerufen werden kann
             teamPoints.setUserId("bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12");
-            log.debug("blaue Teampoints (Objekt) erstellt");
         } else if(team.equals("red")){
             teamPoints.setId(UuidId.fromString("eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12"));
             teamPoints.setUserId("eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12");
-            log.debug("rote Teampoints (Objekt) erstellt");
         } else {
             throw new RuntimeException("unknown Team!");
         }
 
         //prüfen, ob es die Teampoints schon gibt und erzeugen, falls nicht
         if(get(teamPoints.getId())== null){
-            log.debug("die Teams müssen noch erstellt werden");
             persistTeams();
         }
 
@@ -315,9 +311,7 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
 
         Points oldpoints = get(teamPoints.getId());
         int oldteampoints = oldpoints.getPoint();
-        log.debug("alte Teampoints: " + oldteampoints);
         int newpoints = oldteampoints + p;
-        log.debug("die neuen Punkte des Teams sind: " + newpoints + " UserId ist " + teamPoints.getUserId() + " updateTeampoints wird aufgerufen!");
         updateTeamPoints(teamPoints.getUserId(), newpoints);
 
     }
@@ -359,7 +353,6 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
         PreparedStatement statement = null;
         String p = Integer.toString(newpoints);
         try {
-            log.debug("jetzt werden die Teampoints upgedated");
             statement = con.prepareStatement("UPDATE Points SET point = ? WHERE id = ?");
             statement.setString(1, p); //p ist schon der neue Punktwert
             statement.setString(2, id);
