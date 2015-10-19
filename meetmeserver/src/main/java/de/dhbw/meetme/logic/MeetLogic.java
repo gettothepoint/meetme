@@ -2,8 +2,10 @@ package de.dhbw.meetme.logic;
 
 import de.dhbw.meetme.database.Transaction;
 import de.dhbw.meetme.database.dao.GPSClassicDao;
+import de.dhbw.meetme.database.dao.PointsClassicDao;
 import de.dhbw.meetme.database.dao.UserClassicDao;
 import de.dhbw.meetme.domain.GPSData;
+import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
 import de.dhbw.meetme.rest.GPSService;
 import org.slf4j.Logger;
@@ -23,7 +25,10 @@ public class MeetLogic {
     @Inject
     GPSClassicDao GPSClassicDao;
     @Inject
+    PointsClassicDao pointsClassicDao;
+    @Inject
     Transaction transaction;
+
 
     public boolean checkMeeting(String user1, String user2)
     {
@@ -49,6 +54,28 @@ public class MeetLogic {
 
         log.debug("distance: " + distance);
         return distance <= spielraum;
+    }
+
+    public void updatePoints(String user1, String user2)
+    {
+        if(checkMeeting(user1, user2))
+        {
+            transaction.begin();
+
+            String userId1 = (userClassicDao.idFromName(user1)).asString();
+            String userId2 = (userClassicDao.idFromName(user2)).asString();
+
+            User u1 = userClassicDao.get(UuidId.fromString(userId1));
+            User u2 = userClassicDao.get(UuidId.fromString(userId2));
+
+            String team1 = u1.getTeam();
+            String team2 = u2.getTeam();
+
+            pointsClassicDao.updatePoints(team1, user1, userId1, 1);
+            pointsClassicDao.updatePoints(team2, user2, userId2, 1);
+
+            transaction.commit();
+        }
     }
 
 }
