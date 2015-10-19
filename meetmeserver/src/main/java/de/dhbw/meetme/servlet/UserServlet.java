@@ -31,6 +31,8 @@ public class UserServlet extends HttpServlet {
     @Inject BasicLogic basicLogic;
 
 
+
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       log.debug("UserServlet get");
