@@ -5,6 +5,7 @@ import de.dhbw.meetme.database.dao.GPSClassicDao;
 import de.dhbw.meetme.database.dao.PointsClassicDao;
 import de.dhbw.meetme.database.dao.UserClassicDao;
 import de.dhbw.meetme.domain.GPSData;
+import de.dhbw.meetme.domain.Points;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
 import de.dhbw.meetme.rest.GPSService;
@@ -56,26 +57,31 @@ public class MeetLogic {
         return distance <= spielraum;
     }
 
-    public void updatePoints(String user1, String user2)
+    public void updatePoints(String user)
     {
-        if(checkMeeting(user1, user2))
-        {
             transaction.begin();
 
-            String userId1 = (userClassicDao.idFromName(user1)).asString();
-            String userId2 = (userClassicDao.idFromName(user2)).asString();
-
-            User u1 = userClassicDao.get(UuidId.fromString(userId1));
-            User u2 = userClassicDao.get(UuidId.fromString(userId2));
-
-            String team1 = u1.getTeam();
-            String team2 = u2.getTeam();
-
-            pointsClassicDao.updatePoints(team1, user1, userId1, 1);
-            pointsClassicDao.updatePoints(team2, user2, userId2, 1);
+            String userId = (userClassicDao.idFromName(user)).asString();
+            User u = userClassicDao.get(UuidId.fromString(userId));
+            String team = u.getTeam();
+            pointsClassicDao.updatePoints(team, user, userId, 1);
 
             transaction.commit();
-        }
+
     }
 
+    public int getPoints(String username){
+        String id = userClassicDao.idFromName(username).asString();
+        return pointsClassicDao.getPointsAmountByUserId1(id);
+    }
+
+    public int getTeamPoints(String team){
+        if(team.equals("red")){
+            Points p = pointsClassicDao.get(UuidId.fromString("eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12"));
+            return p.getPoint();
+        }else{
+            Points p = pointsClassicDao.get(UuidId.fromString("bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12"));
+            return p.getPoint();
+        }
+    }
 }

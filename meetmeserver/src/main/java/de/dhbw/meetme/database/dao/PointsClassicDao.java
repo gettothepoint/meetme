@@ -2,6 +2,9 @@ package de.dhbw.meetme.database.dao;
 
 import de.dhbw.meetme.domain.UuidId;
 import de.dhbw.meetme.domain.Points;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Connection;
@@ -19,6 +22,8 @@ import java.util.List;
 public class PointsClassicDao implements Dao<UuidId, Points>{
     @PersistenceContext
     protected EntityManager entityManager;
+    private static final Logger log = LoggerFactory.getLogger(PointsClassicDao.class);
+
 
     private Connection getConnection() {
         return entityManager.unwrap(Connection.class);
@@ -281,28 +286,38 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
         point.setPoint(p);
         persist(point);
 
+        log.debug("points erstellt: " + point);
+
         //danach sollen die Teampoints upgedaten werden - also zuerst erzeugen:
         Points teamPoints = new Points();
         if(team.equals("blue")) {
             teamPoints.setId(UuidId.fromString("bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12"));
             //wird benötigt, da sonst get() nicht aufgerufen werden kann
             teamPoints.setUserId("bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12");
+            log.debug("blaue Teampoints (Objekt) erstellt");
         } else if(team.equals("red")){
             teamPoints.setId(UuidId.fromString("eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12"));
             teamPoints.setUserId("eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12");
+            log.debug("rote Teampoints (Objekt) erstellt");
         } else {
             throw new RuntimeException("unknown Team!");
         }
 
         //prüfen, ob es die Teampoints schon gibt und erzeugen, falls nicht
         if(get(teamPoints.getId())== null){
+            log.debug("die Teams müssen noch erstellt werden");
             persistTeams();
         }
 
         //teampoints updated (UserId wird übergeben
         // weil sie nicht noch zum String gemacht werden muss in updateTeamPoints
         //todo Käthe: Version abprüfen!
-        int newpoints = getPointsAmountByUserId1(teamPoints.getUserId()) + p;
+
+        Points oldpoints = get(teamPoints.getId());
+        int oldteampoints = oldpoints.getPoint();
+        log.debug("alte Teampoints: " + oldteampoints);
+        int newpoints = oldteampoints + p;
+        log.debug("die neuen Punkte des Teams sind: " + newpoints + " UserId ist " + teamPoints.getUserId() + " updateTeampoints wird aufgerufen!");
         updateTeamPoints(teamPoints.getUserId(), newpoints);
 
     }
@@ -325,6 +340,7 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
             statement.setString(9, "eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12");
             statement.setString(10, "0");
             statement.executeUpdate();
+            log.debug("beide Teams in der Tabelle erstellt");
             statement.close();
         } catch (SQLException e) {
             throw new RuntimeException("Could not update database", e);
@@ -343,7 +359,8 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
         PreparedStatement statement = null;
         String p = Integer.toString(newpoints);
         try {
-            statement = con.prepareStatement("UPDATE Points SET points = ? WHERE id = ?");
+            log.debug("jetzt werden die Teampoints upgedated");
+            statement = con.prepareStatement("UPDATE Points SET point = ? WHERE id = ?");
             statement.setString(1, p); //p ist schon der neue Punktwert
             statement.setString(2, id);
             statement.executeUpdate();

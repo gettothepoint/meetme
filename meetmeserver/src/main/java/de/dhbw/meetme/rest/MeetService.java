@@ -42,6 +42,27 @@ public class MeetService {
 
     }
 /*
+    @Path("/points/{username}/{username2}")
+    @POST
+    public String check(@PathParam("username") String username, @PathParam("username2") String username2 ) {
+        if (meetLogic.checkMeeting(username, username2)) {
+
+            meetLogic.updatePoints(username);
+            meetLogic.updatePoints(username2);
+            int points1 = meetLogic.getPoints(username);
+            int points2 = meetLogic.getPoints(username2);
+            int teamred = meetLogic.getTeamPoints("red");
+            int teamblue = meetLogic.getTeamPoints("blue");
+            return "Meeting confirmed, Points added. " +
+                    "The new Points of " + username + " are " + points1 +
+                    "The new Points of " + username2 + " are " + points2 +
+                    "The new Points of the red team are " + teamred +
+                    "The new Points of the blue team are " + teamblue;
+
+        }
+        return "Eure GeoDaten sind zu weit auseinander!";
+    }
+
     @Path("/checkpw/{username}/{password}")
     @GET
     public boolean checkpw(@PathParam("username") String username, @PathParam("password") String pw){
