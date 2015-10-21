@@ -64,44 +64,6 @@ public class BasicLogic {
 
     }
 
-    public void updateGPS(String username, String latitude, String longitude){
-
-        transaction.begin();
-
-        log.debug("Get User " + username);
-        UuidId uID = userClassicDao.idFromName(username);
-        String userId = uID.asString();
-
-        log.debug("User found, continue to insert or update");
-        GPSClassicDao.updateGPS(username, userId, latitude, longitude);
-
-        transaction.commit();
-
-    }
-
-    public String listGPSData(){
-        StringBuffer sb = new StringBuffer("{\"gPSData\"[");
-        Collection<GPSData> list = GPSClassicDao.list();
-        for (GPSData data: list){
-            sb.append("{\"latitude\":");
-            sb.append(data.getLatitude());
-            sb.append(",\"longitude\":");
-            sb.append(data.getLongitude());
-            sb.append(",\"username\":\"");
-            sb.append(data.getUsername());
-            sb.append("\"},");
-        }
-        sb.append("]}");
-
-        return sb.toString();
-
-        //return GPSClassicDao.list();
-    }
-
-    public Collection<GPSData> colGPSData(){
-        return GPSClassicDao.list();
-    }
-
     //by Pia - todo: nochmal Funktion klären!
     public static String getMD5(String input) {
         byte[] source;

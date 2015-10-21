@@ -23,8 +23,6 @@ public class MeetService {
     private static final Logger log = LoggerFactory.getLogger(GPSService.class);
 
     @Inject
-    BasicLogic basicLogic;
-    @Inject
     MeetLogic meetLogic;
     @Inject
     Verification verification;

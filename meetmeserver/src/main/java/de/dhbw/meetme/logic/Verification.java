@@ -22,8 +22,6 @@ public class Verification {
     @Inject
     UserClassicDao userClassicDao;
     @Inject
-    GPSClassicDao GPSClassicDao;
-    @Inject
     Transaction transaction;
 
     public boolean checkPassword(String username, String password){

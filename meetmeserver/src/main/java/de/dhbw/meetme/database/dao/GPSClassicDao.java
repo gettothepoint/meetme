@@ -205,41 +205,26 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         return Data;
     }
 
-    //später ändern -> keine Überschreibung, nur persist
-    public void updateGPS(String username, String userId, String latitude, String longitude) {
-
-        GPSData data = new GPSData();
-        data.setUsername(username);
-        data.setUserId(userId);
-        data.setLatitude(latitude);
-        data.setLongitude(longitude);
-
-        GPSData olddata = getGPSbyUserId(userId);
-
-        if(olddata == null){
-            persist(data);  //sollte der betreffende User noch keine Daten haben
-        } else {
-            String id = olddata.getId().asString();
-
-            Connection con = getConnection();
-            PreparedStatement statement = null;
+    //später evtl ändern -> keine Überschreibung, nur persist
+    public void updateGPS(GPSData data, String oldId) {
+        Connection con = getConnection();
+        PreparedStatement statement = null;
+        try {
+            statement = con.prepareStatement("UPDATE GPSData SET latitude = ?, longitude = ? WHERE id = ?");
+            statement.setString(1, data.getLatitude());
+            statement.setString(2, data.getLongitude());
+            statement.setString(3, oldId);
+            //hier wird die ID der GeoData nicht überschrieben sondern bleibt die alte - später mit Datum noch abändern
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException("Could not update database", e);
+        } finally {
             try {
-                statement = con.prepareStatement("UPDATE GPSData SET latitude = ?, longitude = ? WHERE id = ?");
-                statement.setString(1, latitude);
-                statement.setString(2, longitude);
-                statement.setString(3, id);
-                //hier wird die ID der GeoData nicht überschrieben sondern bleibt die alte - später mit Datum noch abändern
-                statement.executeUpdate();
-                statement.close();
+                if (statement != null && !statement.isClosed())
+                    statement.close();
             } catch (SQLException e) {
-                throw new RuntimeException("Could not update database", e);
-            } finally {
-                try {
-                    if (statement != null && !statement.isClosed())
-                        statement.close();
-                } catch (SQLException e) {
-                    // ignore
-                }
+                // ignore
             }
         }
 
