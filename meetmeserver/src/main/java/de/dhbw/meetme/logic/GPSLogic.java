@@ -25,18 +25,25 @@ public class GPSLogic {
     @Inject
     Transaction transaction;
 
-    public String testExistence(String userId){
-        //enthält id der olddata bei Vorhandensein, bei nichtvorhandensein einen Leeren String
-        String result;
-
-        transaction.begin();
-        GPSData olddata = GPSClassicDao.getGPSbyUserId(userId);
-        if (olddata != null){
-            result = olddata.getId().asString();
-        }else{
-            result = "";
+    public String listGPSData(){
+        //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
+        StringBuffer sb = new StringBuffer("{\"gPSData\":[");
+        Collection<GPSData> list = GPSClassicDao.list();
+        for (GPSData data: list){
+            sb.append("{\"latitude\":");
+            sb.append(data.getLatitude());
+            sb.append(",\"longitude\":");
+            sb.append(data.getLongitude());
+            sb.append(",\"username\":\"");
+            sb.append(data.getUsername());
+            sb.append("\"},");
         }
-        return result;
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("]}");
+
+        return sb.toString();
+
+        //return GPSClassicDao.list();
     }
 
     public void updateGPS(String username, String latitude, String longitude){
@@ -61,25 +68,18 @@ public class GPSLogic {
         transaction.commit();
     }
 
-    public String listGPSData(){
-        //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
-        StringBuffer sb = new StringBuffer("{\"gPSData\":[");
-        Collection<GPSData> list = GPSClassicDao.list();
-        for (GPSData data: list){
-            sb.append("{\"latitude\":");
-            sb.append(data.getLatitude());
-            sb.append(",\"longitude\":");
-            sb.append(data.getLongitude());
-            sb.append(",\"username\":\"");
-            sb.append(data.getUsername());
-            sb.append("\"},");
+    public String testExistence(String userId){
+        //enthält id der olddata bei Vorhandensein, bei nichtvorhandensein einen Leeren String
+        String result;
+
+        transaction.begin();
+        GPSData olddata = GPSClassicDao.getGPSbyUserId(userId);
+        if (olddata != null){
+            result = olddata.getId().asString();
+        }else{
+            result = "";
         }
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append("]}");
-
-        return sb.toString();
-
-        //return GPSClassicDao.list();
+        return result;
     }
 
     public Collection<GPSData> colGPSData(){

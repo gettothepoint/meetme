@@ -107,7 +107,7 @@ public class UserServlet extends HttpServlet {
               out.println( output1 +
                       "<h1>Entschuldigung!</h1>\n" +
                       "<p>Es ist ein Fehler bei deiner Registrierung aufgetreten. <br />\n" +
-                      "Wahrscheinlich ist dein Username bereits vergeben Bitte suche dir einen anderen Namen aus und versuche es noch einmal. <br />\n" +
+                      "Dein Username ist bereits vergeben. Bitte suche dir einen anderen Namen aus und versuche es noch einmal. <br />\n" +
                      output2);
           }
       } else if (!verification.checkMail(request.getParameter("e-mail"))) {
@@ -119,7 +119,7 @@ public class UserServlet extends HttpServlet {
               out.println( output1 +
                       "<h1>Entschuldigung!</h1>\n" +
                       "<p>Es ist ein Fehler bei deiner Registrierung aufgetreten. <br />\n" +
-                      "Wahrscheinlich ist deine E-Mailadresse ungültig. Bitte gib deine richtige E-Mail an und versuche es noch einmal. <br />\n" +
+                      "Deine E-Mailadresse scheint ungültig zu sein. Bitte gib deine richtige E-Mail an und versuche es noch einmal. <br />\n" +
                       output2);
           }
       } else if (!verification.checkTeam(request.getParameter("teams"))) {
@@ -131,7 +131,7 @@ public class UserServlet extends HttpServlet {
               out.println( output1 +
                       "<h1>Entschuldigung!</h1>\n" +
                       "<p>Es ist ein Fehler bei deiner Registrierung aufgetreten. <br />\n" +
-                      "Womöglich wolltest du Schlingel unsere Datenbank sabotieren - wir erlauben nur die Teameingaben blue, red und random!. <br />\n" +
+                      "Wolltest du Schlingel unsere Datenbank sabotieren? - wir erlauben nur die Teameingaben blue, red und random!. <br />\n" +
                       output2);
           }
       } else {
