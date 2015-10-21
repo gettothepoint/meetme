@@ -29,26 +29,48 @@ public class MeetService {
 
     @Path("/check/{username}/{password}/{username2}")
     @POST
-    public String check(@PathParam("username") String username, @PathParam("password") String password, @PathParam("username2") String username2 ) {
-        if (!basicLogic.checkPassword(username,password)){
+    public String check(@PathParam("username") String username, @PathParam("password") String password, @PathParam("username2") String username2) {
+        if (!basicLogic.checkPassword(username, password)) {
             return "Password incorrect";
-        }
-        else if (meetLogic.checkMeeting(username, username2)) {
-           return "Meeting confirmed";
-        }
-        else {
+        } else if (meetLogic.checkMeeting(username, username2)) {
+            return "Meeting confirmed";
+        } else {
             return "Meeting rejected";
         }
+    }
+
+    @Path("/tryEqualTeams/{user1}/{user2}")
+    @POST
+    public String tryEqualTeams(@PathParam("user1") String user1, @PathParam("user2") String user2) {
+        meetLogic.checkEqualTeams(user1, user2);
+
+        int points1 = meetLogic.getPoints(user1);
+        int points2 = meetLogic.getPoints(user2);
+        int teamred = meetLogic.getTeamPoints("red");
+        int teamblue = meetLogic.getTeamPoints("blue");
+        return "The Points have been updated"+
+                "The new Points of " + user1 + " are " + points1 +
+                "The new Points of " + user2 + " are " + points2 +
+                "The new Points of the red team are " + teamred +
+                "The new Points of the blue team are " + teamblue +
+                "WATCH OUT MEETING NOT CHECKED";
 
     }
-/*
+
+    @Path("/bestteam")
+    @GET
+    public String best(){
+        return meetLogic.bestTeams();
+    }
+
+
     @Path("/points/{username}/{username2}")
     @POST
     public String check(@PathParam("username") String username, @PathParam("username2") String username2 ) {
         if (meetLogic.checkMeeting(username, username2)) {
 
-            meetLogic.updatePoints(username);
-            meetLogic.updatePoints(username2);
+            meetLogic.updatePoints(username, 1);
+            meetLogic.updatePoints(username2, 1);
             int points1 = meetLogic.getPoints(username);
             int points2 = meetLogic.getPoints(username2);
             int teamred = meetLogic.getTeamPoints("red");
@@ -63,23 +85,5 @@ public class MeetService {
         return "Eure GeoDaten sind zu weit auseinander!";
     }
 
-    @Path("/checkpw/{username}/{password}")
-    @GET
-    public boolean checkpw(@PathParam("username") String username, @PathParam("password") String pw){
-        return basicLogic.checkPassword(username, pw);
 
-    }
-
-    @Path("/checkmeet/{username}/{username2}")
-    @GET
-    public boolean checkMeet(@PathParam("username") String username, @PathParam("username2") String username2){
-        return meetLogic.checkMeeting(username, username2);
-    }
-
-    @Path("checkunique/{name}")
-    @GET
-    public boolean checkUnique(@PathParam("name") String name){
-        return basicLogic.usernameUnique(name);
-    }
-*/
 }

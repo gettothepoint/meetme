@@ -79,10 +79,27 @@ public class BasicLogic {
 
     }
 
-    public Collection<GPSData> listGPSData(){
+    public String listGPSData(){
+        StringBuffer sb = new StringBuffer("{\"gPSData\"[");
+        Collection<GPSData> list = GPSClassicDao.list();
+        for (GPSData data: list){
+            sb.append("{\"latitude\":");
+            sb.append(data.getLatitude());
+            sb.append(",\"longitude\":");
+            sb.append(data.getLongitude());
+            sb.append(",\"username\":\"");
+            sb.append(data.getUsername());
+            sb.append("\"},");
+        }
+        sb.append("]}");
 
+        return sb.toString();
+
+        //return GPSClassicDao.list();
+    }
+
+    public Collection<GPSData> colGPSData(){
         return GPSClassicDao.list();
-
     }
 
 

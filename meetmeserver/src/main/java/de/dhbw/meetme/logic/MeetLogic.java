@@ -57,14 +57,14 @@ public class MeetLogic {
         return distance <= spielraum;
     }
 
-    public void updatePoints(String user)
+    public void updatePoints(String user, int points)
     {
             transaction.begin();
 
             String userId = (userClassicDao.idFromName(user)).asString();
             User u = userClassicDao.get(UuidId.fromString(userId));
             String team = u.getTeam();
-            pointsClassicDao.updatePoints(team, user, userId, 1);
+            pointsClassicDao.updatePoints(team, user, userId, points);
 
             transaction.commit();
 
@@ -78,23 +78,24 @@ public class MeetLogic {
         User u1 = userClassicDao.get(UuidId.fromString(userId1));
         String team1 = u1.getTeam();
 
-        String userId2 = (userClassicDao.idFromName(user1).asString());
+        String userId2 = (userClassicDao.idFromName(user2).asString());
         User u2 = userClassicDao.get(UuidId.fromString(userId2));
         String team2 = u1.getTeam();
 
-        if(team1==team2)
+        transaction.commit();
+
+        if(team1.equals(team2))
         {
             //Team ist gleich, beide User bekommen einen Punkt
-            updatePoints(user1);
-            updatePoints(user2);
+            updatePoints(user1, 1);
+            updatePoints(user2, 1);
         }
         else
         {
             //Team ist ungleich, beide User verlieren einen Punkt
-            pointsClassicDao.updatePoints(team1, user1, userId1, -1);
-            pointsClassicDao.updatePoints(team2, user2, userId2, -1);
+            updatePoints(user1, -1);
+            updatePoints(user2, -1);
         }
-        transaction.commit();
     }
 
     //Gibt Punkte des Benutzers aus

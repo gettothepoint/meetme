@@ -61,4 +61,6 @@ public class StartUpBean {
       log.error("Could not shutdown db server: " + e);
     }
   }
+
+  //todo abfrage ob teams schon in Points bestehen
 }

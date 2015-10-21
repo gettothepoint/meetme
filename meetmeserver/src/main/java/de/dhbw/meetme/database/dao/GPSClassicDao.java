@@ -160,6 +160,8 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         return datalist;
     }
 
+
+
     //später ändern, wenn die UserId häufiger vorkommt -> auf Datum überprüfen
     public GPSData getGPSbyUserId(String userId) {
         Connection con = getConnection();
