@@ -211,7 +211,7 @@ public class UserClassicDao implements Dao<UuidId, User> {
         return users;
     }
 
-    //ungetestet - macht aus username die UuId
+    //macht aus username die UuId
     public UuidId idFromName(String username) {
         Connection con = getConnection();
         PreparedStatement statement = null;

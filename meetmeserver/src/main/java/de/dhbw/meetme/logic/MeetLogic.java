@@ -69,12 +69,41 @@ public class MeetLogic {
             transaction.commit();
 
     }
+    //Überprüft, ob Teams gleich sind
+    public void checkEqualTeams(String user1, String user2)
+    {
+        transaction.begin();
 
+        String userId1 = (userClassicDao.idFromName(user1).asString());
+        User u1 = userClassicDao.get(UuidId.fromString(userId1));
+        String team1 = u1.getTeam();
+
+        String userId2 = (userClassicDao.idFromName(user1).asString());
+        User u2 = userClassicDao.get(UuidId.fromString(userId2));
+        String team2 = u1.getTeam();
+
+        if(team1==team2)
+        {
+            //Team ist gleich, beide User bekommen einen Punkt
+            updatePoints(user1);
+            updatePoints(user2);
+        }
+        else
+        {
+            //Team ist ungleich, beide User verlieren einen Punkt
+            pointsClassicDao.updatePoints(team1, user1, userId1, -1);
+            pointsClassicDao.updatePoints(team2, user2, userId2, -1);
+        }
+        transaction.commit();
+    }
+
+    //Gibt Punkte des Benutzers aus
     public int getPoints(String username){
         String id = userClassicDao.idFromName(username).asString();
         return pointsClassicDao.getPointsAmountByUserId1(id);
     }
 
+    //Gibt Punkte der Teams aus
     public int getTeamPoints(String team){
         if(team.equals("red")){
             Points p = pointsClassicDao.get(UuidId.fromString("eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12"));
@@ -84,4 +113,31 @@ public class MeetLogic {
             return p.getPoint();
         }
     }
+
+    public String bestTeams()
+    {
+        transaction.begin();
+
+        Points p = pointsClassicDao.get(UuidId.fromString("eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12"));
+        int pointsRed = p.getPoint();
+
+        Points p2 = pointsClassicDao.get(UuidId.fromString("bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12"));
+        int pointsBlue = p2.getPoint();
+
+        transaction.commit();
+
+        if(pointsBlue>pointsRed)
+        {
+            return "blueTeam";
+        }
+        else if(pointsRed>pointsBlue)
+        {
+            return "redTeam";
+        }
+        else
+        {
+            return "tie";
+        }
+    }
+
 }
