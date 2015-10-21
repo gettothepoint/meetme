@@ -2,6 +2,7 @@ package de.dhbw.meetme.rest;
 
 import de.dhbw.meetme.domain.GPSData;
 import de.dhbw.meetme.logic.BasicLogic;
+import de.dhbw.meetme.logic.Verification;
 import groovy.lang.Singleton;
 import org.slf4j.Logger;
         import org.slf4j.LoggerFactory;
@@ -25,12 +26,14 @@ public class GPSService {
 
     @Inject
     BasicLogic basicLogic;
+    @Inject
+    Verification verification;
 
 
     @Path("/{username}/{password}/{lat}/{long}")
     @POST
     public String putGPS(@PathParam("username") String username, @PathParam("password") String password, @PathParam("lat") String latitude, @PathParam("long") String longitude ){
-        if (basicLogic.checkPassword(username, password))
+        if (verification.checkPassword(username, password))
         {
             basicLogic.updateGPS(username, latitude, longitude);
             return "updated GPS Data for User " + username;

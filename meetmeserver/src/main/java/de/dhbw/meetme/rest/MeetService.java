@@ -3,6 +3,7 @@ package de.dhbw.meetme.rest;
 
 import de.dhbw.meetme.logic.BasicLogic;
 import de.dhbw.meetme.logic.MeetLogic;
+import de.dhbw.meetme.logic.Verification;
 import groovy.lang.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,12 +26,14 @@ public class MeetService {
     BasicLogic basicLogic;
     @Inject
     MeetLogic meetLogic;
+    @Inject
+    Verification verification;
 
 
     @Path("/check/{username}/{password}/{username2}")
     @POST
     public String check(@PathParam("username") String username, @PathParam("password") String password, @PathParam("username2") String username2) {
-        if (!basicLogic.checkPassword(username, password)) {
+        if (!verification.checkPassword(username, password)) {
             return "Password incorrect";
         } else if (meetLogic.checkMeeting(username, username2)) {
             return "Meeting confirmed";

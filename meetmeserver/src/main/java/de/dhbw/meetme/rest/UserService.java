@@ -2,6 +2,7 @@ package de.dhbw.meetme.rest;
 
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.logic.BasicLogic;
+import de.dhbw.meetme.logic.Verification;
 import groovy.lang.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +24,13 @@ public class UserService {
 
   @Inject
   BasicLogic basicLogic;
+  @Inject
+  Verification verification;
 
   @Path("/login/{username}/{password}")
   @GET
   public boolean login(@PathParam("username") String username, @PathParam("password") String password) {
-    return basicLogic.checkPassword(username, password);
+    return verification.checkPassword(username, password);
   }
 
   @Path("/list")

@@ -6,6 +6,7 @@ import de.dhbw.meetme.database.dao.UserDao;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
 import de.dhbw.meetme.logic.BasicLogic;
+import de.dhbw.meetme.logic.Verification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +29,10 @@ import java.util.Collection;
 public class UserServlet extends HttpServlet {
   private static final Logger log = LoggerFactory.getLogger(UserServlet.class);
 
-    @Inject BasicLogic basicLogic;
-
+    @Inject
+    BasicLogic basicLogic;
+    @Inject
+    Verification verification;
 
 
 
@@ -95,7 +98,7 @@ public class UserServlet extends HttpServlet {
               "</html>\n";
 
       //prüft, ob Username unique
-      if (!basicLogic.usernameUnique(request.getParameter("username"))) {
+      if (!verification.usernameUnique(request.getParameter("username"))) {
 
           //gibt Error Page zurück
           response.setContentType("text/html");
@@ -107,7 +110,7 @@ public class UserServlet extends HttpServlet {
                       "Wahrscheinlich ist dein Username bereits vergeben Bitte suche dir einen anderen Namen aus und versuche es noch einmal. <br />\n" +
                      output2);
           }
-      } else if (!basicLogic.checkMail(request.getParameter("e-mail"))) {
+      } else if (!verification.checkMail(request.getParameter("e-mail"))) {
 
           //gibt Error Page zurück
           response.setContentType("text/html");
@@ -119,7 +122,7 @@ public class UserServlet extends HttpServlet {
                       "Wahrscheinlich ist deine E-Mailadresse ungültig. Bitte gib deine richtige E-Mail an und versuche es noch einmal. <br />\n" +
                       output2);
           }
-      } else if (!basicLogic.checkTeam(request.getParameter("teams"))) {
+      } else if (!verification.checkTeam(request.getParameter("teams"))) {
 
           //gibt Error Page zurück
           response.setContentType("text/html");
