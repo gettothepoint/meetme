@@ -66,8 +66,8 @@ class UserClassicDaoTest extends Specification {
 
         cleanup:
         dbTestUtil.em.getTransaction().commit();
-
     }
+
     void testDelete() {
 
     }

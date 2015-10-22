@@ -101,7 +101,7 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
             result.close();
             statement.close();
         } catch (SQLException e) {
-            throw new RuntimeException("Could not update database", e);
+            throw new RuntimeException("Could extract data", e);
         } finally {
             try {
                 if (result != null && !result.isClosed())
@@ -276,6 +276,8 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
         return p;
     }
 
+
+    /* Nur noch persist wird genutzt!
     //updated die Punkte des Users und des Teams
     public void updatePoints(String team, String username, String userId, int p){
         //zuerst werden die Punkte des Users abgespeichert
@@ -307,7 +309,7 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
 
         //teampoints updated (UserId wird übergeben
         // weil sie nicht noch zum String gemacht werden muss in updateTeamPoints
-        //todo Käthe: Version abprüfen!
+
 
         Points oldpoints = get(teamPoints.getId());
         int oldteampoints = oldpoints.getPoint();
@@ -368,5 +370,5 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
                 // ignore
             }
         }
-    }
+    } */
 }

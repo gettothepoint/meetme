@@ -31,7 +31,7 @@ public class Points extends PersistentObject {
 
     @Override
     public String toString(){
-        return "GPSData{" +
+        return "Points{" +
                 "id='" + id + '\'' +
                 ", team'" + team + '\'' +
                 ", username'" + username + '\'' +

@@ -19,43 +19,15 @@ import javax.inject.Inject;
  */
 public class MeetLogic {
 
-    private static final Logger log = LoggerFactory.getLogger(GPSService.class);
+    private static final Logger log = LoggerFactory.getLogger(MeetLogic.class);
 
     @Inject
     UserClassicDao userClassicDao;
     @Inject
-    GPSClassicDao GPSClassicDao;
-    @Inject
-    PointsClassicDao pointsClassicDao;
+    PointsLogic pointsLogic;
     @Inject
     Transaction transaction;
 
-
-    public boolean checkMeeting(String user1, String user2)
-    {
-        double spielraum = 0.015;
-
-        transaction.begin();
-        String userId1 = (userClassicDao.idFromName(user1)).asString();
-
-        String userId2 = (userClassicDao.idFromName(user2)).asString();
-
-        GPSData data1 = GPSClassicDao.getGPSbyUserId(userId1);
-        GPSData data2 = GPSClassicDao.getGPSbyUserId(userId2);
-        transaction.commit();
-
-        double lat1 = Double.parseDouble(data1.getLatitude());
-        double long1 = Double.parseDouble(data1.getLongitude());
-        double lat2 = Double.parseDouble(data2.getLatitude());
-        double long2 = Double.parseDouble(data2.getLongitude());
-
-        double dx = 71.5 * (long1-long2);
-        double dy = 111.3 * (lat1-lat2);
-        double distance = Math.sqrt((dx*dx)+(dy*dy));
-
-        log.debug("distance: " + distance);
-        return distance <= spielraum;
-    }
 
 
     //Überprüft, ob Teams gleich sind
@@ -89,17 +61,30 @@ public class MeetLogic {
 
     public void updatePoints(String user, int points)
     {
-        transaction.begin();
-
-        String userId = (userClassicDao.idFromName(user)).asString();
-        User u = userClassicDao.get(UuidId.fromString(userId));
-        String team = u.getTeam();
-        pointsClassicDao.updatePoints(team, user, userId, points);
-
-        transaction.commit();
-
+        pointsLogic.updatePoints(user, points);
+        pointsLogic.updatePointsOverview(user, points);
     }
 
+    public String bestTeam()
+    {
+        int pointsBlue = pointsLogic.score("teamBlue");
+        int pointsRed = pointsLogic.score("teamRed");
+
+        if(pointsBlue>pointsRed)
+        {
+            return "blueTeam";
+        }
+        else if(pointsRed>pointsBlue)
+        {
+            return "redTeam";
+        }
+        else
+        {
+            return "tie";
+        }
+    }
+
+   /*
     //Gibt Punkte des Benutzers aus
     public int getPoints(String username){
         String id = userClassicDao.idFromName(username).asString();
@@ -116,31 +101,8 @@ public class MeetLogic {
             return p.getPoint();
         }
     }
+    */
 
-    public String bestTeams()
-    {
-        transaction.begin();
 
-        Points p = pointsClassicDao.get(UuidId.fromString("eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12"));
-        int pointsRed = p.getPoint();
-
-        Points p2 = pointsClassicDao.get(UuidId.fromString("bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12"));
-        int pointsBlue = p2.getPoint();
-
-        transaction.commit();
-
-        if(pointsBlue>pointsRed)
-        {
-            return "blueTeam";
-        }
-        else if(pointsRed>pointsBlue)
-        {
-            return "redTeam";
-        }
-        else
-        {
-            return "tie";
-        }
-    }
 
 }

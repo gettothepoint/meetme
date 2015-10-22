@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import java.util.Collection;
 
 /**
- * Created by vrettos on 21.10.2015.
+ * Behandelt alle GPSClassicDao zugriffe.
  */
 public class GPSLogic {
     private static final Logger log = LoggerFactory.getLogger(GPSService.class);
@@ -25,9 +25,34 @@ public class GPSLogic {
     @Inject
     Transaction transaction;
 
+    public boolean checkMeeting(String user1, String user2){
+        double spielraum = 0.015;
+
+        transaction.begin();
+        String userId1 = (userClassicDao.idFromName(user1)).asString();
+
+        String userId2 = (userClassicDao.idFromName(user2)).asString();
+
+        GPSData data1 = GPSClassicDao.getGPSbyUserId(userId1);
+        GPSData data2 = GPSClassicDao.getGPSbyUserId(userId2);
+        transaction.commit();
+
+        double lat1 = Double.parseDouble(data1.getLatitude());
+        double long1 = Double.parseDouble(data1.getLongitude());
+        double lat2 = Double.parseDouble(data2.getLatitude());
+        double long2 = Double.parseDouble(data2.getLongitude());
+
+        double dx = 71.5 * (long1-long2);
+        double dy = 111.3 * (lat1-lat2);
+        double distance = Math.sqrt((dx*dx)+(dy*dy));
+
+        log.debug("distance: " + distance);
+        return distance <= spielraum;
+    }
+
     public String listGPSData(){
         //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
-        StringBuffer sb = new StringBuffer("{\"gPSData\":[");
+        StringBuilder sb = new StringBuilder("{\"gPSData\":[");
         Collection<GPSData> list = GPSClassicDao.list();
         for (GPSData data: list){
             sb.append("{\"latitude\":");

@@ -1,6 +1,7 @@
 package de.dhbw.meetme.servlet;
 
 import de.dhbw.meetme.database.dao.UserDao;
+import de.dhbw.meetme.logic.PointsLogic;
 import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ public class StartUpBean {
 
   @Inject
   UserDao userDao;
+  @Inject
+  PointsLogic pointsLogic;
 
   @PostConstruct
   public void init() {
@@ -52,7 +55,11 @@ public class StartUpBean {
     } catch (SQLException e) {
       log.error("Could not start db server: " + e);
     }
+    if(!pointsLogic.testExistence("bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12")){
+      pointsLogic.persistTeams();
+    }
   }
+
 
   private static void stopDbServer() {
     try {
@@ -62,5 +69,4 @@ public class StartUpBean {
     }
   }
 
-  //todo abfrage ob teams schon in Points bestehen
 }
