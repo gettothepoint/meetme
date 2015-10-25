@@ -30,6 +30,7 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
         //davor: return (entityManager.unwrap(SessionImpl.class)).connection();
     }
 
+
     @Override
     public void persist(PointsOverview entity) {
         Connection con = getConnection();
@@ -44,6 +45,7 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
             statement.setString(6, entity.getVersionS());
             statement.executeUpdate();
             statement.close();
+            log.debug("inserted PointsOverview for " + entity.getUsername());
         } catch (SQLException e) {
             throw new RuntimeException("Could not update database", e);
         } finally {
@@ -163,13 +165,14 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
         return poList;
     }
 
+    /*
     public Collection<PointsOverview> listbyTeam(String team){
         Connection con = getConnection();
         PreparedStatement statement = null;
         ResultSet result = null;
         List<PointsOverview> poList = new ArrayList<>();
         try {
-            statement = con.prepareStatement("SELECT id, team, username, userId, point FROM pointsoverview WHERE team = ? ORDER BY point DESC");
+            statement = con.prepareStatement("SELECT id, team, username, userId, point, version FROM pointsoverview WHERE team = ? ORDER BY point DESC");
             statement.setString(1, team);
             result = statement.executeQuery();
 
@@ -205,6 +208,7 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
         return poList;
     }
 
+*/
     public int getPointsByUserId(String userId){
         Connection con = getConnection();
         PreparedStatement statement = null;
@@ -214,7 +218,9 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
             statement = con.prepareStatement("select point from pointsoverview where userid = ?");
             statement.setString(1, userId);
             result = statement.executeQuery();
-            if (!result.next()){}
+            if (!result.next()){
+                return 0;
+            }
             else {
                 if (result.getFetchSize() > 1) {
                     throw new RuntimeException("UserId not unique!");
@@ -253,7 +259,9 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
             statement = con.prepareStatement("SELECT version from pointsoverview where userid = ?");
             statement.setString(1, userId);
             result = statement.executeQuery();
-            if (!result.next()){}
+            if (!result.next()){
+                return -1;
+            }
             else {
                 if (result.getFetchSize() > 1) {
                     throw new RuntimeException("UserId not unique!");
@@ -289,7 +297,7 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
         PreparedStatement statement = null;
 
         try {
-            con.setAutoCommit(false);
+            //con.setAutoCommit(false);
             statement = con.prepareStatement("UPDATE pointsoverview SET point = ?, version = ? WHERE userId = ? AND version = ?");
             statement.setString(1, Integer.toString(newpoints)); //p ist schon der neue Punktwert
             statement.setString(2, Integer.toString(version + 1));
@@ -298,21 +306,16 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
-            if(con !=null){
+            /*if(con !=null){
                 try {
                     log.debug("Transaction is being rolled back with exception: " + e);
                     con.rollback(); //rollback wegen optimistic locking -> nächster Versuch
-                    try{
-                        int r = (int)(Math.random()*15);
-                        TimeUnit.SECONDS.sleep(r);  //warten einer zufälligen Zeit, falls immer zwei gleichzeitig zugreifen (dafür auch der try-Block)
-                    } catch(InterruptedException ex){
-                        log.debug("Problem with sleep: "+ ex);
-                    }
+
                     updatePointsOverview(userId, newpoints, version+1); //version +1, da jetzt eine neuere Version da sein muss
                 }catch(SQLException excep){
                     log.debug("rollback failed with exception: "+ excep);
                 }
-            }
+            }*/
             throw new RuntimeException("Could not update database", e);
         } finally {
             try {
