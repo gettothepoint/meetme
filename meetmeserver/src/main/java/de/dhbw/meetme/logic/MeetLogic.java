@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.Collection;
 
 /**
  * Kerstin und Käthe - meet enthält boolean meeting um ein Treffen zu prüfen
@@ -23,6 +24,10 @@ public class MeetLogic {
 
     @Inject
     UserClassicDao userClassicDao;
+    @Inject
+    PointsClassicDao pointsClassicDao;
+    @Inject
+    GPSClassicDao geoDao;
     @Inject
     PointsLogic pointsLogic;
     @Inject
@@ -41,27 +46,27 @@ public class MeetLogic {
 
         String userId2 = (userClassicDao.idFromName(user2).asString());
         User u2 = userClassicDao.get(UuidId.fromString(userId2));
-        String team2 = u1.getTeam();
+        String team2 = u2.getTeam();
 
         transaction.commit();
 
         if(team1.equals(team2))
         {
             //Team ist gleich, beide User bekommen einen Punkt
-            updatePoints(user1, 1);
-            updatePoints(user2, 1);
+            updatePoints(user1, user2, 3);
+            updatePoints(user2, user1, 3);
         }
         else
         {
             //Team ist ungleich, beide User verlieren einen Punkt
-            updatePoints(user1, -1);
-            updatePoints(user2, -1);
+            updatePoints(user1, user2, 1);
+            updatePoints(user2, user1, 1);
         }
     }
 
-    public void updatePoints(String user, int points)
+    public void updatePoints(String user, String user2, int points)
     {
-        pointsLogic.updatePoints(user, points);
+        pointsLogic.updatePoints(user, user2, points);
         pointsLogic.updatePointsOverview(user, points);
     }
 
@@ -84,25 +89,97 @@ public class MeetLogic {
         }
     }
 
-   /*
-    //Gibt Punkte des Benutzers aus
-    public int getPoints(String username){
-        String id = userClassicDao.idFromName(username).asString();
-        return pointsClassicDao.getPointsAmountByUserId1(id);
-    }
-
-    //Gibt Punkte der Teams aus
-    public int getTeamPoints(String team){
-        if(team.equals("red")){
-            Points p = pointsClassicDao.get(UuidId.fromString("eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12"));
-            return p.getPoint();
-        }else{
-            Points p = pointsClassicDao.get(UuidId.fromString("bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12"));
-            return p.getPoint();
+    public String listAllMeetings(){
+        StringBuilder sb = new StringBuilder("{\"meetings\":[");
+        Collection<Points> list = pointsClassicDao.list();
+        for (Points data: list){
+            sb.append("{\"user1\":");
+            sb.append(data.getUsername());
+            sb.append("\"team1\":");
+            sb.append(data.getTeam());
+            sb.append(",\"user2\":");
+            sb.append(data.getUsername2());
+            sb.append("\"team2\":");
+            sb.append(data.getTeam2());
+            sb.append(",\"points\":\"");
+            sb.append(data.getPointS());
+            sb.append("\"},");
         }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("]}");
+        log.debug("String erstellt: " + sb);
+
+        return sb.toString();
     }
-    */
 
+    public String listUserMeetings(String username){
+        String userId = (userClassicDao.idFromName(username).asString());
+        log.debug("userId found: " + userId);
 
+        StringBuilder sb = new StringBuilder("{\"meetings\":[");
+        Collection<Points> list = pointsClassicDao.getPointsByUserId(userId);
+        for (Points data: list){
+            log.debug("folgendes: " + data);
+            sb.append("{\"user2\":");
+            sb.append(data.getUsername2());
+            sb.append(", \"team2\":");
+            sb.append(data.getTeam2());
+            sb.append(", \"points\":\"");
+            sb.append(data.getPointS());
+            sb.append("\"},");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("]}");
+        log.debug("String erstellt: " + sb);
 
+        return sb.toString();
+    }
+
+    public String geoAndColor(String username){
+        //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
+
+        StringBuilder sb = new StringBuilder("{\"gPSData\":[");
+        Collection<GPSData> geoList = geoDao.list();
+
+        for (GPSData data: geoList){
+
+            String color = met(username, data.getUsername());
+
+            sb.append("{\"latitude\":");
+            sb.append(data.getLatitude());
+            sb.append(",\"longitude\":");
+            sb.append(data.getLongitude());
+            sb.append(",\"username\":\"");
+            sb.append(data.getUsername());
+
+            sb.append(",\"color\":\"");
+            sb.append(color);
+
+            sb.append("\"},");
+        }
+        log.debug("String erstellt: " + sb);
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("]}");
+
+        return sb.toString();
+
+    }
+
+    public String met(String user1, String user2){
+        String userId = (userClassicDao.idFromName(user1).asString());
+        Collection<Points> meetingList = pointsClassicDao.getPointsByUserId(userId);
+
+        if(user1.equals(user2)){
+            return "green";
+        }
+
+        for(Points meeting: meetingList){
+            if(user2.equals(meeting.getUsername2())) {
+                return meeting.getTeam2();
+            }
+        }
+
+        return "";
+
+    }
 }

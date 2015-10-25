@@ -27,27 +27,33 @@ public class GPSLogic {
 
     public boolean checkMeeting(String user1, String user2){
         double spielraum = 0.015;
+        boolean b;
 
         transaction.begin();
         String userId1 = (userClassicDao.idFromName(user1)).asString();
-
         String userId2 = (userClassicDao.idFromName(user2)).asString();
 
-        GPSData data1 = GPSClassicDao.getGPSbyUserId(userId1);
-        GPSData data2 = GPSClassicDao.getGPSbyUserId(userId2);
+        if(testExistence(userId1).equals("")||testExistence(userId2).equals("")){
+            b =  false;
+        } else {
+
+            GPSData data1 = GPSClassicDao.getGPSbyUserId(userId1);
+            GPSData data2 = GPSClassicDao.getGPSbyUserId(userId2);
+
+            double lat1 = Double.parseDouble(data1.getLatitude());
+            double long1 = Double.parseDouble(data1.getLongitude());
+            double lat2 = Double.parseDouble(data2.getLatitude());
+            double long2 = Double.parseDouble(data2.getLongitude());
+
+            double dx = 71.5 * (long1 - long2);
+            double dy = 111.3 * (lat1 - lat2);
+            double distance = Math.sqrt((dx * dx) + (dy * dy));
+
+            log.debug("distance: " + distance);
+            b= (distance <= spielraum);
+        }
         transaction.commit();
-
-        double lat1 = Double.parseDouble(data1.getLatitude());
-        double long1 = Double.parseDouble(data1.getLongitude());
-        double lat2 = Double.parseDouble(data2.getLatitude());
-        double long2 = Double.parseDouble(data2.getLongitude());
-
-        double dx = 71.5 * (long1-long2);
-        double dy = 111.3 * (lat1-lat2);
-        double distance = Math.sqrt((dx*dx)+(dy*dy));
-
-        log.debug("distance: " + distance);
-        return distance <= spielraum;
+        return b;
     }
 
     public String listGPSData(){
@@ -63,18 +69,18 @@ public class GPSLogic {
             sb.append(data.getUsername());
             sb.append("\"},");
         }
+        log.debug("String erstellt: " + sb);
         sb.deleteCharAt(sb.length() - 1);
         sb.append("]}");
 
         return sb.toString();
 
-        //return GPSClassicDao.list();
     }
 
     public void updateGPS(String username, String latitude, String longitude){
         transaction.begin();
-
         UuidId uID = userClassicDao.idFromName(username);
+
         String userId = uID.asString();
         GPSData data = new GPSData();
         data.setUsername(username);
@@ -85,8 +91,10 @@ public class GPSLogic {
         String oldId = testExistence(userId);
 
         if(oldId.equals("")){
+            log.debug("neue GPSDaten, die erst eingetragen werden müssen");
             GPSClassicDao.persist(data);
         }else{
+            log.debug("alte GPSDaten, die upgedated werden");
             GPSClassicDao.updateGPS(data, oldId);
         }
 
@@ -97,12 +105,15 @@ public class GPSLogic {
         //enthält id der olddata bei Vorhandensein, bei nichtvorhandensein einen Leeren String
         String result;
 
-        transaction.begin();
         GPSData olddata = GPSClassicDao.getGPSbyUserId(userId);
+
+        log.debug("alte Daten: "+ olddata);
         if (olddata != null){
             result = olddata.getId().asString();
+            log.debug("gefunden mit id: "+result);
         }else{
             result = "";
+            log.debug("nicht gefunden");
         }
         return result;
     }

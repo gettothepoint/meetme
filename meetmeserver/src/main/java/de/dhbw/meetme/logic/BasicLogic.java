@@ -4,6 +4,7 @@ import de.dhbw.meetme.database.Transaction;
 import de.dhbw.meetme.database.dao.GPSClassicDao;
 import de.dhbw.meetme.database.dao.UserClassicDao;
 import de.dhbw.meetme.domain.GPSData;
+import de.dhbw.meetme.domain.Points;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
 import de.dhbw.meetme.rest.GPSService;
@@ -26,7 +27,7 @@ public class BasicLogic {
     @Inject
     UserClassicDao userClassicDao;
     @Inject
-    GPSClassicDao GPSClassicDao;
+    PointsLogic pointsLogic;
     @Inject
     Transaction transaction;
 
@@ -62,6 +63,7 @@ public class BasicLogic {
         userClassicDao.persist(u);
         transaction.commit();
 
+        pointsLogic.createPointsOverview(username, u.getId().asString(), team);
     }
 
     //by Pia - todo: nochmal Funktion klären!

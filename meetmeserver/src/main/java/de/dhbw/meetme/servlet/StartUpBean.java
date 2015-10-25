@@ -16,6 +16,7 @@ import java.sql.SQLException;
 /**
  *
  */
+
 @Singleton
 @Startup
 public class StartUpBean {
@@ -32,7 +33,10 @@ public class StartUpBean {
     log.info("MeetMe Server started.");
     // inital code goes here
     startDbServer();
+    poSetup();
   }
+
+
 
   @PreDestroy
   public void shutdown() {
@@ -55,9 +59,13 @@ public class StartUpBean {
     } catch (SQLException e) {
       log.error("Could not start db server: " + e);
     }
-    if(!pointsLogic.testExistence("bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12")){
+
+  }
+
+  public void poSetup(){
+    if(!pointsLogic.testExistence("eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12"))
       pointsLogic.persistTeams();
-    }
+    log.debug("beide Teams erstellt");
   }
 
 

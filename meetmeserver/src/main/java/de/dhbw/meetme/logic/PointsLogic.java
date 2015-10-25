@@ -34,103 +34,166 @@ public class PointsLogic {
         return poDao.list();
     }
 
-    public Collection<PointsOverview> bestOfTeams(String team){
-        return poDao.listbyTeam(team);
-        //todo ändern, sodass richtige Reihenfolge ausgegeben wird
+    public String bestOfTeams(String team){
+        //zugelassen: red und blue
+        log.debug("best of Team " + team + " wird ausgegeben:");
+
+        StringBuilder sb = new StringBuilder("{\"pointsOverview\":[");
+        Collection<PointsOverview> list = poDao.list();
+        for (PointsOverview data: list){
+                if(data.getTeam().equals(team)) {
+                sb.append("{\"username\":");
+                sb.append(data.getUsername());
+                sb.append(",\"points\":");
+                sb.append(data.getPointS());
+                sb.append("\"},");
+            }
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("]}");
+
+        log.debug("String erstellt: " + sb);
+
+        return sb.toString();
+    }
+
+    public String bestOf(){
+
+        StringBuilder sb = new StringBuilder("{\"pointsOverview\":[");
+        Collection<PointsOverview> list = poDao.list();
+        for (PointsOverview data: list){
+            if(!data.getTeam().equals("team")) {
+                sb.append("{\"username\":");
+                sb.append(data.getUsername());
+                sb.append(",\"points\":");
+                sb.append(data.getPointS());
+                sb.append("\"},");
+            }
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("]}");
+
+        log.debug("String erstellt: " + sb);
+
+        return sb.toString();
     }
 
     public int score(String username){
         transaction.begin();
         int result;
         if(username.equals("teamRed")){
+            log.debug("rotes Team wird ausgegeben");
             result = poDao.getPointsByUserId("eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12");
         }else if (username.equals("teamBlue")){
+            log.debug("blaues Team wird ausgegeben");
             result = poDao.getPointsByUserId("bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12");
         }else {
             String id = (userClassicDao.idFromName(username)).asString();
             result = poDao.getPointsByUserId(id);
+            log.debug("user " + username + "wird ausgegeben");
         }
         transaction.commit();
 
         return result;
     }
 
-    public void updatePoints(String user, int points){
-        //updated nur die Tabelle Points
+    public void updatePoints(String user, String user2, int points){
+
         transaction.begin();
 
         Points entity = new Points();
         String userId = (userClassicDao.idFromName(user)).asString();
         User u = userClassicDao.get(UuidId.fromString(userId));
+        String userId2 = (userClassicDao.idFromName(user2)).asString();
+        User u2 = userClassicDao.get(UuidId.fromString(userId2));
+
 
         entity.setUserId(userId);
         entity.setUsername(user);
         entity.setTeam(u.getTeam());
+        entity.setUsername2(user2);
+        entity.setUserId2(userId2);
+        entity.setTeam2(u2.getTeam());
         entity.setPoint(points);
 
         pointsClassicDao.persist(entity);
+        log.debug("erstellt: " + entity);
         transaction.commit();
 
+    }
+
+
+    public void createPointsOverview(String user, String userId, String team){
+        PointsOverview po = new PointsOverview();
+        po.setUserId(userId);
+        po.setUsername(user);
+        po.setTeam(team);
+        po.setPoint(0);
+        po.setVersion(0);
+
+        transaction.begin();
+        poDao.persist(po);
+        transaction.commit();
     }
 
     public void updatePointsOverview(String user, int points){
         transaction.begin();
-        PointsOverview po = new PointsOverview();
+        //PointsOverview po = new PointsOverview();
+
         String userId = (userClassicDao.idFromName(user)).asString();
         User u = userClassicDao.get(UuidId.fromString(userId));
 
-        po.setUserId(userId);
-        po.setUsername(user);
-        po.setTeam(u.getTeam());
-        po.setPoint(points);
-        po.setVersion(0);
+        String team = u.getTeam();
+        int userversion = poDao.getVersionByUserId(userId);
+        int userPoints = points + poDao.getPointsByUserId(userId);
+        poDao.updatePointsOverview(userId, userPoints, userversion);
 
 
-        //speichern oder updaten des Users in PointsOverview
-        if(!testExistence(userId)){
-            poDao.persist(po);
-        }else{
-            int version = poDao.getVersionByUserId(userId);
-            int userPoints = points + poDao.getPointsByUserId(userId);
-            poDao.updatePointsOverview(userId, userPoints, version);
-        }
-
-        //updaten des Teams in PointsOverview
-        if(po.getTeam().equals("red")){
+        if(team.equals("red")){
             String redId = "eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12";
-            int version = poDao.getVersionByUserId(redId);
+            int teamversion = poDao.getVersionByUserId(redId);
             int teamPoints = points + poDao.getPointsByUserId(redId);
-            poDao.updatePointsOverview(redId, teamPoints, version);
+            poDao.updatePointsOverview(redId, teamPoints, teamversion);
         }else{
             String blueId = "bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12";
-            int version = poDao.getVersionByUserId(blueId);
+            int teamversion = poDao.getVersionByUserId(blueId);
             int teamPoints = points + poDao.getPointsByUserId(blueId);
-            poDao.updatePointsOverview(blueId, teamPoints, version);
+            poDao.updatePointsOverview(blueId, teamPoints, teamversion);
         }
         transaction.commit();
+        log.debug("update abgeschlossen!");
     }
 
     public boolean testExistence(String userId){
         //true, wenn ein User besteht
-        return poDao.get(UuidId.fromString(userId))!= null;
+        boolean b = poDao.getVersionByUserId(userId)!= -1;
+        log.debug(userId + " bestehen: " + b);
+
+        return b;
     }
 
     public void persistTeams(){
         PointsOverview pored = new PointsOverview();
         pored.setUserId("eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12");
         pored.setUsername("teamRed");
+        pored.setTeam("team");
         pored.setPoint(0);
         pored.setVersion(0);
+        log.debug("redTeam erstellt");
 
         PointsOverview poblue = new PointsOverview();
-        pored.setUserId("bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12");
-        pored.setUsername("teamBlue");
-        pored.setPoint(0);
-        pored.setVersion(0);
+        poblue.setUserId("bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12");
+        poblue.setUsername("teamBlue");
+        poblue.setTeam("team");
+        poblue.setPoint(0);
+        poblue.setVersion(0);
+        log.debug("blueTeam erstellt");
 
-        transaction.begin();
+       // transaction.begin();
         poDao.persist(pored);
+        log.debug("redTeam persisted");
         poDao.persist(poblue);
-        transaction.commit();
+        log.debug("blueTeam persisted");
+       // transaction.commit();
     }
 }

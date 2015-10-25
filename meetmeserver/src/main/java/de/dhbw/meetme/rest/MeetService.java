@@ -48,8 +48,8 @@ public class MeetService {
     public String check(@PathParam("username") String username, @PathParam("username2") String username2 ) {
         if (GPSLogic.checkMeeting(username, username2)) {
 
-            meetLogic.updatePoints(username, 1);
-            meetLogic.updatePoints(username2, 1);
+            meetLogic.updatePoints(username, username2, 1);
+            meetLogic.updatePoints(username2, username, 1);
             int points1 = pointsLogic.score(username);
             int points2 = pointsLogic.score(username2);
             int teamred = pointsLogic.score("teamRead");

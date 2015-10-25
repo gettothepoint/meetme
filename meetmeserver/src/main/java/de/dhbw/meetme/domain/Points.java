@@ -12,6 +12,9 @@ public class Points extends PersistentObject {
     private String team;
     private String username;
     private String userId;
+    private String username2;
+    private String userId2;
+    private String team2;
     private int point;
 
     public String getTeam(){ return team; }
@@ -22,6 +25,15 @@ public class Points extends PersistentObject {
 
     public String getUserId(){ return userId; }
     public void setUserId(String userId){ this.userId = userId; }
+
+    public String getTeam2(){ return team2; }
+    public void setTeam2(String team){ this.team2 = team; }
+
+    public String getUsername2(){ return username2; }
+    public void setUsername2(String username){ this.username2 = username; }
+
+    public String getUserId2(){ return userId2; }
+    public void setUserId2(String userId){ this.userId2 = userId; }
 
     public int getPoint(){ return point; }
     public void setPoint(int point){ this.point = point; }
@@ -36,6 +48,9 @@ public class Points extends PersistentObject {
                 ", team'" + team + '\'' +
                 ", username'" + username + '\'' +
                 ", userID'" + userId + '\'' +
+                ", team2'" + team2 + '\'' +
+                ", username2'" + username2 + '\'' +
+                ", userID2'" + userId2 + '\'' +
                 ", point'" + point + '\'' +
                 '}';
     }

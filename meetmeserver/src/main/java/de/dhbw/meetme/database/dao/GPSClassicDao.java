@@ -167,7 +167,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         Connection con = getConnection();
         PreparedStatement statement = null;
         ResultSet result = null;
-        GPSData Data = null;
+        GPSData Data;
         try {
             statement = con.prepareStatement("select id, username, userId, latitude, longitude from GPSData where userId = ?");
             statement.setString(1, userId);
@@ -177,6 +177,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
             if (result.getFetchSize() > 1) {
                 throw new RuntimeException("Id not unique!");
             }
+
             Data = new GPSData();
             Data.setId(UuidId.fromString(result.getString(1)));
             Data.setUsername(result.getString(2));
