@@ -28,12 +28,15 @@ public class MeetService {
     GPSLogic GPSLogic;
     @Inject
     PointsLogic pointsLogic;
+    @Inject
+    BasicLogic basicLogic;
 
 
     @Path("/check/{username}/{password}/{username2}")
     @POST
     public String check(@PathParam("username") String username, @PathParam("password") String password, @PathParam("username2") String username2) {
-        if (!verification.checkPassword(username, password)) {
+        String pw = basicLogic.getMD5(password);
+        if (!verification.checkPassword(username, pw)) {
             return "Password incorrect";
         } else if (GPSLogic.checkMeeting(username, username2)) {
             return "Meeting confirmed";

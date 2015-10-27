@@ -138,7 +138,7 @@ public class UserServlet extends HttpServlet {
           String username = request.getParameter("username");
           String firstname = request.getParameter("name");
           String lastname = request.getParameter("lastname");
-          String password = request.getParameter("password");
+          String password = basicLogic.getMD5(request.getParameter("password"));
           String mail = request.getParameter("e-mail");
           String team = request.getParameter("teams");
 

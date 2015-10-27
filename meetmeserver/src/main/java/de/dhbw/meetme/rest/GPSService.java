@@ -29,17 +29,20 @@ public class GPSService {
     Verification verification;
     @Inject
     GPSLogic GPSLogic;
+    @Inject
+    BasicLogic basicLogic;
 
 
     @Path("/{username}/{password}/{lat}/{long}")
     @POST
     public String putGPS(@PathParam("username") String username, @PathParam("password") String password, @PathParam("lat") String latitude, @PathParam("long") String longitude ){
-        if (verification.checkPassword(username, password))
-        {
+        String pw = basicLogic.getMD5(password);
+        if (verification.checkPassword(username, pw)){
             GPSLogic.updateGPS(username, latitude, longitude);
             return "updated GPS Data for User " + username;
+        } else {
+            return "Password incorrect";
         }
-        else {return "Password incorrect";}
     }
 
     // Martin: die übergibt den neuen String :)

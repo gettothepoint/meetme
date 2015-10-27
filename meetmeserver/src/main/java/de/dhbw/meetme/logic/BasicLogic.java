@@ -67,7 +67,7 @@ public class BasicLogic {
     }
 
     //by Pia - todo: nochmal Funktion klären!
-    public static String getMD5(String input) {
+    public String getMD5(String input) {
         byte[] source;
         try {
             //Get byte according by specified coding.
