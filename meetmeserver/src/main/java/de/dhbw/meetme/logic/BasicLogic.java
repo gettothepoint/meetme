@@ -31,8 +31,6 @@ public class BasicLogic {
     @Inject
     Transaction transaction;
 
-    UserClassicDao userDao = new UserClassicDao();
-
     public Collection<User> listUsers(){
         return userClassicDao.list();
     }
@@ -66,7 +64,8 @@ public class BasicLogic {
         pointsLogic.createPointsOverview(username, u.getId().asString(), team);
     }
 
-    //by Pia - todo: nochmal Funktion klären!
+
+
     public String getMD5(String input) {
         byte[] source;
         try {

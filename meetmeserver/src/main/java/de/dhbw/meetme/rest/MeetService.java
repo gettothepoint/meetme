@@ -27,70 +27,22 @@ public class MeetService {
     @Inject
     GPSLogic GPSLogic;
     @Inject
-    PointsLogic pointsLogic;
-    @Inject
     BasicLogic basicLogic;
 
 
     @Path("/check/{username}/{password}/{username2}")
-    @POST
+    @GET
     public String check(@PathParam("username") String username, @PathParam("password") String password, @PathParam("username2") String username2) {
         String pw = basicLogic.getMD5(password);
         if (!verification.checkPassword(username, pw)) {
             return "Password incorrect";
         } else if (GPSLogic.checkMeeting(username, username2)) {
+            meetLogic.coreLogic(username, username2);
             return "Meeting confirmed";
         } else {
-            return "Meeting rejected";
+            return "Meeting rejected - GeoData too far apart.";
         }
     }
 
 
-    @Path("/points/{username}/{username2}")
-    @POST
-    public String check(@PathParam("username") String username, @PathParam("username2") String username2 ) {
-        if (GPSLogic.checkMeeting(username, username2)) {
-
-            meetLogic.updatePoints(username, username2, 1);
-            meetLogic.updatePoints(username2, username, 1);
-            int points1 = pointsLogic.score(username);
-            int points2 = pointsLogic.score(username2);
-            int teamred = pointsLogic.score("teamRead");
-            int teamblue = pointsLogic.score("teamBlue");
-            return "Meeting confirmed, Points added. " +
-                    "The new Points of " + username + " are " + points1 +
-                    "The new Points of " + username2 + " are " + points2 +
-                    "The new Points of the red team are " + teamred +
-                    "The new Points of the blue team are " + teamblue;
-
-        }
-        return "Eure GeoDaten sind zu weit auseinander!";
-    }
-
-    /* Tests von Käthe und Kerstin
-    @Path("/tryEqualTeams/{user1}/{user2}")
-    @POST
-    public String tryEqualTeams(@PathParam("user1") String user1, @PathParam("user2") String user2) {
-        meetLogic.checkEqualTeams(user1, user2);
-
-        int points1 = pointsLogic.score(user1);
-        int points2 = pointsLogic.score(user2);
-        int teamred = pointsLogic.score("teamRed");
-        int teamblue = pointsLogic.score("teamBlue");
-        return "The Points have been updated"+
-                "The new Points of " + user1 + " are " + points1 +
-                "The new Points of " + user2 + " are " + points2 +
-                "The new Points of the red team are " + teamred +
-                "The new Points of the blue team are " + teamblue +
-                "WATCH OUT MEETING NOT CHECKED";
-
-    }
-
-    @Path("/bestteam")
-    @GET
-    public String best(){
-        return meetLogic.bestTeam();
-    }
-
-    */
 }

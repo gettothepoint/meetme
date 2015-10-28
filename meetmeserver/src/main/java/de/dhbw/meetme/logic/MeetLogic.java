@@ -27,17 +27,13 @@ public class MeetLogic {
     @Inject
     PointsClassicDao pointsClassicDao;
     @Inject
-    GPSClassicDao geoDao;
-    @Inject
     PointsLogic pointsLogic;
     @Inject
     Transaction transaction;
 
 
-
-    //Überprüft, ob Teams gleich sind
-    public void checkEqualTeams(String user1, String user2)
-    {
+    //Entählt Spiellogik
+    public void coreLogic(String user1, String user2) {
         transaction.begin();
 
         String userId1 = (userClassicDao.idFromName(user1).asString());
@@ -64,31 +60,7 @@ public class MeetLogic {
         }
     }
 
-    public void updatePoints(String user, String user2, int points)
-    {
-        pointsLogic.updatePoints(user, user2, points);
-        pointsLogic.updatePointsOverview(user, points);
-    }
-
-    public String bestTeam()
-    {
-        int pointsBlue = pointsLogic.score("teamBlue");
-        int pointsRed = pointsLogic.score("teamRed");
-
-        if(pointsBlue>pointsRed)
-        {
-            return "blueTeam";
-        }
-        else if(pointsRed>pointsBlue)
-        {
-            return "redTeam";
-        }
-        else
-        {
-            return "tie";
-        }
-    }
-
+    //Listet alle alle Meetings (also auch doppelte): user1, team1, user2, team2, points
     public String listAllMeetings(){
         StringBuilder sb = new StringBuilder("{\"meetings\":[");
         Collection<Points> list = pointsClassicDao.list();
@@ -112,6 +84,7 @@ public class MeetLogic {
         return sb.toString();
     }
 
+    //Listet alle Meetings des Users: user2, team2, points
     public String listUserMeetings(String username){
         String userId = (userClassicDao.idFromName(username).asString());
         log.debug("userId found: " + userId);
@@ -135,51 +108,10 @@ public class MeetLogic {
         return sb.toString();
     }
 
-    public String geoAndColor(String username){
-        //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
 
-        StringBuilder sb = new StringBuilder("{\"gPSData\":[");
-        Collection<GPSData> geoList = geoDao.list();
-
-        for (GPSData data: geoList){
-
-            String color = met(username, data.getUsername());
-
-            sb.append("{\"latitude\":");
-            sb.append(data.getLatitude());
-            sb.append(",\"longitude\":");
-            sb.append(data.getLongitude());
-            sb.append(",\"username\":\"");
-            sb.append(data.getUsername());
-
-            sb.append(",\"color\":\"");
-            sb.append(color);
-
-            sb.append("\"},");
-        }
-        log.debug("String erstellt: " + sb);
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append("]}");
-
-        return sb.toString();
-
-    }
-
-    public String met(String user1, String user2){
-        String userId = (userClassicDao.idFromName(user1).asString());
-        Collection<Points> meetingList = pointsClassicDao.getPointsByUserId(userId);
-
-        if(user1.equals(user2)){
-            return "green";
-        }
-
-        for(Points meeting: meetingList){
-            if(user2.equals(meeting.getUsername2())) {
-                return meeting.getTeam2();
-            }
-        }
-
-        return "";
-
+    /** NONO FUNCTION */
+    public void updatePoints(String user, String user2, int points){
+        pointsLogic.updatePoints(user, user2, points);
+        pointsLogic.updatePointsOverview(user, points);
     }
 }

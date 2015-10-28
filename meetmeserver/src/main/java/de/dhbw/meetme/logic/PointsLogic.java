@@ -30,10 +30,27 @@ public class PointsLogic {
     @Inject
     Transaction transaction;
 
-    public Collection<PointsOverview> listPointsOverview(){
-        return poDao.list();
+    /** Functions für Paul */
+    //gibt das beste Team aus: red Team, blue Team und tie
+    public String bestTeam() {
+        int pointsBlue = score("teamBlue");
+        int pointsRed = score("teamRed");
+
+        if(pointsBlue>pointsRed)
+        {
+            return "blue Team";
+        }
+        else if(pointsRed>pointsBlue)
+        {
+            return "red Team";
+        }
+        else
+        {
+            return "tie";
+        }
     }
 
+    //als String User + Score absteigend nur von Team
     public String bestOfTeams(String team){
         //zugelassen: red und blue
         log.debug("best of Team " + team + " wird ausgegeben:");
@@ -57,6 +74,7 @@ public class PointsLogic {
         return sb.toString();
     }
 
+    //als String alle User + Scores absteigend
     public String bestOf(){
 
         StringBuilder sb = new StringBuilder("{\"pointsOverview\":[");
@@ -78,6 +96,7 @@ public class PointsLogic {
         return sb.toString();
     }
 
+    //gibt Score des Users zurück
     public int score(String username){
         transaction.begin();
         int result;
@@ -97,6 +116,16 @@ public class PointsLogic {
         return result;
     }
 
+
+
+    /** weniger wichtig */
+    public Collection<PointsOverview> listPointsOverview(){
+        return poDao.list();
+    }
+
+
+
+    /**NONO-FUNCTIONS */
     public void updatePoints(String user, String user2, int points){
 
         transaction.begin();
@@ -121,7 +150,6 @@ public class PointsLogic {
         transaction.commit();
 
     }
-
 
     public void createPointsOverview(String user, String userId, String team){
         PointsOverview po = new PointsOverview();

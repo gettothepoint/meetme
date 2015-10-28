@@ -2,8 +2,10 @@ package de.dhbw.meetme.logic;
 
 import de.dhbw.meetme.database.Transaction;
 import de.dhbw.meetme.database.dao.GPSClassicDao;
+import de.dhbw.meetme.database.dao.PointsClassicDao;
 import de.dhbw.meetme.database.dao.UserClassicDao;
 import de.dhbw.meetme.domain.GPSData;
+import de.dhbw.meetme.domain.Points;
 import de.dhbw.meetme.domain.UuidId;
 import de.dhbw.meetme.rest.GPSService;
 import org.slf4j.Logger;
@@ -23,8 +25,12 @@ public class GPSLogic {
     @Inject
     GPSClassicDao GPSClassicDao;
     @Inject
+    PointsClassicDao pointsClassicDao;
+    @Inject
     Transaction transaction;
 
+    /** wichtige Functions */
+    //prüft ob Entfernung <15m
     public boolean checkMeeting(String user1, String user2){
         double spielraum = 0.015;
         boolean b;
@@ -33,7 +39,9 @@ public class GPSLogic {
         String userId1 = (userClassicDao.idFromName(user1)).asString();
         String userId2 = (userClassicDao.idFromName(user2)).asString();
 
-        if(testExistence(userId1).equals("")||testExistence(userId2).equals("")){
+        GPSData exist1 = GPSClassicDao.getGPSbyUserId(userId1);
+        GPSData exist2 = GPSClassicDao.getGPSbyUserId(userId2);
+        if(exist1== null || exist2 == null){
             b =  false;
         } else {
 
@@ -56,7 +64,8 @@ public class GPSLogic {
         return b;
     }
 
-    public String listGPSData(){
+    //String der GPSDaten aller User
+    public String listGeo(){
         //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
         StringBuilder sb = new StringBuilder("{\"gPSData\":[");
         Collection<GPSData> list = GPSClassicDao.list();
@@ -69,14 +78,45 @@ public class GPSLogic {
             sb.append(data.getUsername());
             sb.append("\"},");
         }
-        log.debug("String erstellt: " + sb);
         sb.deleteCharAt(sb.length() - 1);
         sb.append("]}");
+        log.debug("String erstellt: " + sb);
 
         return sb.toString();
 
     }
 
+    //String der GPSDaten aller User mit Colors
+    public String listGeoAndColor(String username){
+        //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
+
+        StringBuilder sb = new StringBuilder("{\"gPSData\":[");
+        Collection<GPSData> geoList = GPSClassicDao.list();
+
+        for (GPSData data: geoList){
+
+            String color = met(username, data.getUsername());
+
+            sb.append("{\"latitude\":");
+            sb.append(data.getLatitude());
+            sb.append(",\"longitude\":");
+            sb.append(data.getLongitude());
+            sb.append(",\"username\":\"");
+            sb.append(data.getUsername());
+
+            sb.append(",\"color\":\"");
+            sb.append(color);
+
+            sb.append("\"},");
+        }
+        log.debug("String erstellt: " + sb);
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("]}");
+
+        return sb.toString();
+    }
+
+    //Neue Geo-Daten in die Datenbank
     public void updateGPS(String username, String latitude, String longitude){
         transaction.begin();
         UuidId uID = userClassicDao.idFromName(username);
@@ -101,6 +141,8 @@ public class GPSLogic {
         transaction.commit();
     }
 
+
+    /** NONO FUNCTION */
     public String testExistence(String userId){
         //enthält id der olddata bei Vorhandensein, bei nichtvorhandensein einen Leeren String
         String result;
@@ -110,7 +152,7 @@ public class GPSLogic {
         log.debug("alte Daten: "+ olddata);
         if (olddata != null){
             result = olddata.getId().asString();
-            log.debug("gefunden mit id: "+result);
+            log.debug("gefunden mit id: " + result);
         }else{
             result = "";
             log.debug("nicht gefunden");
@@ -118,8 +160,23 @@ public class GPSLogic {
         return result;
     }
 
-    public Collection<GPSData> colGPSData(){
-        //gibt die Collection wie ursprünglich zurück, bei Bestehen des Fehlers im JSon Parser wieder zurück!
-        return GPSClassicDao.list();
+    public String met(String user1, String user2){
+        String userId = (userClassicDao.idFromName(user1).asString());
+        Collection<Points> meetingList = pointsClassicDao.getPointsByUserId(userId);
+
+        if(user1.equals(user2)){
+            return "green";
+        }
+
+        for(Points meeting: meetingList){
+            if(user2.equals(meeting.getUsername2())) {
+                return meeting.getTeam2();
+            }
+        }
+
+        return "";
+
     }
+
+
 }
