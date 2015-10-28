@@ -30,7 +30,7 @@ public class UserService {
   @Path("/login/{username}/{password}")
   @GET
   public boolean login(@PathParam("username") String username, @PathParam("password") String password) {
-    return verification.checkPassword(username, password);
+    return verification.checkPassword(username, basicLogic.getMD5(password));
   }
 
   @Path("/list")
