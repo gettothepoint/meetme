@@ -24,8 +24,6 @@ public class StartUpBean {
   public static final String DB_PORT = "9092";
 
   @Inject
-  UserDao userDao;
-  @Inject
   PointsLogic pointsLogic;
 
   @PostConstruct

@@ -34,12 +34,12 @@ public class GPSService {
 
 
     @Path("/{username}/{password}/{lat}/{long}")
-    @POST
+    @GET
     public String putGPS(@PathParam("username") String username, @PathParam("password") String password, @PathParam("lat") String latitude, @PathParam("long") String longitude ){
         String pw = basicLogic.getMD5(password);
         if (verification.checkPassword(username, pw)){
             GPSLogic.updateGPS(username, latitude, longitude);
-            return "updated GPS Data for User " + username;
+            return "updated GPS Data for " + username;
         } else {
             return "Password incorrect";
         }
@@ -50,7 +50,7 @@ public class GPSService {
     @GET
     public String list() {
         log.debug("List GPSData");
-        return GPSLogic.listGPSData();
+        return GPSLogic.listGeo();
     }
 
 
