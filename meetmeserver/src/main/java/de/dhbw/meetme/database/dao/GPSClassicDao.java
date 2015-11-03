@@ -34,7 +34,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         Connection con = getConnection();
         PreparedStatement statement = null;
         try {
-            statement = con.prepareStatement("insert into GPSData (id, username, userid, latitude, longitude) values (?, ?, ?, ?, ?)");
+            statement = con.prepareStatement("insert into GPSData (id, username, userid, latitude, longitude, timestamp) values (?, ?, ?, ?, ?, CURRENT_TIMESTAMP())");
             statement.setString(1, entity.getId().asString());
             statement.setString(2, entity.getUsername());
             statement.setString(3, entity.getUserId());
@@ -125,7 +125,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         ResultSet result = null;
         List<GPSData> datalist = new ArrayList<>();
         try {
-            statement = con.prepareStatement("select id, username, userId, latitude, longitude from GPSData");
+            statement = con.prepareStatement("select id, username, userId, latitude, longitude, timestamp from GPSData");
             result = statement.executeQuery();
 
             while(result.next()) {
@@ -135,6 +135,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
                 data.setUserId(result.getString(3));
                 data.setLatitude(result.getString(4));
                 data.setLongitude(result.getString(5));
+                data.setTimestamp(result.getString(6));
 
                 datalist.add(data);
             }

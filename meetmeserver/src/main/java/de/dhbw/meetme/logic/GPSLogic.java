@@ -76,6 +76,8 @@ public class GPSLogic {
             sb.append(data.getLongitude());
             sb.append(",\"username\":\"");
             sb.append(data.getUsername());
+            sb.append(",\"timestamp\":\"");
+            sb.append(data.getTimestamp());
             sb.append("\"},");
         }
         sb.deleteCharAt(sb.length() - 1);

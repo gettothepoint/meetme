@@ -1,7 +1,8 @@
 package de.dhbw.meetme.domain;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.sql.Timestamp;
 
 /**
  * Created by vrettos on 08.10.2015.
@@ -15,6 +16,10 @@ public class GPSData extends PersistentObject {
     private String userId;
     private String latitude;
     private String longitude;
+    @Basic(optional = false)
+    @Column(insertable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp timestamp;
     //TODO Datum und Zeit einfügen - dafür noch Variablen einfügen und Datentyp abstimmen
 
 
@@ -33,6 +38,8 @@ public class GPSData extends PersistentObject {
     public void setLongitude(String longitude) {this.longitude = longitude; }
 
 
+    public Timestamp getTimestamp(){return timestamp;}
+    public void setTimestamp (String ts){ this.timestamp = Timestamp.valueOf(ts);}
 
     @Override
     public String toString() {
@@ -42,6 +49,7 @@ public class GPSData extends PersistentObject {
                 "userid='" + userId + '\'' +
                 "latitude='" + latitude + '\'' +
                 "longitude='" + longitude + '\'' +
+                "timestamp'" + timestamp + '\'' +
                 '}';
     }
 }
