@@ -69,7 +69,7 @@ public class MeetLogic {
             sb.append(data.getUsername());
             sb.append("\", \"team1\":\"");
             sb.append(data.getTeam());
-            sb.append("\", \"user2\":");
+            sb.append("\", \"user2\":\"");
             sb.append(data.getUsername2());
             sb.append("\", \"team2\": \"");
             sb.append(data.getTeam2());
@@ -93,11 +93,11 @@ public class MeetLogic {
         Collection<Points> list = pointsClassicDao.getPointsByUserId(userId);
         for (Points data: list){
             log.debug("folgendes: " + data);
-            sb.append("{\"user2\":");
+            sb.append("{\"user2\":\"");
             sb.append(data.getUsername2());
-            sb.append(", \"team2\":");
+            sb.append("\", \"team2\":");
             sb.append(data.getTeam2());
-            sb.append(", \"points\":\"");
+            sb.append("\", \"points\":\"");
             sb.append(data.getPointS());
             sb.append("\"},");
         }
