@@ -35,7 +35,7 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
         Connection con = getConnection();
         PreparedStatement statement = null;
         try {
-            statement = con.prepareStatement("insert into points (id, team, username, userId, team2, username2, userId2, point) values (?, ?, ?, ?, ?, ?, ?, ?)");
+            statement = con.prepareStatement("insert into points (id, team, username, userId, team2, username2, userId2, point, timestamp) values (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP())");
             statement.setString(1, entity.getId().asString());
             statement.setString(2, entity.getTeam());
             statement.setString(3, entity.getUsername());
@@ -86,7 +86,7 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
         ResultSet result = null;
         Points points = null;
         try {
-            statement = con.prepareStatement("select id, team, username, userId, team2, username2, userId2, point from points where id = ?");
+            statement = con.prepareStatement("select id, team, username, userId, team2, username2, userId2, point, timestamp from points where id = ?");
             statement.setString(1, id.asString());
             result = statement.executeQuery();
             if (!result.next())
@@ -103,6 +103,7 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
             points.setUsername2(result.getString(6));
             points.setUserId2(result.getString(7));
             points.setPointS(result.getString(8));
+            points.setTimestamp(result.getString(9));
 
             result.close();
             statement.close();
@@ -132,7 +133,7 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
         ResultSet result = null;
         List<Points> pointlist = new ArrayList<>();
         try {
-            statement = con.prepareStatement("select id, team, username, userId, team2, username2, userId2, point from points");
+            statement = con.prepareStatement("select id, team, username, userId, team2, username2, userId2, point, timestamp from points");
             result = statement.executeQuery();
 
             while(result.next()) {
@@ -145,6 +146,8 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
                 points.setUsername2(result.getString(6));
                 points.setUserId2(result.getString(7));
                 points.setPointS(result.getString(8));
+                points.setTimestamp(result.getString(9));
+
                 pointlist.add(points);
             }
             result.close();
@@ -175,7 +178,7 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
         ResultSet result = null;
         List<Points> pointslist = new ArrayList<>();
         try {
-            statement = con.prepareStatement("select id, team, username, userId, team2, username2, userId2, point from points where userId = ?");
+            statement = con.prepareStatement("select id, team, username, userId, team2, username2, userId2, point, timestamp from points where userId = ?");
             statement.setString(1, userId);
             result = statement.executeQuery();
            /* if(!result.next())
@@ -191,6 +194,8 @@ public class PointsClassicDao implements Dao<UuidId, Points>{
                 points.setUsername2(result.getString(6));
                 points.setUserId2(result.getString(7));
                 points.setPointS(result.getString(8));
+                points.setTimestamp(result.getString(9));
+
                 pointslist.add(points);
             }
             result.close();

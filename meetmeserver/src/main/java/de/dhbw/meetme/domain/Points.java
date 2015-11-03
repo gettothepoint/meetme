@@ -1,7 +1,9 @@
 package de.dhbw.meetme.domain;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.sql.Timestamp;
+
 /**
  * Käthe, 11.10.15
  */
@@ -16,6 +18,10 @@ public class Points extends PersistentObject {
     private String userId2;
     private String team2;
     private int point;
+    @Basic(optional = false)
+    @Column(insertable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp timestamp;
 
     public String getTeam(){ return team; }
     public void setTeam(String team){ this.team = team; }
@@ -40,6 +46,8 @@ public class Points extends PersistentObject {
     public String getPointS(){ return Integer.toString(point); }
     public void setPointS(String pointS){ this.point = Integer.parseInt(pointS); }
 
+    public Timestamp getTimestamp(){return timestamp;}
+    public void setTimestamp (String ts){ this.timestamp = Timestamp.valueOf(ts);}
 
     @Override
     public String toString(){
@@ -52,6 +60,7 @@ public class Points extends PersistentObject {
                 ", username2'" + username2 + '\'' +
                 ", userID2'" + userId2 + '\'' +
                 ", point'" + point + '\'' +
+                ", timestamp'" + timestamp + '\'' +
                 '}';
     }
 }
