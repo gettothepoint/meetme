@@ -82,7 +82,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         ResultSet result = null;
         GPSData Data = null;
         try {
-            statement = con.prepareStatement("select id, username, userId, latitude, longitude from GPSData where id = ?");
+            statement = con.prepareStatement("select id, username, userId, latitude, longitude, timestamp from GPSData where id = ? ORDER BY timestamp DESC LIMIT 1");
             statement.setString(1, id.asString());
             result = statement.executeQuery();
             if (!result.next())
@@ -96,6 +96,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
             Data.setUserId(result.getString(3));
             Data.setLatitude(result.getString(4));
             Data.setLongitude(result.getString(5));
+            Data.setTimestamp(result.getString(6));
 
             result.close();
             statement.close();
@@ -125,7 +126,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         ResultSet result = null;
         List<GPSData> datalist = new ArrayList<>();
         try {
-            statement = con.prepareStatement("select id, username, userId, latitude, longitude, timestamp from GPSData");
+            statement = con.prepareStatement("select id, username, userId, latitude, longitude, timestamp from GPSData ORDER BY username, timestamp DESC");
             result = statement.executeQuery();
 
             while(result.next()) {
@@ -170,7 +171,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         ResultSet result = null;
         GPSData Data;
         try {
-            statement = con.prepareStatement("select id, username, userId, latitude, longitude from GPSData where userId = ?");
+            statement = con.prepareStatement("select id, username, userId, latitude, longitude, timestamp from GPSData where userId = ? ORDER BY timestamp DESC LIMIT 1");
             statement.setString(1, userId);
             result = statement.executeQuery();
             if (!result.next())
@@ -185,6 +186,7 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
             Data.setUserId(result.getString(3));
             Data.setLatitude(result.getString(4));
             Data.setLongitude(result.getString(5));
+            Data.setTimestamp(result.getString(6));
 
             result.close();
             statement.close();
@@ -207,7 +209,49 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         return Data;
     }
 
-    //später evtl ändern -> keine Überschreibung, nur persist
+    public Collection<GPSData> listByUserId(String userId){
+        Connection con = getConnection();
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        List<GPSData> datalist = new ArrayList<>();
+        try {
+            statement = con.prepareStatement("SELECT id, username, userId, latitude, longitude, timestamp FROM GPSData WHERE userId = ? ORDER BY timestamp DESC");
+            statement.setString(1, userId);
+            result = statement.executeQuery();
+
+            while(result.next()) {
+                GPSData data = new GPSData();
+                data.setId(UuidId.fromString(result.getString(1)));
+                data.setUsername(result.getString(2));
+                data.setUserId(result.getString(3));
+                data.setLatitude(result.getString(4));
+                data.setLongitude(result.getString(5));
+                data.setTimestamp(result.getString(6));
+
+                datalist.add(data);
+            }
+            result.close();
+            statement.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Could not update database", e);
+        } finally {
+            try {
+                if (result != null && !result.isClosed())
+                    result.close();
+            } catch (SQLException e) {
+                // ignore
+            }
+            try {
+                if (statement != null && !statement.isClosed())
+                    statement.close();
+            } catch (SQLException e) {
+                // ignore
+            }
+        }
+        return datalist;
+    }
+    /*später evtl ändern -> keine Überschreibung, nur persist
     public void updateGPS(GPSData data, String oldId) {
         Connection con = getConnection();
         PreparedStatement statement = null;
@@ -231,5 +275,6 @@ public class GPSClassicDao implements Dao<UuidId, GPSData> {
         }
 
     }
+    */
 
 }

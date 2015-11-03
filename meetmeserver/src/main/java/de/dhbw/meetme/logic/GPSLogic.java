@@ -39,15 +39,11 @@ public class GPSLogic {
         String userId1 = (userClassicDao.idFromName(user1)).asString();
         String userId2 = (userClassicDao.idFromName(user2)).asString();
 
-        GPSData exist1 = GPSClassicDao.getGPSbyUserId(userId1);
-        GPSData exist2 = GPSClassicDao.getGPSbyUserId(userId2);
-        if(exist1== null || exist2 == null){
+        GPSData data1 = GPSClassicDao.getGPSbyUserId(userId1);
+        GPSData data2 = GPSClassicDao.getGPSbyUserId(userId2);
+        if(data1== null || data2 == null){
             b =  false;
         } else {
-
-            GPSData data1 = GPSClassicDao.getGPSbyUserId(userId1);
-            GPSData data2 = GPSClassicDao.getGPSbyUserId(userId2);
-
             double lat1 = Double.parseDouble(data1.getLatitude());
             double long1 = Double.parseDouble(data1.getLongitude());
             double lat2 = Double.parseDouble(data2.getLatitude());
@@ -69,16 +65,20 @@ public class GPSLogic {
         //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
         StringBuilder sb = new StringBuilder("{\"gPSData\":[");
         Collection<GPSData> list = GPSClassicDao.list();
+        String temp ="";
+
         for (GPSData data: list){
-            sb.append("{\"latitude\":");
-            sb.append(data.getLatitude());
-            sb.append(",\"longitude\":");
-            sb.append(data.getLongitude());
-            sb.append(",\"username\":\"");
-            sb.append(data.getUsername());
-            sb.append(",\"timestamp\":\"");
-            sb.append(data.getTimestamp());
-            sb.append("\"},");
+            if(!temp.equals(data.getUserId())) {
+                sb.append("{\"latitude\":");
+                sb.append(data.getLatitude());
+                sb.append(",\"longitude\":");
+                sb.append(data.getLongitude());
+                sb.append(",\"username\":\"");
+                sb.append(data.getUsername());
+                sb.append("\"},");
+
+                temp = data.getUserId();
+            }
         }
         sb.deleteCharAt(sb.length() - 1);
         sb.append("]}");
@@ -94,22 +94,26 @@ public class GPSLogic {
 
         StringBuilder sb = new StringBuilder("{\"gPSData\":[");
         Collection<GPSData> geoList = GPSClassicDao.list();
+        String temp = "";
 
         for (GPSData data: geoList){
+            if(!temp.equals(data.getUserId())) {
+                String color = met(username, data.getUsername());
 
-            String color = met(username, data.getUsername());
+                sb.append("{\"latitude\":");
+                sb.append(data.getLatitude());
+                sb.append(",\"longitude\":");
+                sb.append(data.getLongitude());
+                sb.append(",\"username\":\"");
+                sb.append(data.getUsername());
 
-            sb.append("{\"latitude\":");
-            sb.append(data.getLatitude());
-            sb.append(",\"longitude\":");
-            sb.append(data.getLongitude());
-            sb.append(",\"username\":\"");
-            sb.append(data.getUsername());
+                sb.append(",\"color\":\"");
+                sb.append(color);
 
-            sb.append(",\"color\":\"");
-            sb.append(color);
+                sb.append("\"},");
 
-            sb.append("\"},");
+                temp = data.getUserId();
+            }
         }
         log.debug("String erstellt: " + sb);
         sb.deleteCharAt(sb.length() - 1);
@@ -130,36 +134,37 @@ public class GPSLogic {
         data.setLatitude(latitude);
         data.setLongitude(longitude);
 
-        String oldId = testExistence(userId);
-
-        if(oldId.equals("")){
-            log.debug("neue GPSDaten, die erst eingetragen werden müssen");
-            GPSClassicDao.persist(data);
-        }else{
-            log.debug("alte GPSDaten, die upgedated werden");
-            GPSClassicDao.updateGPS(data, oldId);
-        }
+        GPSClassicDao.persist(data);
 
         transaction.commit();
     }
 
 
+
+
     /** NONO FUNCTION */
-    public String testExistence(String userId){
-        //enthält id der olddata bei Vorhandensein, bei nichtvorhandensein einen Leeren String
-        String result;
 
-        GPSData olddata = GPSClassicDao.getGPSbyUserId(userId);
+    public String listGeoAndTimestamp(String username){
+        String userId = (userClassicDao.idFromName(username).asString());
 
-        log.debug("alte Daten: "+ olddata);
-        if (olddata != null){
-            result = olddata.getId().asString();
-            log.debug("gefunden mit id: " + result);
-        }else{
-            result = "";
-            log.debug("nicht gefunden");
+        //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
+        StringBuilder sb = new StringBuilder("{\"gPSData\":[");
+        Collection<GPSData> list = GPSClassicDao.listByUserId(userId);
+        for (GPSData data: list){
+            sb.append("{\"timestamp\":\"");
+            sb.append(data.getTimestamp());
+            sb.append("\", \"latitude\":");
+            sb.append(data.getLatitude());
+            sb.append(", \"longitude\":");
+            sb.append(data.getLongitude());
+            sb.append("\"},");
         }
-        return result;
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("]}");
+        log.debug("String erstellt: " + sb);
+
+        return sb.toString();
+
     }
 
     public String met(String user1, String user2){
@@ -179,6 +184,7 @@ public class GPSLogic {
         return "";
 
     }
+
 
 
 }
