@@ -71,10 +71,12 @@ public class MeetLogic {
             sb.append(data.getTeam());
             sb.append("\", \"user2\":\"");
             sb.append(data.getUsername2());
-            sb.append("\", \"team2\": \"");
+            sb.append("\", \"team2\":\"");
             sb.append(data.getTeam2());
-            sb.append("\", \"points\":\"");
+            sb.append("\", \"points\":");
             sb.append(data.getPointS());
+            sb.append(",\"timestamp\":\"");
+            sb.append(data.getTimestamp());
             sb.append("\"},");
         }
         sb.deleteCharAt(sb.length() - 1);
@@ -95,10 +97,12 @@ public class MeetLogic {
             log.debug("folgendes: " + data);
             sb.append("{\"user2\":\"");
             sb.append(data.getUsername2());
-            sb.append("\", \"team2\":");
+            sb.append("\", \"team2\":\"");
             sb.append(data.getTeam2());
-            sb.append("\", \"points\":\"");
+            sb.append("\", \"points\":");
             sb.append(data.getPointS());
+            sb.append(", \"timestamp\":\"");
+            sb.append(data.getTimestamp());
             sb.append("\"},");
         }
         sb.deleteCharAt(sb.length() - 1);
