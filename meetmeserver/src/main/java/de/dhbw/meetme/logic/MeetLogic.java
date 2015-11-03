@@ -65,15 +65,15 @@ public class MeetLogic {
         StringBuilder sb = new StringBuilder("{\"meetings\":[");
         Collection<Points> list = pointsClassicDao.list();
         for (Points data: list){
-            sb.append("{\"user1\":");
+            sb.append("{\"user1\":\"");
             sb.append(data.getUsername());
-            sb.append("\"team1\":");
+            sb.append("\", \"team1\":\"");
             sb.append(data.getTeam());
-            sb.append(",\"user2\":");
+            sb.append("\", \"user2\":");
             sb.append(data.getUsername2());
-            sb.append("\"team2\":");
+            sb.append("\", \"team2\": \"");
             sb.append(data.getTeam2());
-            sb.append(",\"points\":\"");
+            sb.append("\", \"points\":\"");
             sb.append(data.getPointS());
             sb.append("\"},");
         }
