@@ -48,13 +48,13 @@ public class MeetLogic {
 
         if(team1.equals(team2))
         {
-            //Team ist gleich, beide User bekommen einen Punkt
+            //Team ist gleich, beide User bekommen drei Punkte
             updatePoints(user1, user2, 3);
             updatePoints(user2, user1, 3);
         }
         else
         {
-            //Team ist ungleich, beide User verlieren einen Punkt
+            //Team ist ungleich, beide User bekommen einen Punkt
             updatePoints(user1, user2, 1);
             updatePoints(user2, user1, 1);
         }
