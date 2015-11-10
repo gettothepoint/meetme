@@ -166,15 +166,13 @@ public class PointsLogic {
 
     public void updatePointsOverview(String user, int points){
         transaction.begin();
-        //PointsOverview po = new PointsOverview();
 
         String userId = (userClassicDao.idFromName(user)).asString();
         User u = userClassicDao.get(UuidId.fromString(userId));
 
         String team = u.getTeam();
         int userversion = poDao.getVersionByUserId(userId);
-        int userPoints = points + poDao.getPointsByUserId(userId);
-        poDao.updatePointsOverview(userId, userPoints, userversion);
+        poDao.updatePointsOverview(userId, points, userversion);
 
 
         if(team.equals("red")){

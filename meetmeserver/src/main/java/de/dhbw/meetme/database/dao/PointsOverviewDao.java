@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by vrettos on 21.10.2015.
+ * Für den Zugriff auf die Tabelle PointsOverview - enthält alle aktuellen kumulierten Punktestände
  */
 public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
     @PersistenceContext
@@ -165,50 +165,6 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
         return poList;
     }
 
-    /*
-    public Collection<PointsOverview> listbyTeam(String team){
-        Connection con = getConnection();
-        PreparedStatement statement = null;
-        ResultSet result = null;
-        List<PointsOverview> poList = new ArrayList<>();
-        try {
-            statement = con.prepareStatement("SELECT id, team, username, userId, point, version FROM pointsoverview WHERE team = ? ORDER BY point DESC");
-            statement.setString(1, team);
-            result = statement.executeQuery();
-
-            while(result.next()) {
-                PointsOverview po = new PointsOverview();
-                po.setId(UuidId.fromString(result.getString(1)));
-                po.setTeam(result.getString(2));
-                po.setUsername(result.getString(3));
-                po.setUserId(result.getString(4));
-                po.setPointS(result.getString(5));
-                po.setVersionS(result.getString(6));
-                poList.add(po);
-            }
-            result.close();
-            statement.close();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Could not extract data", e);
-        } finally {
-            try {
-                if (result != null && !result.isClosed())
-                    result.close();
-            } catch (SQLException e) {
-                // ignore
-            }
-            try {
-                if (statement != null && !statement.isClosed())
-                    statement.close();
-            } catch (SQLException e) {
-                // ignore
-            }
-        }
-        return poList;
-    }
-
-*/
     public int getPointsByUserId(String userId){
         Connection con = getConnection();
         PreparedStatement statement = null;
@@ -291,31 +247,26 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
         return v;
     }
 
-    public void updatePointsOverview(String userId, int newpoints, int version){
-        //newpoints wird upgedated, nicht draufgezählt!
+    public void updatePointsOverview(String userId, int addedpoints, int version){
         Connection con = getConnection();
         PreparedStatement statement = null;
+        int newpoints = addedpoints + getPointsByUserId(userId);
+        //newpoints müssen jedes mal neu berechnet werden - falls neuere Version schon existiert!
 
         try {
-            //con.setAutoCommit(false);
             statement = con.prepareStatement("UPDATE pointsoverview SET point = ?, version = ? WHERE userId = ? AND version = ?");
             statement.setString(1, Integer.toString(newpoints)); //p ist schon der neue Punktwert
             statement.setString(2, Integer.toString(version + 1));
             statement.setString(3, userId);
             statement.setString(4, Integer.toString(version));
-            statement.executeUpdate();
+            int anzahl = statement.executeUpdate();
             statement.close();
-        } catch (SQLException e) {
-            /*if(con !=null){
-                try {
-                    log.debug("Transaction is being rolled back with exception: " + e);
-                    con.rollback(); //rollback wegen optimistic locking -> nächster Versuch
 
-                    updatePointsOverview(userId, newpoints, version+1); //version +1, da jetzt eine neuere Version da sein muss
-                }catch(SQLException excep){
-                    log.debug("rollback failed with exception: "+ excep);
-                }
-            }*/
+            if(anzahl==0) { //also kein Datensatz upgedated wurde
+                log.debug("der Datensatz ist schon gelockt - nächster Versucht mit der neuen Version " + version+1);
+                updatePointsOverview(userId, addedpoints, version + 1); //version +1, da jetzt eine neuere Version da sein muss
+            }
+        } catch (SQLException e) {
             throw new RuntimeException("Could not update database", e);
         } finally {
             try {
@@ -328,4 +279,48 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
         }
     }
 
+        /*
+    public Collection<PointsOverview> listbyTeam(String team){
+        Connection con = getConnection();
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        List<PointsOverview> poList = new ArrayList<>();
+        try {
+            statement = con.prepareStatement("SELECT id, team, username, userId, point, version FROM pointsoverview WHERE team = ? ORDER BY point DESC");
+            statement.setString(1, team);
+            result = statement.executeQuery();
+
+            while(result.next()) {
+                PointsOverview po = new PointsOverview();
+                po.setId(UuidId.fromString(result.getString(1)));
+                po.setTeam(result.getString(2));
+                po.setUsername(result.getString(3));
+                po.setUserId(result.getString(4));
+                po.setPointS(result.getString(5));
+                po.setVersionS(result.getString(6));
+                poList.add(po);
+            }
+            result.close();
+            statement.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Could not extract data", e);
+        } finally {
+            try {
+                if (result != null && !result.isClosed())
+                    result.close();
+            } catch (SQLException e) {
+                // ignore
+            }
+            try {
+                if (statement != null && !statement.isClosed())
+                    statement.close();
+            } catch (SQLException e) {
+                // ignore
+            }
+        }
+        return poList;
+    }
+
+*/
 }

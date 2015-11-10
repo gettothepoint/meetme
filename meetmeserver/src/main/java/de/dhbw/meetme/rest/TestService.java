@@ -19,9 +19,7 @@ import java.util.Collection;
 @Produces({"application/json"}) // mime type
 @Singleton
 public class TestService {
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
-
-    //Mutter aller Services muss beide Daos bereitstellen
+    private static final Logger log = LoggerFactory.getLogger(TestService.class);
 
     @Inject
     Verification verification;
