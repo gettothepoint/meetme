@@ -44,5 +44,11 @@ public class MeetService {
         }
     }
 
+    @Path("/listmeetings/{username}")
+    @GET
+    public String listMeetings(@PathParam("username") String username){
+        return meetLogic.listUserMeetings(username);
+    }
+
 
 }

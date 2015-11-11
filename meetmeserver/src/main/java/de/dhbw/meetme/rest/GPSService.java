@@ -53,6 +53,12 @@ public class GPSService {
         return GPSLogic.listGeo();
     }
 
+    @Path("/listcolor/{username}")
+    @GET
+    public String listColor(@PathParam("username") String username){
+        log.debug("List GPS+Color");
+        return GPSLogic.listGeoAndColor(username);
+    }
 
     //curl -i -H "Accept: application/json" -X POST http://127.0.0.1:8087/meetmeserver/api/login/
 

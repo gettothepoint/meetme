@@ -107,6 +107,7 @@ public class GPSLogic {
                 sb.append(",\"username\":\"");
                 sb.append(data.getUsername());
 
+                sb.append("\"");
                 sb.append(",\"color\":\"");
                 sb.append(color);
 

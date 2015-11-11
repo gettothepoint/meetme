@@ -81,9 +81,9 @@ public class PointsLogic {
         Collection<PointsOverview> list = poDao.list();
         for (PointsOverview data: list){
             if(!data.getTeam().equals("team")) {
-                sb.append("{\"username\":");
+                sb.append("{\"username\":\"");
                 sb.append(data.getUsername());
-                sb.append(",\"points\":");
+                sb.append("\",\"points\":\"");
                 sb.append(data.getPointS());
                 sb.append("\"},");
             }
