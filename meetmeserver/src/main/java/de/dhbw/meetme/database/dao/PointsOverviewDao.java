@@ -181,10 +181,10 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
                 if (result.getFetchSize() > 1) {
                     throw new RuntimeException("UserId not unique!");
                 } else {
+                    log.debug("der übermittelte Pukntestand ist: " + result.getString(1));
                     p = Integer.parseInt(result.getString(1));
                 }
             }
-
             result.close();
             statement.close();
         } catch (SQLException e) {
@@ -251,7 +251,6 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
         Connection con = getConnection();
         PreparedStatement statement = null;
         int newpoints = addedpoints + getPointsByUserId(userId);
-        log.debug("alte Punkte: " + getPointsByUserId(userId) + " dazu: " + addedpoints + " und jetzt: " + newpoints);
         //newpoints müssen jedes mal neu berechnet werden - falls neuere Version schon existiert!
 
         try {

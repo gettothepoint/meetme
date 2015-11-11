@@ -109,7 +109,7 @@ public class PointsLogic {
         }else {
             String id = (userClassicDao.idFromName(username)).asString();
             result = poDao.getPointsByUserId(id);
-            log.debug("user " + username + "wird ausgegeben");
+            log.debug("user " + username + " wird ausgegeben");
         }
         transaction.commit();
 
@@ -178,13 +178,11 @@ public class PointsLogic {
         if(team.equals("red")){
             String redId = "eeeeeee8-eee4-eee4-eee4-eeeeeeeeee12";
             int teamversion = poDao.getVersionByUserId(redId);
-            int teamPoints = points + poDao.getPointsByUserId(redId);
-            poDao.updatePointsOverview(redId, teamPoints, teamversion);
+            poDao.updatePointsOverview(redId, points, teamversion);
         }else{
             String blueId = "bbbbbbb8-bbb4-bbb4-bbb4-bbbbbbbbbb12";
             int teamversion = poDao.getVersionByUserId(blueId);
-            int teamPoints = points + poDao.getPointsByUserId(blueId);
-            poDao.updatePointsOverview(blueId, teamPoints, teamversion);
+            poDao.updatePointsOverview(blueId, points, teamversion);
         }
         transaction.commit();
         log.debug("update abgeschlossen!");

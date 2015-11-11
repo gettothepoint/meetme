@@ -71,7 +71,8 @@ public class TestService {
     @Path("/adduser/{name}/{lastname}/{username}/{e-mail}/{password}/{team}")
     @POST
     public void adduser(@PathParam("name") String firstname, @PathParam("lastname") String lastname, @PathParam("username") String username, @PathParam("e-mail") String email, @PathParam("password") String password, @PathParam("team") String team){
-        basicLogic.addUser(firstname, lastname, username, email, password, team);
+        String pw = basicLogic.getMD5(password);
+        basicLogic.addUser(firstname, lastname, username, email, pw, team);
     }
 
     @Path("/getuser/{id}")
@@ -139,11 +140,6 @@ public class TestService {
         return pointsLogic.testExistence(userId);
     }
 
-    @Path("/maketeams")
-    @POST
-    public void makeTeam(){
-        pointsLogic.persistTeams();
-    }
 
     @Path("/updatePoints/{user}/{user2}{points}")
     @POST
