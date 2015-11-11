@@ -251,6 +251,7 @@ public class PointsOverviewDao implements Dao<UuidId, PointsOverview> {
         Connection con = getConnection();
         PreparedStatement statement = null;
         int newpoints = addedpoints + getPointsByUserId(userId);
+        log.debug("alte Punkte: " + getPointsByUserId(userId) + " dazu: " + addedpoints + " und jetzt: " + newpoints);
         //newpoints müssen jedes mal neu berechnet werden - falls neuere Version schon existiert!
 
         try {
