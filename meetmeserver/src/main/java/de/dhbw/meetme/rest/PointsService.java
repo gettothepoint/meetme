@@ -51,7 +51,19 @@ public class PointsService {
     @GET
     public String bestTeamScore(){
         String bestTeam = pointsLogic.bestTeam();
-        return String.valueOf(pointsLogic.score(bestTeam));
+        if (bestTeam.equals("red Team")){
+            return String.valueOf(pointsLogic.score("teamRed"));
+        }
+        else if (bestTeam.equals("blue Team")){
+            return String.valueOf(pointsLogic.score("teamBlue"));
+        }
+        else if (bestTeam.equals("tie")){
+            return String.valueOf(pointsLogic.score("teamBlue"));
+        }
+        else {
+            return "Fehler bei der Ausgabe des besten Teams.";
+        }
+
     }
 
     @Path("/best/users")
