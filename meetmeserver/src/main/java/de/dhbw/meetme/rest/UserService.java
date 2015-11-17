@@ -30,7 +30,12 @@ public class UserService {
   @Path("/login/{username}/{password}")
   @GET
   public boolean login(@PathParam("username") String username, @PathParam("password") String password) {
-    return verification.checkPassword(username, basicLogic.getMD5(password));
+    if( verification.checkPassword(username, basicLogic.getMD5(password))&& basicLogic.getLoggedin(username)){
+      basicLogic.updateLoggedin(username, true);
+      return true;
+    }else{
+      return false;
+    }
   }
 
   @Path("/list")
@@ -73,10 +78,10 @@ public class UserService {
     return basicLogic.getLoggedin(username);
   }
 
-  @Path("/setLoggedIn/{username}/{loggedIn}")
+  @Path("/logout/{username}")
   @GET
-  public void updateLogin(@PathParam("username") String username, @PathParam("loggedIn") boolean loggedin){
-    basicLogic.updateLoggedin(username, loggedin);
+  public void logout(@PathParam("username") String username){
+    basicLogic.updateLoggedin(username, false);
   }
 
     /*@Path("/adduser")
