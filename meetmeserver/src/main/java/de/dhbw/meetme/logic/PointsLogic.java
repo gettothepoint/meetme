@@ -53,6 +53,8 @@ public class PointsLogic {
     //als String User + Score absteigend nur von Team
     public String bestOfTeams(String team){
         //zugelassen: red und blue
+
+        transaction.begin();
         log.debug("best of Team " + team + " wird ausgegeben:");
 
         StringBuilder sb = new StringBuilder("{\"pointsOverview\":[");
@@ -70,6 +72,8 @@ public class PointsLogic {
         sb.append("]}");
 
         log.debug("String erstellt: " + sb);
+
+        transaction.commit();
 
         return sb.toString();
     }

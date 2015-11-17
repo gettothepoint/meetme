@@ -32,6 +32,7 @@ public class GPSLogic {
     /** wichtige Functions */
     //prüft ob Entfernung <15m
     public boolean checkMeeting(String user1, String user2){
+
         double spielraum = 0.015;
         boolean b;
 
@@ -63,6 +64,8 @@ public class GPSLogic {
     //String der GPSDaten aller User
     public String listGeo(){
         //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
+        transaction.begin();
+
         StringBuilder sb = new StringBuilder("{\"gPSData\":[");
         Collection<GPSData> list = GPSClassicDao.list();
         String temp ="";
@@ -83,6 +86,8 @@ public class GPSLogic {
         sb.deleteCharAt(sb.length() - 1);
         sb.append("]}");
         log.debug("String erstellt: " + sb);
+
+        transaction.commit();
 
         return sb.toString();
 
@@ -149,6 +154,9 @@ public class GPSLogic {
     /** NONO FUNCTION */
 
     public String listGeoAndTimestamp(String username){
+
+        transaction.begin();
+
         String userId = (userClassicDao.idFromName(username).asString());
 
         //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
@@ -166,6 +174,8 @@ public class GPSLogic {
         sb.deleteCharAt(sb.length() - 1);
         sb.append("]}");
         log.debug("String erstellt: " + sb);
+
+        transaction.commit();
 
         return sb.toString();
 

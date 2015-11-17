@@ -62,6 +62,9 @@ public class MeetLogic {
 
     //Listet alle alle Meetings (also auch doppelte): user1, team1, user2, team2, points
     public String listAllMeetings(){
+
+        transaction.begin();
+
         StringBuilder sb = new StringBuilder("{\"meetings\":[");
         Collection<Points> list = pointsClassicDao.list();
         for (Points data: list){
@@ -83,11 +86,16 @@ public class MeetLogic {
         sb.append("]}");
         log.debug("String erstellt: " + sb);
 
+        transaction.commit();
+
         return sb.toString();
     }
 
     //Listet alle Meetings des Users: user2, team2, points
     public String listUserMeetings(String username){
+
+        transaction.begin();
+
         String userId = (userClassicDao.idFromName(username).asString());
         log.debug("userId found: " + userId);
 
@@ -108,6 +116,8 @@ public class MeetLogic {
         sb.deleteCharAt(sb.length() - 1);
         sb.append("]}");
         log.debug("String erstellt: " + sb);
+
+        transaction.commit();
 
         return sb.toString();
     }
