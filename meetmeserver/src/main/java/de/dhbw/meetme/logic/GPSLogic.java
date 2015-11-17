@@ -64,7 +64,6 @@ public class GPSLogic {
     //String der GPSDaten aller User
     public String listGeo(){
         //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
-        transaction.begin();
 
         StringBuilder sb = new StringBuilder("{\"gPSData\":[");
         Collection<GPSData> list = GPSClassicDao.list();
@@ -87,7 +86,6 @@ public class GPSLogic {
         sb.append("]}");
         log.debug("String erstellt: " + sb);
 
-        transaction.commit();
 
         return sb.toString();
 
@@ -155,8 +153,6 @@ public class GPSLogic {
 
     public String listGeoAndTimestamp(String username){
 
-        transaction.begin();
-
         String userId = (userClassicDao.idFromName(username).asString());
 
         //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
@@ -175,7 +171,6 @@ public class GPSLogic {
         sb.append("]}");
         log.debug("String erstellt: " + sb);
 
-        transaction.commit();
 
         return sb.toString();
 
