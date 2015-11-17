@@ -33,6 +33,7 @@ public class TestService {
     PointsLogic pointsLogic;
 
 
+
     //VERIFICATION
     @Path("/checkpw/{u}/{pw}")
     @GET

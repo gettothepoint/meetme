@@ -19,6 +19,7 @@ public class User extends PersistentObject {
     private String email;
     private String password;
     private String team;
+    private boolean loggedin;
     //zufall oder freiwillig, beides offen lassen
 
 
@@ -66,6 +67,9 @@ public class User extends PersistentObject {
     this.name = name;
   }
 
+    public boolean getLoggedin(){return loggedin;}
+    public void setLoggedin(boolean login){ this.loggedin = login;}
+
 
 
     //Methode für die zufällige Verteilung der Teams
@@ -94,6 +98,7 @@ public class User extends PersistentObject {
             ", email='" + email + '\'' +
             ", password='" + password + '\'' +
             ", team='" + team + '\'' +
+            ", loggedin='" + loggedin + '\'' +
             '}';
   }
 }

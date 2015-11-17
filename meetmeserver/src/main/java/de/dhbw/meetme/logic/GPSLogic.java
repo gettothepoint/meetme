@@ -142,7 +142,6 @@ public class GPSLogic {
 
 
 
-
     /** NONO FUNCTION */
 
     public String listGeoAndTimestamp(String username){

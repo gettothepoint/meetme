@@ -31,20 +31,6 @@ public class BasicLogic {
     @Inject
     Transaction transaction;
 
-    public Collection<User> listUsers(){
-        return userClassicDao.list();
-    }
-
-    public User getUser(String id){
-        return userClassicDao.get(UuidId.fromString(id));
-    }
-
-    public void deleteUser(String id){
-        transaction.begin();
-        userClassicDao.delete(UuidId.fromString(id));
-        transaction.commit();
-    }
-
     public void addUser(String firstname, String lastname, String username, String email, String password, String team){
         User u = new User();
         u.setName(username);
@@ -64,6 +50,24 @@ public class BasicLogic {
         pointsLogic.createPointsOverview(username, u.getId().asString(), team);
     }
 
+    public void updateLoggedin(String username, boolean login){
+        transaction.begin();
+        String id = userClassicDao.idFromName(username).asString();
+        User u = getUser(id);
+
+        u.setLoggedin(login);
+        userClassicDao.updateUser(u);
+        transaction.commit();
+    }
+
+    public boolean getLoggedin(String username){
+        transaction.begin();
+        String id = userClassicDao.idFromName(username).asString();
+        User u = getUser(id);
+        boolean loggedin = u.getLoggedin();
+        transaction.commit();
+        return loggedin;
+    }
 
 
     public String getMD5(String input) {
@@ -95,6 +99,24 @@ public class BasicLogic {
         }
         return result;
     }
+
+
+
+
+    public Collection<User> listUsers(){
+        return userClassicDao.list();
+    }
+
+    public User getUser(String id){
+        return userClassicDao.get(UuidId.fromString(id));
+    }
+
+    public void deleteUser(String id){
+        transaction.begin();
+        userClassicDao.delete(UuidId.fromString(id));
+        transaction.commit();
+    }
+
 
 
 }

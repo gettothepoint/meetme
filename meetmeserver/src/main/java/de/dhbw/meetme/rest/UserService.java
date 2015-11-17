@@ -67,6 +67,18 @@ public class UserService {
     log.debug("Save user " + user);
   }
 
+  @Path("/isLoggedin/{username}")
+  @GET
+  public boolean isLoggedin(@PathParam("username") String username){
+    return basicLogic.getLoggedin(username);
+  }
+
+  @Path("/setLoggedIn/{username}/{loggedIn}")
+  @GET
+  public void updateLogin(@PathParam("username") String username, @PathParam("loggedIn") boolean loggedin){
+    basicLogic.updateLoggedin(username, loggedin);
+  }
+
     /*@Path("/adduser")
     @POST
     @Produces(MediaType.TEXT_HTML)
