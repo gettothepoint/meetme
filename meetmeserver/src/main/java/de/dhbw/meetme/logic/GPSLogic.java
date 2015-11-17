@@ -92,6 +92,8 @@ public class GPSLogic {
     public String listGeoAndColor(String username){
         //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
 
+        transaction.begin();
+
         StringBuilder sb = new StringBuilder("{\"gPSData\":[");
         Collection<GPSData> geoList = GPSClassicDao.list();
         String temp = "";
@@ -119,6 +121,8 @@ public class GPSLogic {
         log.debug("String erstellt: " + sb);
         sb.deleteCharAt(sb.length() - 1);
         sb.append("]}");
+
+        transaction.commit();
 
         return sb.toString();
     }
