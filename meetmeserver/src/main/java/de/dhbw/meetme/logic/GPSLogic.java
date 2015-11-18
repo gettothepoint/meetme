@@ -12,7 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Behandelt alle GPSClassicDao zugriffe.
@@ -151,13 +153,14 @@ public class GPSLogic {
 
     /** NONO FUNCTION */
 
-    public String listGeoAndTimestamp(String username){
+    public String jsonGeoAndTimestamp(String username){
 
         String userId = (userClassicDao.idFromName(username).asString());
 
         //gibt im Vergleich zu colGPSData einen String aus, der aber richtig modelliert sein sollte
         StringBuilder sb = new StringBuilder("{\"gPSData\":[");
         Collection<GPSData> list = GPSClassicDao.listByUserId(userId);
+
         for (GPSData data: list){
             sb.append("{\"timestamp\":\"");
             sb.append(data.getTimestamp());
@@ -174,6 +177,17 @@ public class GPSLogic {
 
         return sb.toString();
 
+    }
+
+    public List<GPSData> listGeoandTimeStamp(String username){
+        String userId = (userClassicDao.idFromName(username).asString());
+
+        Collection<GPSData> list = GPSClassicDao.listByUserId(userId);
+        List<GPSData> data = new ArrayList<>();
+        for (GPSData kram: list){
+            data.add(kram);
+        }
+        return data;
     }
 
     public String met(String user1, String user2){

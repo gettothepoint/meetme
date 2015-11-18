@@ -108,10 +108,11 @@ public class TestService {
         return geoLogic.checkMeeting(u1, u2);
     }
 
+
     @Path("/geoAndTime/{username}")
     @GET
     public String geoAndTime(@PathParam("username") String username){
-        return geoLogic.listGeoAndTimestamp(username);
+        return geoLogic.jsonGeoAndTimestamp(username);
     }
 
 
