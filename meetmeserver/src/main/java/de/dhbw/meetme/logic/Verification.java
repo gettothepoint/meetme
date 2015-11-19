@@ -44,6 +44,14 @@ public class Verification {
         return b;
     }
 
+    public boolean usernameKnown(String username){
+        transaction.begin();
+        boolean b;
+        b = !(userClassicDao.idFromName(username)==null);
+        transaction.commit();
+        return b;
+    }
+
     public boolean checkMail(String email) {
         //by Kerstin - Funktion bestätigt!
         String EMAIL_PATTERN =  "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";

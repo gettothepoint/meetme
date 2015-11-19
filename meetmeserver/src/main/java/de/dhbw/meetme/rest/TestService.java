@@ -1,5 +1,6 @@
 package de.dhbw.meetme.rest;
 
+import de.dhbw.meetme.Evaluation.Evaluation;
 import de.dhbw.meetme.database.dao.PointsOverviewDao;
 import de.dhbw.meetme.domain.PointsOverview;
 import de.dhbw.meetme.domain.User;
@@ -31,8 +32,15 @@ public class TestService {
     MeetLogic meetLogic;
     @Inject
     PointsLogic pointsLogic;
+    @Inject
+    Evaluation evaluation;
 
 
+    @Path("/evaluate/{username}")
+    @GET
+    public String evaluate(@PathParam("username") String username){
+        return evaluation.evaluate(username);
+    }
 
     //VERIFICATION
     @Path("/checkpw/{u}/{pw}")

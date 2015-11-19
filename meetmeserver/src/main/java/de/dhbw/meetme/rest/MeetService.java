@@ -36,6 +36,8 @@ public class MeetService {
         String pw = basicLogic.getMD5(password);
         if (!verification.checkPassword(username, pw)) {
             return "Password incorrect";
+        }else if(!verification.usernameKnown(username2)){
+            return "Meeting rejected - unknown user";
         } else if (GPSLogic.checkMeeting(username, username2)) {
             meetLogic.coreLogic(username, username2);
             return "Meeting confirmed";

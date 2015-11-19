@@ -3,6 +3,8 @@ package de.dhbw.meetme.Evaluation;
 import de.dhbw.meetme.database.Transaction;
 import de.dhbw.meetme.domain.GPSData;
 import de.dhbw.meetme.logic.GPSLogic;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.sql.Timestamp;
@@ -14,19 +16,48 @@ import java.util.List;
  * Created by vrettos on 18.11.2015.
  */
 public class Evaluation {
+    private static final Logger log = LoggerFactory.getLogger(Evaluation.class);
+
     @Inject
     GPSLogic geoLogic;
-    @Inject
-    Transaction transaction;
 
-    public void evaluate(String username){
+    int index = 0;
+
+
+    public String evaluate(String username){
         List<GPSData> list =  geoLogic.listGeoandTimeStamp(username);
-        Collection <Collection<GPSData>> all = new ArrayList<>();
+        List <List<GPSData>> all = new ArrayList<>();
 
+        //hier wird die liste all zusammengebastelt
+        while(index < list.size()){
+            List<GPSData> row = findRow(list);
+            all.add(row);
+            log.debug("der neue index in evaluate ist: " + index);
+            log.debug("und die neue all ist " + all.toString());
+        }
+
+        //hier wird die liste all ausgewertet - die Row mit den meisten Einträgen war der längste Aufenthaltsort
+        int longestsize = 0;
+        List<GPSData> longestList = null;
+        for(List<GPSData> row: all){
+            if(row.size()>longestsize){
+                longestList = row;
+            }
+        }
+        GPSData longest = longestList.get(0);
+        GPSData last = longestList.get(longestList.size()-1);
+
+        String ausgabe  =  ("Der user " + username+ " hat sich von " + longest.getTimestamp() +
+                " bis " + last.getTimestamp() +
+                " am Standort mit den Koordinaten " + longest.getLatitude() +
+                "/" + longest.getLongitude() + " aufgehalten.");
+        return ausgabe;
     }
 
-    public List<GPSData> findRow(int number, List<GPSData> list){
+    public List<GPSData> findRow(List<GPSData> list){
+        log.debug("findrow wird aufgerufen");
         List<GPSData> row = new ArrayList<>();
+
 
         int counter = 0;
         GPSData temp = null;
@@ -36,9 +67,10 @@ public class Evaluation {
         double middleLong = 0;
         double tempLat = 0;
         double tempLong = 0;
-        double newLat = 0;
-        double newLong = 0;
-        for (int i = number; i < list.size(); i++) {
+        double newLat;
+        double newLong;
+
+        for (int i = index; i < list.size(); i++) {
             GPSData data = list.get(i);
             //erste Frage: ist das erste Element schon in der Reihe?
             if (temp == null) {
@@ -55,7 +87,7 @@ public class Evaluation {
 
                 if (isClose(tempLat, tempLong, newLat, newLong)) {
                     //jetzt sind sie beieinander, die nächsten GeoDaten werden in die Reihe eingefügt
-                    row.add(temp);
+                    row.add(data);
                     counter++;
                     temp = data;
 
@@ -64,11 +96,16 @@ public class Evaluation {
                         // passt die Entfernung noch oder läuft da jemand nur wie eine Schildkröte?
                         if (!isClose(oldLat, oldLong, newLat, newLong)) {
                             //ok er scheint hier wie eine Schildkröte zu laufen.. also hören wir jetzt auf mit der Reihe!
+                            log.debug("beim ersten isClose raus" + index + " " +row.toString());
+                            index++;
+                            log.debug("neuer index: " + index);
                             return row;
                         } else {
                             //keine Schildkröte - der lebt hier vielleicht. Lass uns noch einen zusätzlichen Wert abprüfen und zuweisen, sicher ist sicher
                             if (middleLat != 0 && !isClose(middleLat, middleLong, newLat, newLong)) {
                                 //es existiert ein mittlerer Wert, der aber zu weit weg ist vom aktuellen Standpunkt!
+                                log.debug(index + " " + row.toString());
+                                index++;
                                 return row;
                             } else {
                                 middleLat = newLat;
@@ -76,11 +113,14 @@ public class Evaluation {
                             }
                         }
                     } else {
+                        log.debug(index + " " +row.toString());
+                        index++;
                         return row;
                     }
                 }
             }
         }
+        log.debug(index + " " + row.toString());
         return row;
     }
 
@@ -89,7 +129,7 @@ public class Evaluation {
         double dy = 111.3 * (lat1 - lat2);
         double distance = Math.sqrt((dx * dx) + (dy * dy));
 
-        return distance<=0.010;
+        return distance<=0.030;
     }
 
 }
